@@ -1,5 +1,15 @@
 name: ShatteredCore
 description: A library of libraries, for the ShatteredSuite.
-main: com.github.shatteredsuite.core.ShatteredCore
+main: com.github.shatteredsuite.core.plugin.ShatteredCore
 version: @version@
 api-version: "1.13"
+
+permissions:
+  shatteredcore.command.about:
+    default: op
+    description: "Displays information about this library."
+
+commands:
+  shatteredcore:
+    usage: /shatteredcore
+    description: "Shows information about this plugin."

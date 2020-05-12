@@ -117,7 +117,10 @@ public class Messenger {
                     entry.getValue());
             }
         }
-        sender.sendMessage(prefix + message);
+        message = prefix + message;
+        for (String line : message.split("\n")) {
+            sender.sendMessage(line);
+        }
     }
 
     /**

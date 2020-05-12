@@ -3,6 +3,9 @@ import org.apache.tools.ant.filters.ReplaceTokens
 buildscript {
     repositories {
         jcenter()
+        maven {
+          url 'https://plugins.gradle.org/m2/'
+        }
     }
     dependencies {
         classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:2.2.+'
@@ -10,12 +13,12 @@ buildscript {
 }
 
 plugins {
-    id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.3.72'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'maven'
 }
 
+apply plugin: 'java'
 apply plugin: 'nebula-aggregate-javadocs'
 
 group 'com.github.ShatteredSuite'
@@ -43,10 +46,25 @@ repositories {
     }
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
+}
+
+task getHash {
+    def p1 = 'git rev-parse --short HEAD'.execute()
+    p1.waitFor()
+    getHash.ext.hash = p1.text
+}
+
 processResources {
+    dependsOn getHash
+    def hash = getHash.hash
     with copySpec{
         from 'src/main/resources'
-        filter(ReplaceTokens, tokens: [version: project.version + '#' + ext.getHash()])
+        filter(ReplaceTokens, tokens: [version: project.version + ' (' + hash.trim() + ')'])
     }
 }
 
@@ -65,12 +83,6 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-task getHash {
-    def p1 = 'get rev-parse HEAD'.execute()
-    p1.waitFor()
-    return p1.text
 }
 
 shadowJar {

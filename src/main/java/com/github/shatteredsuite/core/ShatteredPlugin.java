@@ -1,5 +1,6 @@
 package com.github.shatteredsuite.core;
 
+import com.github.shatteredsuite.core.messages.Messageable;
 import com.github.shatteredsuite.core.messages.Messages;
 import com.github.shatteredsuite.core.messages.Messenger;
 import com.github.shatteredsuite.core.updates.UpdateChecker;
@@ -11,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.logging.Level;
 
-public abstract class ShatteredPlugin extends JavaPlugin {
+public abstract class ShatteredPlugin extends JavaPlugin implements Messageable {
     private boolean loaded;
 
     protected Metrics metrics;
@@ -19,6 +20,8 @@ public abstract class ShatteredPlugin extends JavaPlugin {
     protected Messenger messenger;
     protected int bStatsId = 0;
     protected int spigotResourceId = 0;
+    protected boolean updateAvailable;
+    private String latestVersion;
 
     protected void load() throws Exception { }
 
@@ -56,10 +59,13 @@ public abstract class ShatteredPlugin extends JavaPlugin {
             updateChecker.getVersion(version -> {
                 if(this.getDescription().getVersion().startsWith(version)) {
                     getLogger().info("You are up to date.");
+                    updateAvailable = false;
                 }
                 else {
-                    getLogger().info("An update is available! Version " + version);
+                    getLogger().info("Version " + version + " is available.");
+                    updateAvailable = true;
                 }
+                this.latestVersion = version;
             });
         }
         loadMessages();
@@ -88,5 +94,13 @@ public abstract class ShatteredPlugin extends JavaPlugin {
 
     public Messenger getMessenger() {
         return this.messenger;
+    }
+
+    public boolean isUpdateAvailable() {
+        return this.updateAvailable;
+    }
+
+    public String getLatestVersion() {
+        return this.latestVersion;
     }
 }

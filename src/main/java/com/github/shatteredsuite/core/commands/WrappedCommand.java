@@ -55,17 +55,7 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
 
     @Override
     public boolean onCommand(CommandSender sender, String label, String[] args) {
-        if (showHelpOrNoPerms(sender, label, args)) {
-            children
-                .get(args[0])
-                .onCommand(sender, label + " " + args[0], Arrays.copyOfRange(args, 1, args.length));
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (showHelpOrNoPerms(sender, label, args)) {
+        if (!showHelpOrNoPerms(sender, label, args)) {
             children
                 .get(args[0])
                 .onCommand(sender, label + " " + args[0], Arrays.copyOfRange(args, 1, args.length));
@@ -96,7 +86,7 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
         HashMap<String, String> msgArgs = new HashMap<>();
         msgArgs.put("label", label);
         if (!hasPerms(sender)) {
-            instance.getMessenger().sendMessage(sender, "no-permission");
+            instance.getMessenger().sendMessage(sender, "no-permission", true);
             return false;
         }
         if (!children.isEmpty() && (args.length <= 0 || !children.containsKey(args[0]))) {
