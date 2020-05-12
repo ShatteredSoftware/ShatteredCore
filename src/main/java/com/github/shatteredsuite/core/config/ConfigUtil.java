@@ -67,10 +67,10 @@ public final class ConfigUtil {
     /**
      * By making a few assumptions, we can pick the default in multiple cases.
      *
-     * The assumptions are:<br/>
-     * 1. We're picking from an enum<br/>
-     * 2. The value is a string<br/>
-     * 3. A no-match should default.<br/>
+     * The assumptions are:<br>
+     * 1. We're picking from an enum<br>
+     * 2. The value is a string<br>
+     * 3. A no-match should default.<br>
      *
      * @param map The map to look through.
      * @param key The key to use.
