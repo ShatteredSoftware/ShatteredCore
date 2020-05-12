@@ -1,0 +1,81 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:2.2.+'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'maven'
+}
+
+apply plugin: 'nebula-aggregate-javadocs'
+
+group 'com.github.ShatteredSuite'
+version '1.0.0'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven {
+        name = "PaperMC"
+        url = "https://papermc.io/repo/repository/maven-public/"
+    }
+    maven {
+        name = "Jitpack"
+        url = 'https://jitpack.io'
+    }
+    maven {
+        name = "Spigot"
+        url = "https://hub.spigotmc.org/nexus/content/groups/public"
+    }
+    maven {
+        name = "CodeMC-Repo"
+        url = 'http://repo.codemc.io/repository/maven-public'
+    }
+}
+
+processResources {
+    with copySpec{
+        from 'src/main/resources'
+        filter(ReplaceTokens, tokens: [version: project.version + '#' + ext.getHash()])
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "fr.minuskube.inv:smart-invs:1.2.7"
+    implementation "de.tr7zw:item-nbt-api:2.3.1"
+    implementation "org.bstats:bstats-bukkit:1.7"
+    implementation "com.github.cryptomorin:XSeries:5.3.1"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+task getHash {
+    def p1 = 'get rev-parse HEAD'.execute()
+    p1.waitFor()
+    return p1.text
+}
+
+shadowJar {
+    dependencies {
+        exclude(dependency('com.destorystokyo:paper-api:.*'))
+    }
+    classifier = null
+}

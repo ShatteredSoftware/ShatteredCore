@@ -1,0 +1,5 @@
+name: ShatteredCore
+description: A library of libraries, for the ShatteredSuite.
+main: com.github.shatteredsuite.core.ShatteredCore
+version: @version@
+api-version: "1.13"
