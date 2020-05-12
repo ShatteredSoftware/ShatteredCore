@@ -1,10 +1,10 @@
 package com.github.shatteredsuite.core.ext
 
-import de.tr7zw.changeme.nbtapi.NBTContainer
+import de.tr7zw.changeme.nbtapi.NBTCompound
 import org.bukkit.Bukkit
 import org.bukkit.Location
 
-fun NBTContainer.toLocation() : Location {
+fun NBTCompound.toLocation() : Location {
     val x: Double = this.getDouble("x")
     val y: Double = this.getDouble("y")
     val z: Double = this.getDouble("z")
