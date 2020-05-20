@@ -1,5 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar;
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 buildscript {
     repositories {
@@ -23,8 +23,8 @@ apply plugin: 'nebula-aggregate-javadocs'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
-group 'com.github.shatteredsuite'
-version '1.1.0'
+group = project.property('pluginGroup')
+version = project.property('version')
 
 repositories {
     mavenLocal()
@@ -54,6 +54,7 @@ java {
     withJavadocJar()
     withSourcesJar()
 }
+
 task getHash {
     def p1 = 'git rev-parse --short HEAD'.execute()
     p1.waitFor()
@@ -65,7 +66,10 @@ processResources {
     def hash = getHash.hash
     with copySpec{
         from 'src/main/resources'
-        filter(ReplaceTokens, tokens: [version: project.version + ' (' + hash.trim() + ')'])
+        filter(ReplaceTokens, tokens: [description: project.property('description'),
+                                       projectName: project.property('projectName'),
+                                       pluginName : project.property('pluginName'),
+                                       version    : project.version + ' (' + hash.trim() + ')'])
     }
 }
 
@@ -137,18 +141,31 @@ publishing {
     }
     publications {
         maven(MavenPublication) {
+            artifactId 'core'
             artifact javadocJar
             artifact sourcesJar
-            pom.withXml {
-                def depsNode  = asNode().appendNode('dependencies')
+            artifact distJar
+            artifact apiJar
+            pom {
+                name = project.property("projectName")
+                description = project.property('description')
+                url = 'https://github.com/ShatteredSuite/' + project.property("pluginName")
+                developers {
+                    developer {
+                        id = 'UberPilot'
+                        name = 'UberPilot'
+                        email = 'uberpilot99@gmail.com'
+                    }
+                }
+                withXml {
+                    def depsNode = asNode().appendNode('dependencies')
 
-                configurations.compile.allDependencies.each {  dep ->
-                    def depNode  = depsNode.appendNode('dependency')
-                    depNode.appendNode('groupId', dep.group)
-                    depNode.appendNode('artifactId', dep.name)
-                    depNode.appendNode('version', dep.version)
-                    //optional add scope
-                    //optional add transitive exclusions
+                    configurations.compile.allDependencies.each {
+                        def depNode = depsNode.appendNode('dependency')
+                        depNode.appendNode('groupId', it.group)
+                        depNode.appendNode('artifactId', it.name)
+                        depNode.appendNode('version', it.version)
+                    }
                 }
             }
         }
