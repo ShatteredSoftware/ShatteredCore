@@ -1,3 +1,20 @@
+# 1.2.1 - 2020-06-02
+
+## Additions
+* Add install task to gradle.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.2.0 - 2020-06-02
 
 ## Additions
