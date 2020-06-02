@@ -1,3 +1,21 @@
+# 1.2.2 - 2020-06-02
+
+## Additions
+None
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+* Gradle `install` task removed in favor of `publishToMavenLocal`.
+
+## Security Patches
+None
+
+
 # 1.2.1 - 2020-06-02
 
 ## Additions
