@@ -22,6 +22,7 @@ public abstract class ShatteredPlugin extends JavaPlugin implements Messageable 
     protected int spigotResourceId = 0;
     protected boolean updateAvailable;
     protected boolean internalConfig;
+    protected boolean createMessages;
     private String latestVersion;
 
     /**
@@ -109,6 +110,9 @@ public abstract class ShatteredPlugin extends JavaPlugin implements Messageable 
     }
 
     private void loadMessages() {
+        if (!createMessages) {
+            return;
+        }
         if (!getDataFolder().exists()) {
             //noinspection ResultOfMethodCallIgnored
             getDataFolder().mkdirs();
