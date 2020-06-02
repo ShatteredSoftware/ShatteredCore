@@ -1,3 +1,21 @@
+# 1.2.4 - 2020-06-02
+
+## Additions
+None
+
+## Changes
+* Package for Manager and Identified are now in `com.github.shatteredsuite.core.util` instead of
+`com.github.shatteredsuite.scrolls.data`.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.2.3 - 2020-06-02
 
 ## Additions
