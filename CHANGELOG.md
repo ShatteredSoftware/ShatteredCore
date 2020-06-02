@@ -1,4 +1,34 @@
-## 1.1.0
+# 1.2.0 - 2020-06-02
+
+## Additions
+### ShatteredPlugin
+* Added the `preload` hook, allowing for registering ConfigurationSerializables before loading configs.
+* Reworked the `load` hook setting the `loaded` flag.
+* Added the `loadConfig` and `parseConfig` methods. ParseConfig gets the contents of the `loadConfig` function if `this.internalConfig` is set to true.
+
+### CooldownManager
+* Added the `reset` method to the CooldownManager.
+
+### Tests
+* Added tests for StringUtil and CooldownManager (rudimentary).
+
+## Changes
+### ConfigRecipe
+* Allow ConfigRecipe to be loaded as `ConfigRecipe` instead of `com.github.shatteredsuite.core.config.ConfigRecipe`
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Fixes
+*  Registered ConfigRecipe as ConfigurationSerializable.
+
+## Security Patches
+None
+
+# 1.1.0
 
 ### Additions
 
