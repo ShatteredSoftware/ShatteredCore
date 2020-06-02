@@ -21,7 +21,6 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: 'nebula-aggregate-javadocs'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group = project.property('pluginGroup')
@@ -105,7 +104,7 @@ task apiJar(type: ShadowJar) {
     relocate 'de.tr7zw.changeme.nbtapi', 'com.github.shatteredsuite.core.include.nbt'
     relocate 'org.bstats.bukkit', 'com.github.shatteredsuite.core.include.stats'
     relocate 'com.cryptomorin.xseries', 'com.github.shatteredsuite.core.include.xseries'
-    classifier = ''
+    classifier = 'api'
     configurations = [project.configurations.compile]
 }
 
@@ -174,11 +173,3 @@ publishing {
         }
     }
 }
-
-install {
-    repositories.mavenInstaller {
-        addFilter('dist') { artifact, file -> artifact.name.endsWith('dist') }
-        addFilter('javadoc') { artifact, file -> artifact.name.endsWith('javadoc') }
-    }
-}
-
