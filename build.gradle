@@ -175,3 +175,10 @@ publishing {
     }
 }
 
+install {
+    repositories.mavenInstaller {
+        addFilter('dist') { artifact, file -> artifact.name.endsWith('dist') }
+        addFilter('javadoc') { artifact, file -> artifact.name.endsWith('javadoc') }
+    }
+}
+
