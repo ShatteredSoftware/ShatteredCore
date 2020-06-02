@@ -21,8 +21,18 @@ public abstract class ShatteredPlugin extends JavaPlugin implements Messageable 
     protected int bStatsId = 0;
     protected int spigotResourceId = 0;
     protected boolean updateAvailable;
+    protected boolean internalConfig;
     private String latestVersion;
 
+    /**
+     * Do any work that must be done before loading the config.
+     */
+    protected void preload() { }
+
+    /**
+     * Do any work to be done after loading configs. Register external connections here.
+     * @throws Exception Any error that occurs.
+     */
     protected void load() throws Exception { }
 
     protected void postEnable() { }
@@ -31,12 +41,32 @@ public abstract class ShatteredPlugin extends JavaPlugin implements Messageable 
 
     protected void onFirstTick() { }
 
+    protected void parseConfig(YamlConfiguration config) { }
+
+    public void loadConfig() {
+        if (!getDataFolder().exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            getDataFolder().mkdirs();
+        }
+
+        if(internalConfig) {
+            File configFile = new File(getDataFolder(), "config.yml");
+            if (!configFile.exists()) {
+                saveResource("config.yml", false);
+            }
+            parseConfig(YamlConfiguration.loadConfiguration(configFile));
+        }
+    }
+
     @Override
     public void onLoad() {
-        loaded = true;
+        loaded = false;
         try {
+            preload();
             loadMessages();
+            loadConfig();
             load();
+            loaded = true;
         } catch (Throwable t) {
             getLogger().log(Level.SEVERE, "An error occurred while loading.", t);
             loaded = false;

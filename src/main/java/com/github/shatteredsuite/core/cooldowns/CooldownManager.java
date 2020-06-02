@@ -47,6 +47,14 @@ public class CooldownManager {
     }
 
     /**
+     * Resets the use timer on this feature.
+     * @param uuid The player to reset.
+     */
+    public void reset(UUID uuid) {
+        lastUse.remove(uuid);
+    }
+
+    /**
      * Sets last use of this cooldown to the current time for the given player.
      *
      * @param uuid The player to set the cooldown for.
