@@ -1,3 +1,20 @@
+# 1.2.5 - 2020-06-02
+
+## Additions
+None
+
+## Changes
+* Make methods on Manager open.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.2.4 - 2020-06-02
 
 ## Additions
