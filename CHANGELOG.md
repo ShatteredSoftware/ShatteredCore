@@ -1,3 +1,22 @@
+# 1.2.3 - 2020-06-02
+
+## Additions
+* Manager class -- Uses identified objects to build a registry.
+* Identified class -- represents some object that has an identifier.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
+
 # 1.2.2 - 2020-06-02
 
 ## Additions
