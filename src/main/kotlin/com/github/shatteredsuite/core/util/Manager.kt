@@ -1,4 +1,4 @@
-package com.github.shatteredsuite.scrolls.data
+package com.github.shatteredsuite.core.util
 
 open class Manager<T : Identified> {
     private val registry: MutableMap<String, T> = mutableMapOf()
