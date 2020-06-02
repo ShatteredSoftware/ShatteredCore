@@ -1,17 +1,17 @@
 package com.github.shatteredsuite.core.util
 
 open class Manager<T : Identified> {
-    private val registry: MutableMap<String, T> = mutableMapOf()
+    protected val registry: MutableMap<String, T> = mutableMapOf()
 
-    fun get(id: String): T? {
+    open fun get(id: String): T? {
         return registry[id]
     }
 
-    fun getAll(): Iterable<T> {
+    open fun getAll(): Iterable<T> {
         return registry.values
     }
 
-    fun register(element: T) {
+    open fun register(element: T) {
         registry[element.id] = element
     }
 }
