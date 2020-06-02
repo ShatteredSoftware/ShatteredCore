@@ -24,7 +24,7 @@ public class ConfigRecipe implements ConfigurationSerializable {
 
     @SuppressWarnings("unchecked")
     public ConfigRecipe(Map<String, Object> map) {
-        this.items =  ConfigUtil.getIfValid(map, "items", List.class, new ArrayList<String>());
+        this.items =  ConfigUtil.getIfValid(map, "items", ArrayList.class, new ArrayList<String>());
         LinkedHashMap<String, String> mapping = ConfigUtil.getIfValid(map, "mapping", LinkedHashMap.class, new LinkedHashMap<String, String>());
         this.mapping = generateMapping(mapping);
         this.valid = checkValidity(items, mapping);
