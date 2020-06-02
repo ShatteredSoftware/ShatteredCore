@@ -2,6 +2,7 @@ package com.github.shatteredsuite.core.config;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+@SerializableAs("ConfigRecipe")
 public class ConfigRecipe implements ConfigurationSerializable {
     public final List<String> items;
     public final Map<Character, Material> mapping;
