@@ -1,3 +1,20 @@
+# 1.2.7 - 2020-06-03
+
+## Additions
+* Include GSON in dist/api jar.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.2.5 - 2020-06-02
 
 ## Additions
