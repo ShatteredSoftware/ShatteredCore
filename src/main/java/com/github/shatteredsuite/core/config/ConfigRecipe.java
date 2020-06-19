@@ -57,7 +57,7 @@ public class ConfigRecipe implements ConfigurationSerializable {
         if(isValid) {
             for(String s : mapping.keySet()) {
                 for(char c : s.toCharArray()) {
-                    if (!mapping.containsKey(String.valueOf(c))) {
+                    if (!mapping.containsKey(String.valueOf(c)) && c != ' ') {
                         isValid = false;
                         Logger.getLogger("ShatteredUtilities").severe("Invalid mapping in config. Trying to use " + c
                             + " in a recipe where it is not defined.");
@@ -73,7 +73,7 @@ public class ConfigRecipe implements ConfigurationSerializable {
             this.valid = false;
         }
         for(char c : mapping.keySet()) {
-            if (!mapping.containsKey(c)) {
+            if (!mapping.containsKey(c) && c != ' ') {
                 this.valid = false;
                 break;
             }
