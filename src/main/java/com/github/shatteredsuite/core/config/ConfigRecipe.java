@@ -4,17 +4,23 @@ import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 @SerializableAs("ConfigRecipe")
 public class ConfigRecipe implements ConfigurationSerializable {
-    public final List<String> items;
-    public final Map<Character, Material> mapping;
-    public final boolean valid;
+    private final List<String> items;
+    private final Map<Character, Material> mapping;
+    private boolean valid;
+
+    public ConfigRecipe() {
+        this.items = new ArrayList<>();
+        for(int i = 0; i < 3; i++) {
+            items.add("   ");
+        }
+        this.mapping = new HashMap<>();
+        this.valid = false;
+    }
 
     public ConfigRecipe(List<String> items, Map<String, String> mapping) {
         this.items = items;
@@ -28,6 +34,19 @@ public class ConfigRecipe implements ConfigurationSerializable {
         LinkedHashMap<String, String> mapping = ConfigUtil.getIfValid(map, "mapping", LinkedHashMap.class, new LinkedHashMap<String, String>());
         this.mapping = generateMapping(mapping);
         this.valid = checkValidity(items, mapping);
+    }
+
+    public void withItem(char id, Material type) {
+        this.mapping.put(id, type);
+        checkVailidity();
+    }
+
+    public void withRow(int rowNumber, String row) {
+        if(rowNumber < 0 || rowNumber > 3) {
+            return;
+        }
+        this.items.set(rowNumber, row);
+        checkVailidity();
     }
 
     private boolean checkValidity(List<String> items, Map<String, String> mapping) {
@@ -48,6 +67,17 @@ public class ConfigRecipe implements ConfigurationSerializable {
             }
         }
         return isValid;
+    }
+    private void checkVailidity() {
+        if(this.items.size() < 1) {
+            this.valid = false;
+        }
+        for(char c : mapping.keySet()) {
+            if (!mapping.containsKey(c)) {
+                this.valid = false;
+                break;
+            }
+        }
     }
 
     private LinkedHashMap<Character, Material> generateMapping(Map<String, String> mapping) {
@@ -75,5 +105,9 @@ public class ConfigRecipe implements ConfigurationSerializable {
         map.put("items", items);
         map.put("mapping", mapping);
         return map;
+    }
+
+    public boolean isValid() {
+        return valid;
     }
 }
