@@ -1,3 +1,20 @@
+# 1.2.10 - 2020-06-19
+
+## Additions
+None
+
+## Changes
+* Added missing transient modifiers.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.2.9 - 2020-06-19
 
 ## Additions
