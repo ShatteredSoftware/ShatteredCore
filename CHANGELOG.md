@@ -1,3 +1,20 @@
+# 1.2.8 - 2020-06-19
+
+## Additions
+None
+
+## Changes
+* Expanded the ConfigRecipe code API.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.2.7 - 2020-06-03
 
 ## Additions
