@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class ConfigRecipe implements ConfigurationSerializable {
     public final List<String> items;
     public final Map<Character, Material> mapping;
-    private boolean valid;
+    private transient boolean valid;
 
     public ConfigRecipe() {
         this.items = new ArrayList<>();
