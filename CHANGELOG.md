@@ -1,3 +1,20 @@
+# 1.2.9 - 2020-06-19
+
+## Additions
+None
+
+## Changes
+* Changed improper visibility in ConfigRecipe.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.2.8 - 2020-06-19
 
 ## Additions
