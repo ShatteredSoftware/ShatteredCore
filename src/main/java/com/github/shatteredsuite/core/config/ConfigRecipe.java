@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 @SerializableAs("ConfigRecipe")
 public class ConfigRecipe implements ConfigurationSerializable {
-    private final List<String> items;
-    private final Map<Character, Material> mapping;
+    public final List<String> items;
+    public final Map<Character, Material> mapping;
     private boolean valid;
 
     public ConfigRecipe() {
