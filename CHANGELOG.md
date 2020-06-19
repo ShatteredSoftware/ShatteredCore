@@ -1,3 +1,20 @@
+# 1.2.11 - 2020-06-19
+
+## Additions
+None
+
+## Changes
+* Fix bug when crafting recipes had spaces.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.2.10 - 2020-06-19
 
 ## Additions
