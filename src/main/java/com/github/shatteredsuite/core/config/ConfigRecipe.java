@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 @SerializableAs("ConfigRecipe")
 public class ConfigRecipe implements ConfigurationSerializable {
-    public final List<String> items;
-    public final Map<Character, Material> mapping;
+    private List<String> items;
+    private Map<Character, Material> mapping;
     private transient boolean valid;
 
     public ConfigRecipe() {
@@ -68,6 +68,7 @@ public class ConfigRecipe implements ConfigurationSerializable {
         }
         return isValid;
     }
+
     private void checkVailidity() {
         if(this.items.size() < 1) {
             this.valid = false;
@@ -107,7 +108,25 @@ public class ConfigRecipe implements ConfigurationSerializable {
         return map;
     }
 
+    public List<String> getItems() {
+        return items;
+    }
+
+    public Map<Character, Material> getMapping() {
+        return mapping;
+    }
+
     public boolean isValid() {
         return valid;
+    }
+
+    public void setItems(List<String> items) {
+        this.items = items;
+        checkVailidity();
+    }
+
+    public void setMapping(Map<Character, Material> mapping) {
+        this.mapping = mapping;
+        checkVailidity();
     }
 }
