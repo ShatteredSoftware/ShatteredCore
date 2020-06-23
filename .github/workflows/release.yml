@@ -15,12 +15,11 @@ jobs:
       # ...
       - name: "Build & test"
         run: |
-          gradlew allJars
+          ./gradlew allJars
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           files: |
-            LICENSE.txt
             build/libs/*.jar
