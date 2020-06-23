@@ -1,4 +1,25 @@
-# 1.2.11 - 2020-06-19
+# 1.3.0 - 2020-06-22
+
+## Additions
+* Added the execute method to WrappedCommands. This should be used in favor of overriding onCommand.
+* Added a basic Validator system.
+* Added a collection of CommandContextPredicates.
+* Added BranchCommand, specifically made for junctions inside of a command.
+* Added LeafCommand, which should be used for functional commands.
+
+## Changes
+* Slightly changed the functionality of WrappedCommand. Should function nearly identically.
+
+## Deprecations
+* sendHelpOrNoPerms in WrappedCommand has been deprecated in favor of the CommandContextPredicate system.
+
+## Removals
+None
+
+## Security Patches
+None
+
+# 1.2.12 - 2020-06-19
 
 ## Additions
 None
