@@ -1,5 +1,9 @@
 package com.github.shatteredsuite.core.util;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Provides string-related utilities.
  */
@@ -16,5 +20,18 @@ public class StringUtil {
      */
     public static boolean isEmptyOrNull(String string) {
         return string == null || string.isEmpty();
+    }
+
+    private static final Pattern WORD =
+        Pattern.compile("\"((?:[^\\\\\"]|\\\\.)*)\"|([^\\s\"]+)");
+
+    public static String[] fixArgs(String[] args) {
+        ArrayList<String> results = new ArrayList<>();
+        Matcher matcher = WORD.matcher(String.join(" ", args));
+        while (matcher.find()) {
+            String capturedGroup = matcher.group(1) != null ? matcher.group(1) : matcher.group(2);
+            results.add(capturedGroup);
+        }
+        return results.toArray(new String[]{});
     }
 }

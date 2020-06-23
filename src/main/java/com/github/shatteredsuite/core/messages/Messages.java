@@ -28,10 +28,10 @@ public class Messages {
         YamlConfiguration defaults =
             YamlConfiguration.loadConfiguration(
                 new InputStreamReader(instance.getResource("messages.yml")));
-        for (String key : config.getKeys(false)) {
+        for (String key : config.getKeys(true)) {
             messages.put(key, ChatColor.translateAlternateColorCodes('&', config.getString(key)));
         }
-        for (String key : defaults.getKeys(false)) {
+        for (String key : defaults.getKeys(true)) {
             messages.putIfAbsent(
                 key, ChatColor.translateAlternateColorCodes('&', defaults.getString(key)));
         }

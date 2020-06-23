@@ -64,7 +64,7 @@ public class Messenger {
      *
      * @param sender The sender to send a message to.
      * @param id     The id of the message from {@link Messages} to send.
-     * @param prefix Whether to append the prefix.
+     * @param prefix Whether to prepend the prefix.
      */
     public void sendMessage(CommandSender sender, String id, boolean prefix) {
         sendMessage(sender, id, null, prefix);
@@ -87,16 +87,16 @@ public class Messenger {
      * @param sender       The sender to send a message to.
      * @param id           The id of the message from {@link Messages} to send.
      * @param vars         The list of placeholders to replace.
-     * @param appendPrefix Whether to append the prefix.
+     * @param prependPrefix Whether to prepend the prefix.
      */
     public void sendMessage(
-            CommandSender sender, String id, Map<String, String> vars, boolean appendPrefix) {
+            CommandSender sender, String id, Map<String, String> vars, boolean prependPrefix) {
       if (sender == null) {
         throw new IllegalArgumentException("Sender cannot be null.");
       }
 
         String prefix = "";
-        if (appendPrefix) {
+        if (prependPrefix) {
             prefix = messages.getMessage("prefix");
             if (prefix == null) {
                 prefix = "";
@@ -138,7 +138,7 @@ public class Messenger {
      *
      * @param sender The sender to send a message to.
      * @param id     The id of the message from {@link Messages} to send.
-     * @param prefix Whether to append the prefix.
+     * @param prefix Whether to prepend the prefix.
      */
     public void sendErrorMessage(CommandSender sender, String id, boolean prefix) {
         sendErrorMessage(sender, id, null, prefix);
@@ -161,11 +161,11 @@ public class Messenger {
      * @param sender The sender to send a message to.
      * @param id     The id of the message from {@link Messages} to send.
      * @param vars   The list of placeholders to replace.
-     * @param prefix Whether to append the prefix.
+     * @param prefix Whether to prepend the prefix.
      */
     public void sendErrorMessage(
             CommandSender sender, String id, Map<String, String> vars, boolean prefix) {
-        sendMessage(sender, id, vars);
+        sendMessage(sender, id, vars, prefix);
         if (sender instanceof Player) {
             Player player = (Player) sender;
             XSound.BLOCK_NOTE_BLOCK_BASS.playSound(player.getLocation(), 1, .8f);
@@ -198,6 +198,45 @@ public class Messenger {
                 .scheduleSyncDelayedTask(
                     instance,
                     () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F), 4L);
+        }
+    }
+
+    /**
+     * Sends an important message with any placeholders. Includes a sound effect.
+     *
+     * @param sender The sender to send a message to.
+     * @param id     The id of the message from {@link Messages} to send.
+     * @param prefix Whether to prepend the prefix.
+     */
+    public void sendImportantMessage(CommandSender sender, String id, boolean prefix) {
+        sendMessage(sender, id, null, prefix);
+        if (sender instanceof Player) {
+            final Player player = (Player) sender;
+            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F);
+            Bukkit.getScheduler()
+                    .scheduleSyncDelayedTask(
+                            instance,
+                            () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F), 4L);
+        }
+    }
+
+    /**
+     * Sends an important message with any placeholders. Includes a sound effect.
+     *
+     * @param sender The sender to send a message to.
+     * @param id     The id of the message from {@link Messages} to send.
+     * @param vars   The list of placeholders to replace.
+     * @param prefix Whether to prepend the prefix.
+     */
+    public void sendImportantMessage(CommandSender sender, String id, Map<String, String> vars, boolean prefix) {
+        sendMessage(sender, id, vars, prefix);
+        if (sender instanceof Player) {
+            final Player player = (Player) sender;
+            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F);
+            Bukkit.getScheduler()
+                    .scheduleSyncDelayedTask(
+                            instance,
+                            () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F), 4L);
         }
     }
 }
