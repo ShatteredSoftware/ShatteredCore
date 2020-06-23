@@ -42,7 +42,7 @@ public class UpdateChecker {
             InputStream inputStream = conn.getInputStream();
             InputStreamReader reader = new InputStreamReader(inputStream);
 
-            JsonElement element = new JsonParser().parse(reader);
+            JsonElement element = JsonParser.parseReader(reader);
             if(element.isJsonArray()) {
                 JsonObject el = element.getAsJsonArray().get(0).getAsJsonObject();
                 String name = el.get("name").getAsString();
