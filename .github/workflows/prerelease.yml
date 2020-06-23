@@ -3,6 +3,8 @@ name: "prerelease"
 
 on:
   push:
+    tags-ignore:
+      - "*.*.*"
     branches:
       - "master"
 
