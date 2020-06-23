@@ -37,30 +37,6 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
         children = new HashMap<>();
     }
 
-    public WrappedCommand registerSubcommand(WrappedCommand subcommand) {
-        children.putIfAbsent(subcommand.getLabel(), subcommand);
-        for (String alias : subcommand.getAliases()) {
-            children.putIfAbsent(alias, subcommand);
-        }
-        return this;
-    }
-
-    public WrappedCommand attachToParent() {
-        if (this.parent != null) {
-            this.parent.registerSubcommand(this);
-        }
-        return this;
-    }
-
-    public WrappedCommand addAlias(String alias) {
-        this.aliases.add(alias);
-        return this;
-    }
-
-    public boolean inChildren(String child) {
-        return children.containsKey(child);
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, String label, String[] args) {
         try {
@@ -139,6 +115,30 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
             return false;
         }
         return true;
+    }
+
+    public WrappedCommand registerSubcommand(WrappedCommand subcommand) {
+        children.putIfAbsent(subcommand.getLabel(), subcommand);
+        for (String alias : subcommand.getAliases()) {
+            children.putIfAbsent(alias, subcommand);
+        }
+        return this;
+    }
+
+    public WrappedCommand attachToParent() {
+        if (this.parent != null) {
+            this.parent.registerSubcommand(this);
+        }
+        return this;
+    }
+
+    public WrappedCommand addAlias(String alias) {
+        this.aliases.add(alias);
+        return this;
+    }
+
+    public boolean inChildren(String child) {
+        return children.containsKey(child);
     }
 
     public boolean hasPerms(CommandSender sender) {
