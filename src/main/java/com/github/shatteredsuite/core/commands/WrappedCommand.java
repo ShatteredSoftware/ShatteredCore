@@ -77,6 +77,11 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
         return true;
     }
 
+    /**
+     * Runs a command, checking predicates. Call this method to run the command.
+     *
+     * @param context A context object containing information about the command's use.
+     */
     public void run(@NotNull CommandContext context) {
         context.contextMessages.put("permission", getPermission());
         for(CommandContextPredicate predicate : this.contextPredicates.values()) {
@@ -87,6 +92,13 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
         }
     }
 
+    /**
+     * Executes the command without checking predicates. Override this in child classes.
+     * <br><br>
+     * <b>DO NOT CALL THIS METHOD! CALL {@link #run(CommandContext)} INSTEAD!</b>
+     * 
+     * @param context A context object containing information about the command's use.
+     */
     protected void execute(@NotNull CommandContext context) {}
 
     @Override
@@ -108,6 +120,11 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
     }
 
     /**
+     * @param sender The person who used the command.
+     * @param label The alias of the command used.
+     * @param args Any command arguments.
+     * @return Whether the command was used properly.
+     * 
      * @deprecated Use the predicate system. Will be removed in 1.4.
      */
     protected boolean showHelpOrNoPerms(CommandSender sender, String label, String[] args) {
