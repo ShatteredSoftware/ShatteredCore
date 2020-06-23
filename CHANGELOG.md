@@ -1,3 +1,20 @@
+# 1.3.1 - 2020-06-23
+
+## Additions
+* Added JavaDoc in new API portions.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.3.0 - 2020-06-22
 
 ## Additions
