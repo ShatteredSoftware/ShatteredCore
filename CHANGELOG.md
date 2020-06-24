@@ -1,3 +1,20 @@
+# 1.3.3 - 2020-06-23
+
+## Additions
+None
+
+## Changes
+* Allow items to be deleted from Managers.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.3.2 - 2020-06-23
 
 ## Additions
