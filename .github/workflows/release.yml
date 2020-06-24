@@ -30,3 +30,7 @@ jobs:
           prerelease: false
           files: |
             build/libs/*.jar
+      - name: Publish package
+        run: gradle publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
