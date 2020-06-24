@@ -3,6 +3,7 @@ package com.github.shatteredsuite.core.commands;
 import com.github.shatteredsuite.core.validation.ChoiceValidator;
 import com.github.shatteredsuite.core.validation.Validators;
 import com.github.shatteredsuite.core.validation.ArgumentValidationException;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -60,8 +61,13 @@ public class ArgParser {
         return Validators.worldValidator.validate(args[startingIndex]);
     }
 
-    public String validChoice(String[] args, int startingIndex, List<String> choices) throws ArgumentValidationException {
+    public static String validChoice(String[] args, int startingIndex, List<String> choices) throws ArgumentValidationException {
         validLength(args, startingIndex);
         return new ChoiceValidator(choices).validate(args[startingIndex]);
+    }
+
+    public static Player validPlayer(String[] args, int startingIndex) throws ArgumentValidationException {
+        validLength(args, startingIndex);
+        return Validators.playerValidator.validate(args[startingIndex]);
     }
 }
