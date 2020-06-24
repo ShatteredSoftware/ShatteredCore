@@ -1,3 +1,20 @@
+# 1.3.4 - 2020-06-24
+
+## Additions
+* Message-sending utilities in CommandContext.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.3.3 - 2020-06-23
 
 ## Additions
