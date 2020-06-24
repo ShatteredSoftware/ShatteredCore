@@ -1,3 +1,20 @@
+# 1.3.2 - 2020-06-23
+
+## Additions
+None
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.3.1 - 2020-06-23
 
 ## Additions
