@@ -1,3 +1,20 @@
+# 1.3.5 - 2020-06-24
+
+## Additions
+* Add a parsePlayer method in ArgParser.
+
+## Changes
+* Load Messages in UTF-8.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.3.4 - 2020-06-24
 
 ## Additions
