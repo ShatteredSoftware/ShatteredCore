@@ -7,6 +7,11 @@ on:
       - "*.*.*"
     branches:
       - "master"
+    paths-ignore:
+      - ".github/**"
+      - "docs/**"
+      - "travis.yml"
+      - "README.md"
 
 jobs:
   pre-release:

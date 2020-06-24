@@ -5,6 +5,12 @@ on:
   push:
     tags:
       - "*.*.*"
+    paths-ignore:
+      - ".github/**"
+      - "docs/**"
+      - "travis.yml"
+      - "README.md"
+
 
 jobs:
   tagged-release:
