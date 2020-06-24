@@ -23,25 +23,25 @@ public final class TabCompleters {
      * @return A list of options, based on the player's current location.
      */
     public static List<String> completeLocationPlayer(String[] args, int startingArg, Player sender) {
-        if(args.length <= startingArg) {
+        if(args.length < startingArg) {
             return Collections.emptyList();
         }
-        if(args.length == startingArg + 1) {
+        if(args.length == startingArg) {
             return Collections.singletonList(String.valueOf(sender.getLocation().getBlockX()));
         }
-        if(args.length == startingArg + 2) {
+        if(args.length == startingArg + 1) {
             return Collections.singletonList(String.valueOf(sender.getLocation().getBlockY()));
         }
-        if(args.length == startingArg + 3) {
+        if(args.length == startingArg + 2) {
             return Collections.singletonList(String.valueOf(sender.getLocation().getBlockZ()));
         }
-        if(args.length == startingArg + 4) {
+        if(args.length == startingArg + 3) {
             return Collections.singletonList(String.valueOf(sender.getLocation().getPitch()));
         }
-        if(args.length == startingArg + 5) {
+        if(args.length == startingArg + 4) {
             return Collections.singletonList(String.valueOf(sender.getLocation().getYaw()));
         }
-        if(args.length == startingArg + 6) {
+        if(args.length == startingArg + 5) {
             List<World> worlds = Bukkit.getWorlds();
             List<String> results = worlds.stream().map(World::getName).sorted().collect(Collectors.toList());
             return completeFromOptions(args, startingArg + 5, results);
