@@ -5,7 +5,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * A class to store messages and load them from files, internal and external.
@@ -27,11 +29,13 @@ public class Messages {
         messages = new HashMap<>();
         YamlConfiguration defaults =
             YamlConfiguration.loadConfiguration(
-                new InputStreamReader(instance.getResource("messages.yml")));
+                new InputStreamReader(Objects.requireNonNull(instance.getResource("messages.yml")), StandardCharsets.UTF_8));
         for (String key : config.getKeys(true)) {
+            //noinspection ConstantConditions
             messages.put(key, ChatColor.translateAlternateColorCodes('&', config.getString(key)));
         }
         for (String key : defaults.getKeys(true)) {
+            //noinspection ConstantConditions
             messages.putIfAbsent(
                 key, ChatColor.translateAlternateColorCodes('&', defaults.getString(key)));
         }
