@@ -44,4 +44,16 @@ public class CommandContext {
     public CommandContext nextLevel(WrappedCommand command) {
         return new CommandContext(command, sender, command.getLabel(), Arrays.copyOfRange(args, 1, args.length), messenger, cancelled);
     }
+
+    public void sendMessage(String id, boolean prefix) {
+        this.messenger.sendMessage(sender, id, this.contextMessages, prefix);
+    }
+
+    public void sendErrorMessage(String id, boolean prefix) {
+        this.messenger.sendErrorMessage(sender, id, this.contextMessages, prefix);
+    }
+
+    public void sendImportantMessage(String id, boolean prefix) {
+        this.messenger.sendImportantMessage(sender, id, this.contextMessages, prefix);
+    }
 }
