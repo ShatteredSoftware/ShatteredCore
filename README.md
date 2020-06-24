@@ -95,7 +95,7 @@ public class PlayerTeleportCommand extends LeafCommand {
 
     public void execute(CommandContext ctx) {
         // Get a player, and send them a (configurable!) message if we can't find them.
-        Player player = ArgParser.validPlayer(ctx.args[0]);
+        Player player = Validators.playerValidator.validPlayer(ctx.args[0]);
         ((Player) ctx.sender).teleport(player);
         // Add arguments to message system.
         ctx.contextMessages.put("displayname", player.getDisplayName());
