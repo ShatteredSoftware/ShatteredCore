@@ -1,3 +1,19 @@
+# 1.3.6 - 2020-06-24
+
+## Additions
+
+## Changes
+* fixArgs now returns a list with one element if the fixed args are "empty"
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.3.5 - 2020-06-24
 
 ## Additions
