@@ -32,8 +32,8 @@ public class StringUtil {
             String capturedGroup = matcher.group(1) != null ? matcher.group(1) : matcher.group(2);
             results.add(capturedGroup);
         }
-        if(results.size() == 0) {
-            return new String[]{""};
+        if(args[args.length - 1].equals("")) {
+            results.add("");
         }
         return results.toArray(new String[]{});
     }
