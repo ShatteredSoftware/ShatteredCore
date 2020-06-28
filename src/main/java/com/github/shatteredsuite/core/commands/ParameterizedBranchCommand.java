@@ -28,7 +28,7 @@ public abstract class ParameterizedBranchCommand extends WrappedCommand {
     private @NotNull
     CommandContext flippedContext(@NotNull CommandContext context) {
         return new CommandContext(children.get(context.args[1]), context.sender,
-                context.label + context.args[1], ArrayUtil.withoutIndex(context.args, 1),
+                context.label + context.args[1], ArrayUtil.withoutIndex(context.args, 1).toArray(new String[]{}),
                 context.messenger, context.cancelled, context.args[0]);
     }
 

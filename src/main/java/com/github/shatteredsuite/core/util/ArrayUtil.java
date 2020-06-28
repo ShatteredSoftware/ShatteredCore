@@ -16,22 +16,20 @@ public class ArrayUtil {
         array[index1] = tmp;
     }
 
-    public static <T> T[] withoutIndex(T[] array, int index) {
+    public static <T> List<T> withoutIndex(T[] array, int index) {
         List<T> results = new ArrayList<>();
         results.addAll(Arrays.asList(array).subList(0, index));
         results.addAll(Arrays.asList(array).subList(index + 1, array.length));
-        //noinspection unchecked
-        return (T[]) results.toArray();
+        return results;
     }
 
-    public static <T> T[] copyOfRange(String range, T[] array) {
+    public static <T> List<T> copyOfRange(String range, T[] array) {
         List<Integer> indices = parseRange(range);
         List<T> results = new ArrayList<>();
         for (int index : indices) {
             results.add(array[index]);
         }
-        //noinspection unchecked
-        return (T[]) results.toArray();
+        return results;
     }
 
     public static List<Integer> parseRange(String range) {
