@@ -81,18 +81,25 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
      *
      * @param context A context object containing information about the command's use.
      */
-    protected void execute(@NotNull CommandContext context) {    }
+    protected void execute(@NotNull CommandContext context) { }
 
     private CommandContext contextFromCommand(CommandSender sender, String[] args) {
         return new CommandContext(this, sender, label,
                 com.github.shatteredsuite.core.util.StringUtil.fixArgs(args), instance.getMessenger(), false);
     }
 
+    public List<String> tabComplete(CommandContext ctx) {
+        if(hasPerms(ctx.sender)) {
+            return this.onTabComplete(ctx);
+        }
+        return Collections.emptyList();
+    }
+
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if(hasPerms(sender)) {
-            return onTabComplete(contextFromCommand(sender, args));
+            return tabComplete(contextFromCommand(sender, args));
         }
         return Collections.emptyList();
     }

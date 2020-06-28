@@ -30,7 +30,6 @@ public abstract class BranchCommand extends WrappedCommand {
     @Override
     public List<String> onTabComplete(@NotNull CommandContext ctx) {
         // create new array
-        if(this.hasPerms(ctx.sender)) {
             final List<String> completions = new ArrayList<>();
             if (ctx.args.length <= 1) {
                 StringUtil.copyPartialMatches(ctx.args[0], children.keySet(), completions);
@@ -40,11 +39,7 @@ public abstract class BranchCommand extends WrappedCommand {
             return children.containsKey(ctx.args[0])
                     ? children
                     .get(ctx.args[0])
-                    .onTabComplete(ctx.nextLevel(children.get(ctx.args[0])))
+                    .tabComplete(ctx.nextLevel(children.get(ctx.args[0])))
                     : null;
-        }
-        else {
-            return Collections.emptyList();
-        }
     }
 }
