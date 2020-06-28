@@ -15,6 +15,10 @@ open class Manager<T : Identified> : Iterable<T> {
         return this
     }
 
+    open fun getIds() : Iterable<String> {
+        return registry.keys
+    }
+
     open fun register(element: T) {
         registry[element.id.toLowerCase()] = element
     }
