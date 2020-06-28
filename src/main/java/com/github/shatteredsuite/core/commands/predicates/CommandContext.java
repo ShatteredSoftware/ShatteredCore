@@ -48,15 +48,15 @@ public class CommandContext {
     }
 
     public CommandContext cancelled() {
-        return new CommandContext(command, sender, label, args, messenger, true);
+        return new CommandContext(command, sender, label, args, messenger, true, null, debug);
     }
 
     public CommandContext consumeArgument() {
-        return new CommandContext(command, sender, label, Arrays.copyOfRange(args, 1, args.length), messenger, cancelled);
+        return new CommandContext(command, sender, label, Arrays.copyOfRange(args, 1, args.length), messenger, cancelled, null, debug);
     }
 
     public CommandContext nextLevel(WrappedCommand command) {
-        return new CommandContext(command, sender, this.label + " " + command.getLabel(), Arrays.copyOfRange(args, 1, args.length), messenger, cancelled);
+        return new CommandContext(command, sender, this.label + " " + command.getLabel(), Arrays.copyOfRange(args, 1, args.length), messenger, cancelled, null, debug);
     }
 
     public CommandContext debug() {
