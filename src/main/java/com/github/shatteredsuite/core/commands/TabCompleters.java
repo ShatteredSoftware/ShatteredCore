@@ -104,10 +104,13 @@ public final class TabCompleters {
             return Collections.emptyList();
         }
         else if (args.length == startingArg || args.length == startingArg + 1) {
-            List<String> results = new ArrayList<>();
+            List<String> options = new ArrayList<>();
             for (int i = low; i < high; i++) {
-                results.add(String.valueOf(modifier.applyAsInt(i)));
+                options.add(String.valueOf(modifier.applyAsInt(i)));
             }
+            List<String> results = new ArrayList<>();
+            StringUtil.copyPartialMatches(args[startingArg], options, results);
+            Collections.sort(results);
             return results;
         }
         return Collections.emptyList();
