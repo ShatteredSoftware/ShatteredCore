@@ -4,7 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem
 import org.bukkit.Bukkit
 import org.bukkit.Location
 
-fun NBTItem.getLocation(offset: String = "") : Location {
+fun NBTItem.getLocation(offset: String = ""): Location {
     val x: Double = this.getDouble(offset + "x")
     val y: Double = this.getDouble(offset + "y")
     val z: Double = this.getDouble(offset + "z")

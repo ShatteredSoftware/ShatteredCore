@@ -14,7 +14,7 @@ public class ChoiceValidator implements Validator<String> {
     @NotNull
     @Override
     public String validate(@NotNull String param) throws ArgumentValidationException {
-        if(!choices.contains(param)) {
+        if (!choices.contains(param)) {
             String options = String.join(", ", choices);
             throw new ArgumentValidationException("Invalid choice. Choices are: " + options, ArgumentValidationException.ValidationErrorType.INVALID_FORMAT, "invalid-choice", param, options);
         }

@@ -1,10 +1,9 @@
 package com.github.shatteredsuite.core.ext
 
 import de.tr7zw.changeme.nbtapi.NBTContainer
-import org.bukkit.Bukkit
 import org.bukkit.Location
 
-fun Location.toNBT() : NBTContainer {
+fun Location.toNBT(): NBTContainer {
     val container = NBTContainer()
     container.setDouble("x", this.x)
     container.setDouble("y", this.y)

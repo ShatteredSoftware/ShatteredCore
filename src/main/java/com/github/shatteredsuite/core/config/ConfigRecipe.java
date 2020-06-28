@@ -15,7 +15,7 @@ public class ConfigRecipe implements ConfigurationSerializable {
 
     public ConfigRecipe() {
         this.items = new ArrayList<>();
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             items.add("   ");
         }
         this.mapping = new HashMap<>();
@@ -30,7 +30,7 @@ public class ConfigRecipe implements ConfigurationSerializable {
 
     @SuppressWarnings("unchecked")
     public ConfigRecipe(Map<String, Object> map) {
-        this.items =  ConfigUtil.getIfValid(map, "items", ArrayList.class, new ArrayList<String>());
+        this.items = ConfigUtil.getIfValid(map, "items", ArrayList.class, new ArrayList<String>());
         LinkedHashMap<String, String> mapping = ConfigUtil.getIfValid(map, "mapping", LinkedHashMap.class, new LinkedHashMap<String, String>());
         this.mapping = generateMapping(mapping);
         this.valid = checkValidity(items, mapping);
@@ -42,7 +42,7 @@ public class ConfigRecipe implements ConfigurationSerializable {
     }
 
     public void withRow(int rowNumber, String row) {
-        if(rowNumber < 0 || rowNumber > 3) {
+        if (rowNumber < 0 || rowNumber > 3) {
             return;
         }
         this.items.set(rowNumber, row);
@@ -51,16 +51,16 @@ public class ConfigRecipe implements ConfigurationSerializable {
 
     private boolean checkValidity(List<String> items, Map<String, String> mapping) {
         boolean isValid = true;
-        if(items.size() < 1) {
+        if (items.size() < 1) {
             isValid = false;
         }
-        if(isValid) {
-            for(String s : mapping.keySet()) {
-                for(char c : s.toCharArray()) {
+        if (isValid) {
+            for (String s : mapping.keySet()) {
+                for (char c : s.toCharArray()) {
                     if (!mapping.containsKey(String.valueOf(c)) && c != ' ') {
                         isValid = false;
                         Logger.getLogger("ShatteredUtilities").severe("Invalid mapping in config. Trying to use " + c
-                            + " in a recipe where it is not defined.");
+                                + " in a recipe where it is not defined.");
                         break;
                     }
                 }
@@ -70,10 +70,10 @@ public class ConfigRecipe implements ConfigurationSerializable {
     }
 
     private void checkVailidity() {
-        if(this.items.size() < 1) {
+        if (this.items.size() < 1) {
             this.valid = false;
         }
-        for(char c : mapping.keySet()) {
+        for (char c : mapping.keySet()) {
             if (!mapping.containsKey(c) && c != ' ') {
                 this.valid = false;
                 break;
@@ -83,15 +83,15 @@ public class ConfigRecipe implements ConfigurationSerializable {
 
     private LinkedHashMap<Character, Material> generateMapping(Map<String, String> mapping) {
         LinkedHashMap<Character, Material> result = new LinkedHashMap<>();
-        for(Map.Entry<String, String> entry : mapping.entrySet()) {
+        for (Map.Entry<String, String> entry : mapping.entrySet()) {
             String key = entry.getKey();
             String mat = entry.getValue();
-            if(key.length() != 1) {
+            if (key.length() != 1) {
                 continue;
             }
             char c = key.toCharArray()[0];
             Material m = Material.matchMaterial(mat);
-            if(m == null) {
+            if (m == null) {
                 Logger.getLogger("ShatteredUtilities").severe("Invalid material in config: " + mat);
                 continue;
             }
@@ -112,21 +112,21 @@ public class ConfigRecipe implements ConfigurationSerializable {
         return items;
     }
 
-    public Map<Character, Material> getMapping() {
-        return mapping;
-    }
-
-    public boolean isValid() {
-        return valid;
-    }
-
     public void setItems(List<String> items) {
         this.items = items;
         checkVailidity();
     }
 
+    public Map<Character, Material> getMapping() {
+        return mapping;
+    }
+
     public void setMapping(Map<Character, Material> mapping) {
         this.mapping = mapping;
         checkVailidity();
+    }
+
+    public boolean isValid() {
+        return valid;
     }
 }

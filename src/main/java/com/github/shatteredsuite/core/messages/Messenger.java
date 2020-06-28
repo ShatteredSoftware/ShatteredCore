@@ -34,7 +34,7 @@ public class Messenger {
     public String getMessage(String id, Map<String, String> args) {
         String message = messages.getMessage(id);
 
-        if(message == null) {
+        if (message == null) {
             instance.getLogger().severe("Failed to load message with id " + id);
             return "";
         }
@@ -42,8 +42,8 @@ public class Messenger {
         if (args != null) {
             for (Map.Entry<String, String> entry : args.entrySet()) {
                 message = message.replaceAll('%' +
-                        entry.getKey() + '%',
-                    entry.getValue());
+                                entry.getKey() + '%',
+                        entry.getValue());
             }
         }
         return message;
@@ -84,16 +84,16 @@ public class Messenger {
     /**
      * Sends a message with placeholders.
      *
-     * @param sender       The sender to send a message to.
-     * @param id           The id of the message from {@link Messages} to send.
-     * @param vars         The list of placeholders to replace.
+     * @param sender        The sender to send a message to.
+     * @param id            The id of the message from {@link Messages} to send.
+     * @param vars          The list of placeholders to replace.
      * @param prependPrefix Whether to prepend the prefix.
      */
     public void sendMessage(
             CommandSender sender, String id, Map<String, String> vars, boolean prependPrefix) {
-      if (sender == null) {
-        throw new IllegalArgumentException("Sender cannot be null.");
-      }
+        if (sender == null) {
+            throw new IllegalArgumentException("Sender cannot be null.");
+        }
 
         String prefix = "";
         if (prependPrefix) {
@@ -105,7 +105,7 @@ public class Messenger {
 
         String message = messages.getMessage(id);
 
-        if(message == null) {
+        if (message == null) {
             instance.getLogger().severe("Failed to load message with id " + id);
             return;
         }
@@ -113,8 +113,8 @@ public class Messenger {
         if (vars != null) {
             for (Map.Entry<String, String> entry : vars.entrySet()) {
                 message = message.replaceAll('%' +
-                    entry.getKey() + '%',
-                    entry.getValue());
+                                entry.getKey() + '%',
+                        entry.getValue());
             }
         }
         message = prefix + message;
@@ -195,9 +195,9 @@ public class Messenger {
             final Player player = (Player) sender;
             XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F);
             Bukkit.getScheduler()
-                .scheduleSyncDelayedTask(
-                    instance,
-                    () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F), 4L);
+                    .scheduleSyncDelayedTask(
+                            instance,
+                            () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F), 4L);
         }
     }
 

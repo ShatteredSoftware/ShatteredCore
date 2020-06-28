@@ -27,7 +27,7 @@ public class ArrayUtil {
     public static <T> T[] copyOfRange(String range, T[] array) {
         List<Integer> indices = parseRange(range);
         List<T> results = new ArrayList<>();
-        for(int index : indices) {
+        for (int index : indices) {
             results.add(array[index]);
         }
         //noinspection unchecked
@@ -37,12 +37,12 @@ public class ArrayUtil {
     public static List<Integer> parseRange(String range) {
         String[] parts = SEPARATOR.split(range);
         List<Integer> results = new ArrayList<>();
-        for(String part : parts) {
+        for (String part : parts) {
             Matcher matcher = RANGE.matcher(part);
-            if(matcher.matches()) { // This is a range, i.e. 1-3.
+            if (matcher.matches()) { // This is a range, i.e. 1-3.
                 int low = Integer.parseInt(matcher.group(1));
                 int high = Integer.parseInt(matcher.group(2));
-                for(int i = low; i <= high; i++) {
+                for (int i = low; i <= high; i++) {
                     results.add(i);
                 }
             }

@@ -1,33 +1,36 @@
 package com.github.shatteredsuite.core.commands;
 
-import com.github.shatteredsuite.core.commands.predicates.*;
+import com.github.shatteredsuite.core.commands.predicates.CommandContext;
+import com.github.shatteredsuite.core.commands.predicates.CommandContextPredicate;
 import com.github.shatteredsuite.core.messages.Messageable;
 import com.github.shatteredsuite.core.validation.ArgumentValidationException;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.TreeSet;
 
 public abstract class WrappedCommand extends SimpleCommandExecutor
-    implements TabCompleter, CommandExecutor {
+        implements TabCompleter, CommandExecutor {
 
+    protected final HashMap<String, WrappedCommand> children;
+    protected final HashMap<String, CommandContextPredicate> contextPredicates = new HashMap<>();
     private final Messageable instance;
     private final WrappedCommand parent;
     private final String label, permission, helpPath;
     private final TreeSet<String> aliases;
-    protected final HashMap<String, WrappedCommand> children;
-    protected final HashMap<String, CommandContextPredicate> contextPredicates = new HashMap<>();
 
     public WrappedCommand(
-        Messageable instance,
-        WrappedCommand parent,
-        String label,
-        String permission,
-        String helpPath) {
+            Messageable instance,
+            WrappedCommand parent,
+            String label,
+            String permission,
+            String helpPath) {
         this.parent = parent;
         this.instance = instance;
         this.label = label;
@@ -42,7 +45,8 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
         try {
             CommandContext context = contextFromCommand(sender, args);
             run(context);
-        } catch (ArgumentValidationException ex) {
+        }
+        catch (ArgumentValidationException ex) {
             HashMap<String, String> errorArgs = new HashMap<>();
             errorArgs.put("label", label);
             errorArgs.put("offender", ex.offender);
@@ -59,10 +63,10 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
      */
     public void run(@NotNull CommandContext ctx) {
         ctx.contextMessages.put("permission", getPermission());
-        for(CommandContextPredicate predicate : this.contextPredicates.values()) {
+        for (CommandContextPredicate predicate : this.contextPredicates.values()) {
             ctx = predicate.apply(ctx);
         }
-        if(!ctx.cancelled) {
+        if (!ctx.cancelled) {
             execute(ctx);
         }
     }
@@ -71,10 +75,11 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
      * Executes the command without checking predicates. Override this in child classes.
      * <br><br>
      * <b>DO NOT CALL THIS METHOD! CALL {@link #run(CommandContext)} INSTEAD!</b>
-     * 
+     *
      * @param context A context object containing information about the command's use.
      */
-    protected void execute(@NotNull CommandContext context) {}
+    protected void execute(@NotNull CommandContext context) {
+    }
 
     private CommandContext contextFromCommand(CommandSender sender, String[] args) {
         return new CommandContext(this, sender, label,
@@ -88,7 +93,9 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
 
     }
 
-    public List<String> onTabComplete(CommandContext ctx) { return Collections.emptyList(); }
+    public List<String> onTabComplete(CommandContext ctx) {
+        return Collections.emptyList();
+    }
 
     public WrappedCommand registerSubcommand(WrappedCommand subcommand) {
         children.putIfAbsent(subcommand.getLabel(), subcommand);

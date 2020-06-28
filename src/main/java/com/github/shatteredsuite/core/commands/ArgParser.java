@@ -1,9 +1,8 @@
 package com.github.shatteredsuite.core.commands;
 
+import com.github.shatteredsuite.core.validation.ArgumentValidationException;
 import com.github.shatteredsuite.core.validation.ChoiceValidator;
 import com.github.shatteredsuite.core.validation.Validators;
-import com.github.shatteredsuite.core.validation.ArgumentValidationException;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -12,7 +11,7 @@ import java.util.List;
 
 public class ArgParser {
     public static void validLength(String[] args, int startingIndex) throws ArgumentValidationException {
-        if(args.length <= startingIndex) {
+        if (args.length <= startingIndex) {
             throw new ArgumentValidationException("Not Enough Arguments.", ArgumentValidationException.ValidationErrorType.NOT_ENOUGH_ARGS, "not-enough-args-nc", String.valueOf(args.length));
         }
     }

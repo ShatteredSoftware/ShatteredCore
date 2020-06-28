@@ -1,15 +1,14 @@
 package com.github.shatteredsuite.core.commands;
 
-import com.github.shatteredsuite.core.commands.responses.CancelResponse;
 import com.github.shatteredsuite.core.commands.predicates.ChildPredicate;
 import com.github.shatteredsuite.core.commands.predicates.CommandContext;
 import com.github.shatteredsuite.core.commands.predicates.SenderPermissionPredicate;
+import com.github.shatteredsuite.core.commands.responses.CancelResponse;
 import com.github.shatteredsuite.core.messages.Messageable;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

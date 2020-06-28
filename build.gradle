@@ -1,5 +1,5 @@
-import org.apache.tools.ant.filters.ReplaceTokens
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.apache.tools.ant.filters.ReplaceTokens
 
 buildscript {
     ext.kotlin_version = '1.3.72'
@@ -64,7 +64,7 @@ task getHash {
 processResources {
     dependsOn getHash
     def hash = getHash.hash
-    with copySpec{
+    with copySpec {
         from 'src/main/resources'
         filter(ReplaceTokens, tokens: [description: project.property('description'),
                                        projectName: project.property('projectName'),

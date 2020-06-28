@@ -66,7 +66,7 @@ public class TestConfigUtil {
         assertEquals(expected, res);
 
         expected = TestEnum.RED;
-        res = getInEnum(map , "not-an-enum", TestEnum.class, TestEnum.RED);
+        res = getInEnum(map, "not-an-enum", TestEnum.class, TestEnum.RED);
         assertEquals(expected, res);
 
         expected = TestEnum.BLUE;
@@ -77,7 +77,7 @@ public class TestConfigUtil {
     @Test
     public void serializerTest() {
         Map<String, Object> serialized = ConfigUtil.reflectiveSerialize(
-            new TestClass("Hello!", 17, TestEnum.RED), TestClass.class);
+                new TestClass("Hello!", 17, TestEnum.RED), TestClass.class);
 
         assertTrue(serialized.containsKey("message"));
         assertEquals("Hello!", serialized.get("message"));

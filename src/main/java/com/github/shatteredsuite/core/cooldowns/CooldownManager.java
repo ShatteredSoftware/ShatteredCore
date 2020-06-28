@@ -22,13 +22,15 @@ public class CooldownManager {
 
     /**
      * Constructs a cooldown manager with a specified cooldown.
+     *
      * @param cooldown The number of milliseconds between uses of this feature.
      */
     public CooldownManager(Integer cooldown) {
         lastUse = new HashMap<>();
         if (cooldown == null) {
             this.cooldown = DEFAULT_COOLDOWN;
-        } else {
+        }
+        else {
             this.cooldown = cooldown;
         }
     }
@@ -48,6 +50,7 @@ public class CooldownManager {
 
     /**
      * Resets the use timer on this feature.
+     *
      * @param uuid The player to reset.
      */
     public void reset(UUID uuid) {

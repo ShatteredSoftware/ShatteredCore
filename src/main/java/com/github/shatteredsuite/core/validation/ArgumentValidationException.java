@@ -5,6 +5,7 @@ public class ArgumentValidationException extends RuntimeException {
     public final String errorKey;
     public final String offender;
     public final String options;
+
     public ArgumentValidationException(ValidationErrorType type, String errorKey, String offender) {
         this.type = type;
         this.errorKey = errorKey;

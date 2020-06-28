@@ -28,8 +28,8 @@ public class Messages {
     public Messages(JavaPlugin instance, YamlConfiguration config) {
         messages = new HashMap<>();
         YamlConfiguration defaults =
-            YamlConfiguration.loadConfiguration(
-                new InputStreamReader(Objects.requireNonNull(instance.getResource("messages.yml")), StandardCharsets.UTF_8));
+                YamlConfiguration.loadConfiguration(
+                        new InputStreamReader(Objects.requireNonNull(instance.getResource("messages.yml")), StandardCharsets.UTF_8));
         for (String key : config.getKeys(true)) {
             //noinspection ConstantConditions
             messages.put(key, ChatColor.translateAlternateColorCodes('&', config.getString(key)));
@@ -37,7 +37,7 @@ public class Messages {
         for (String key : defaults.getKeys(true)) {
             //noinspection ConstantConditions
             messages.putIfAbsent(
-                key, ChatColor.translateAlternateColorCodes('&', defaults.getString(key)));
+                    key, ChatColor.translateAlternateColorCodes('&', defaults.getString(key)));
         }
     }
 

@@ -17,15 +17,15 @@ import java.net.URL;
  */
 public class UpdateChecker {
 
-    private final Plugin plugin;
-    private final int resourceId;
     private static final String REQUEST_URL = "https://api.spiget.org/v2/resources/";
     private static final String REQUEST_PATH = "/versions";
+    private final Plugin plugin;
+    private final int resourceId;
 
     /**
      * Creates an update checker.
      *
-     * @param plugin The plugin to check for updates for.
+     * @param plugin     The plugin to check for updates for.
      * @param resourceId The resource ID of the plugin.
      */
     public UpdateChecker(Plugin plugin, int resourceId) {
@@ -43,7 +43,7 @@ public class UpdateChecker {
             InputStreamReader reader = new InputStreamReader(inputStream);
 
             JsonElement element = JsonParser.parseReader(reader);
-            if(element.isJsonArray()) {
+            if (element.isJsonArray()) {
                 JsonObject el = element.getAsJsonArray().get(0).getAsJsonObject();
                 String name = el.get("name").getAsString();
                 consumer.accept(name);
@@ -51,7 +51,8 @@ public class UpdateChecker {
             reader.close();
             inputStream.close();
             conn.disconnect();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

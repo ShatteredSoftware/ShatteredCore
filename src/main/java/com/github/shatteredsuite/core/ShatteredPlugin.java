@@ -13,36 +13,41 @@ import java.io.File;
 import java.util.logging.Level;
 
 public abstract class ShatteredPlugin extends JavaPlugin implements Messageable {
-    private boolean loaded;
-
     protected Metrics metrics;
-
     protected Messenger messenger;
     protected int bStatsId = 0;
     protected int spigotResourceId = 0;
     protected boolean updateAvailable;
     protected boolean internalConfig;
     protected boolean createMessages = true;
+    private boolean loaded;
     private String latestVersion;
 
     /**
      * Do any work that must be done before loading the config.
      */
-    protected void preload() { }
+    protected void preload() {
+    }
 
     /**
      * Do any work to be done after loading configs. Register external connections here.
+     *
      * @throws Exception Any error that occurs.
      */
-    protected void load() throws Exception { }
+    protected void load() throws Exception {
+    }
 
-    protected void postEnable() { }
+    protected void postEnable() {
+    }
 
-    protected void preDisable() { }
+    protected void preDisable() {
+    }
 
-    protected void onFirstTick() { }
+    protected void onFirstTick() {
+    }
 
-    protected void parseConfig(YamlConfiguration config) { }
+    protected void parseConfig(YamlConfiguration config) {
+    }
 
     public void loadConfig() {
         if (!getDataFolder().exists()) {
@@ -50,7 +55,7 @@ public abstract class ShatteredPlugin extends JavaPlugin implements Messageable 
             getDataFolder().mkdirs();
         }
 
-        if(internalConfig) {
+        if (internalConfig) {
             File configFile = new File(getDataFolder(), "config.yml");
             if (!configFile.exists()) {
                 saveResource("config.yml", false);
@@ -68,7 +73,8 @@ public abstract class ShatteredPlugin extends JavaPlugin implements Messageable 
             loadConfig();
             load();
             loaded = true;
-        } catch (Throwable t) {
+        }
+        catch (Throwable t) {
             getLogger().log(Level.SEVERE, "An error occurred while loading.", t);
             loaded = false;
         }
@@ -78,17 +84,17 @@ public abstract class ShatteredPlugin extends JavaPlugin implements Messageable 
     public void onEnable() {
         if (!loaded) {
             getLogger().severe(
-                "Plugin cannot be enabled due to an error that occurred during the plugin loading phase");
+                    "Plugin cannot be enabled due to an error that occurred during the plugin loading phase");
             setEnabled(false);
             return;
         }
-        if(this.bStatsId != 0) {
+        if (this.bStatsId != 0) {
             this.metrics = new Metrics(this, this.bStatsId);
         }
-        if(this.spigotResourceId != 0) {
+        if (this.spigotResourceId != 0) {
             UpdateChecker updateChecker = new UpdateChecker(this, this.spigotResourceId);
             updateChecker.getVersion(version -> {
-                if(this.getDescription().getVersion().startsWith(version)) {
+                if (this.getDescription().getVersion().startsWith(version)) {
                     getLogger().info("You are up to date.");
                     updateAvailable = false;
                 }

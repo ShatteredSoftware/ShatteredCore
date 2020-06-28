@@ -9,9 +9,10 @@ public class CancelResponse extends PassResponse {
     public CancelResponse(@Nullable String messageId) {
         this.messageId = messageId;
     }
+
     @Override
     public CommandContext onFailure(CommandContext context) {
-        if(messageId != null) {
+        if (messageId != null) {
             context.messenger.sendErrorMessage(context.sender, messageId, context.contextMessages);
         }
         return context.cancelled();

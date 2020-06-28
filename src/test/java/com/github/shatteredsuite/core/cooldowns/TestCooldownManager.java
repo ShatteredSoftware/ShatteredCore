@@ -1,8 +1,9 @@
 package com.github.shatteredsuite.core.cooldowns;
 
-import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.UUID;
 
 public class TestCooldownManager {
 
@@ -20,6 +21,6 @@ public class TestCooldownManager {
     public void testKnown() {
         cooldownManager.use(uuid);
         Assert.assertFalse("Known UUIDs that have just used the feature should not be able to use it.",
-            cooldownManager.canUse(uuid));
+                cooldownManager.canUse(uuid));
     }
 }
