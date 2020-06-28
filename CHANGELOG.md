@@ -1,6 +1,23 @@
 # 1.4.3 - 2020-06-27
 
 ## Additions
+* Added a boolean validator and completer.
+
+## Changes
+* Changed the number completer to complete based on input.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
+# 1.4.3 - 2020-06-27
+
+## Additions
 * Added a "secret" debug command that shows how the command is flowing through the system.
 
 ## Changes
