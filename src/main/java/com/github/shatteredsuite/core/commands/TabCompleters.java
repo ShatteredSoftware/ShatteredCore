@@ -103,7 +103,7 @@ public final class TabCompleters {
         if (args.length < startingArg) {
             return Collections.emptyList();
         }
-        else if (args.length == startingArg || args.length == startingArg + 1) {
+        else if (args.length == startingArg + 1) {
             List<String> options = new ArrayList<>();
             for (int i = low; i < high; i++) {
                 options.add(String.valueOf(modifier.applyAsInt(i)));
