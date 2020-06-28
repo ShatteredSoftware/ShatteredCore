@@ -25,12 +25,17 @@ public class CommandContext {
     public final boolean cancelled;
     @Nullable
     public final String parameter;
+    public final boolean debug;
 
     public CommandContext(@NotNull WrappedCommand command, @NotNull CommandSender sender, @NotNull String label, @NotNull String[] args, @NotNull Messenger messenger, boolean cancelled) {
         this(command, sender, label, args, messenger, cancelled, null);
     }
 
     public CommandContext(@NotNull WrappedCommand command, @NotNull CommandSender sender, @NotNull String label, @NotNull String[] args, @NotNull Messenger messenger, boolean cancelled, String parameter) {
+        this(command, sender, label, args, messenger, cancelled, parameter, false);
+    }
+
+    public CommandContext(@NotNull WrappedCommand command, @NotNull CommandSender sender, @NotNull String label, @NotNull String[] args, @NotNull Messenger messenger, boolean cancelled, String parameter, boolean debug) {
         this.command = command;
         this.sender = sender;
         this.label = label;
@@ -39,6 +44,7 @@ public class CommandContext {
         this.cancelled = cancelled;
         this.contextMessages.put("label", label);
         this.parameter = parameter;
+        this.debug = debug;
     }
 
     public CommandContext cancelled() {
@@ -51,6 +57,10 @@ public class CommandContext {
 
     public CommandContext nextLevel(WrappedCommand command) {
         return new CommandContext(command, sender, this.label + " " + command.getLabel(), Arrays.copyOfRange(args, 1, args.length), messenger, cancelled);
+    }
+
+    public CommandContext debug() {
+        return new CommandContext(command, sender, label, args, messenger, cancelled, parameter, true);
     }
 
     public void sendMessage(String id, boolean prefix) {

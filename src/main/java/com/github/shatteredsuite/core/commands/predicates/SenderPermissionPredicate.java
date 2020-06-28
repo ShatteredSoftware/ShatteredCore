@@ -10,6 +10,7 @@ public class SenderPermissionPredicate extends CommandContextPredicate {
 
     public SenderPermissionPredicate() {
         super(new CancelResponse("no-permission"));
+        this.name = "Has command permission.";
     }
 
     @Override

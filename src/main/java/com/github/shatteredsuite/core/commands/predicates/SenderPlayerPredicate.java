@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 public class SenderPlayerPredicate extends CommandContextPredicate {
     public SenderPlayerPredicate(PredicateResponse response) {
         super(response);
+        this.name = "Is a player.";
     }
 
     public SenderPlayerPredicate() {

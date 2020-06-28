@@ -5,6 +5,7 @@ import com.github.shatteredsuite.core.commands.responses.PredicateResponse;
 public class ChildPredicate extends CommandContextPredicate {
     public ChildPredicate(PredicateResponse response) {
         super(response);
+        this.name = "Contains Valid Child (0).";
     }
 
     @Override

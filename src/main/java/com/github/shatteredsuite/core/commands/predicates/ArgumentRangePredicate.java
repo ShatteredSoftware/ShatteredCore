@@ -10,6 +10,7 @@ public class ArgumentRangePredicate extends CommandContextPredicate {
         super(response);
         this.low = low;
         this.high = high;
+        this.name = "Contains between " + low + " and " + high + " arguments.";
     }
 
     public ArgumentRangePredicate(PredicateResponse response, int target) {

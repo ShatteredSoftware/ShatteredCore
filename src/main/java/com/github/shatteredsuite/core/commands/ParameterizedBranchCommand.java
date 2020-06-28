@@ -21,15 +21,19 @@ public abstract class ParameterizedBranchCommand extends WrappedCommand {
     }
 
     @Override
-    protected void execute(@NotNull CommandContext context) {
-        children.get(context.args[1]).execute(flippedContext(context));
+    protected void execute(@NotNull CommandContext ctx) {
+        if(ctx.debug) {
+            ctx.sender.sendMessage(this.getLabel() + " (Parameterized Branch) -> "
+                    + ctx.args[1] + " with argument " + ctx.args[0]);
+        }
+        children.get(ctx.args[1]).execute(flippedContext(ctx));
     }
 
     private @NotNull
-    CommandContext flippedContext(@NotNull CommandContext context) {
-        return new CommandContext(children.get(context.args[1]), context.sender,
-                context.label + context.args[1], ArrayUtil.withoutIndex(context.args, 1).toArray(new String[]{}),
-                context.messenger, context.cancelled, context.args[0]);
+    CommandContext flippedContext(@NotNull CommandContext ctx) {
+        return new CommandContext(children.get(ctx.args[1]), ctx.sender,
+                ctx.label + ctx.args[1], ArrayUtil.withoutIndex(ctx.args, 1).toArray(new String[]{}),
+                ctx.messenger, ctx.cancelled, ctx.args[0]);
     }
 
     @Override

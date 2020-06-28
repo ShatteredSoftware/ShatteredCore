@@ -8,6 +8,7 @@ public class IndexedChildPredicate extends CommandContextPredicate {
     public IndexedChildPredicate(PredicateResponse response, int index) {
         super(response);
         this.index = index;
+        this.name = "Contains valid child (" + index + ").";
     }
 
     @Override

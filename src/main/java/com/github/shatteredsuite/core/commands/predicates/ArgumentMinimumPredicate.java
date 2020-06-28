@@ -7,15 +7,14 @@ public class ArgumentMinimumPredicate extends CommandContextPredicate {
     private final String expected;
 
     public ArgumentMinimumPredicate(PredicateResponse response, int min) {
-        super(response);
-        this.min = min;
-        expected = null;
+        this(response, min, null);
     }
 
     public ArgumentMinimumPredicate(PredicateResponse response, int min, String expected) {
         super(response);
         this.min = min;
         this.expected = expected;
+        this.name = "Has at least " + min + " arguments.";
     }
 
     @Override

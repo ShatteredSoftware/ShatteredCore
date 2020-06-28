@@ -44,6 +44,9 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
     public boolean onCommand(CommandSender sender, String label, String[] args) {
         try {
             CommandContext context = contextFromCommand(sender, args);
+            if(args.length > 0 && args[0].equalsIgnoreCase("debug") && !children.containsKey("debug")) {
+                context = context.debug().consumeArgument();
+            }
             run(context);
         }
         catch (ArgumentValidationException ex) {
@@ -78,8 +81,7 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
      *
      * @param context A context object containing information about the command's use.
      */
-    protected void execute(@NotNull CommandContext context) {
-    }
+    protected void execute(@NotNull CommandContext context) {    }
 
     private CommandContext contextFromCommand(CommandSender sender, String[] args) {
         return new CommandContext(this, sender, label,
