@@ -47,12 +47,12 @@ public abstract class ParameterizedBranchCommand extends WrappedCommand {
     public List<String> onTabComplete(@NotNull CommandContext ctx) {
         if (ctx.args.length <= argTarget) {
             List<String> res = new ArrayList<>();
-            StringUtil.copyPartialMatches(ctx.args[0], provideCompletions(ctx), res);
+            StringUtil.copyPartialMatches(ctx.args[ctx.args.length - 1], provideCompletions(ctx), res);
             return res;
         }
         if (ctx.args.length == argTarget + 1) {
             List<String> res = new ArrayList<>();
-            StringUtil.copyPartialMatches(ctx.args[1], this.children.keySet(), res);
+            StringUtil.copyPartialMatches(ctx.args[ctx.args.length - 1], this.children.keySet(), res);
             return res;
         }
         else {
