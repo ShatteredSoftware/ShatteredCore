@@ -1,4 +1,21 @@
-# 1.4.3 - 2020-06-27
+# 1.4.5 - 2020-06-27
+
+## Additions
+* Permission checking to tab completing.
+
+## Changes
+* Fixed ParameterizedBranchCommand not checking predicates.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
+# 1.4.4 - 2020-06-27
 
 ## Additions
 * Added a boolean validator and completer.
