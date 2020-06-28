@@ -37,23 +37,28 @@ public abstract class ParameterizedBranchCommand extends WrappedCommand {
     }
 
     @Override
-    public List<String> onTabComplete(CommandContext ctx) {
-        if (ctx.args.length <= 1) {
-            List<String> res = new ArrayList<>();
-            StringUtil.copyPartialMatches(ctx.args[0], provideCompletions(ctx), res);
-            return res;
-        }
-        if (ctx.args.length == 2) {
-            List<String> res = new ArrayList<>();
-            StringUtil.copyPartialMatches(ctx.args[1], this.children.keySet(), res);
-            return res;
+    public List<String> onTabComplete(@NotNull CommandContext ctx) {
+        if(hasPerms(ctx.sender)) {
+            if (ctx.args.length <= 1) {
+                List<String> res = new ArrayList<>();
+                StringUtil.copyPartialMatches(ctx.args[0], provideCompletions(ctx), res);
+                return res;
+            }
+            if (ctx.args.length == 2) {
+                List<String> res = new ArrayList<>();
+                StringUtil.copyPartialMatches(ctx.args[1], this.children.keySet(), res);
+                return res;
+            }
+            else {
+                WrappedCommand child = this.children.get(ctx.args[1]);
+                if (child == null) {
+                    return Collections.emptyList();
+                }
+                return child.onTabComplete(flippedContext(ctx).nextLevel(child));
+            }
         }
         else {
-            WrappedCommand child = this.children.get(ctx.args[1]);
-            if (child == null) {
-                return Collections.emptyList();
-            }
-            return child.onTabComplete(flippedContext(ctx).nextLevel(child));
+            return Collections.emptyList();
         }
     }
 

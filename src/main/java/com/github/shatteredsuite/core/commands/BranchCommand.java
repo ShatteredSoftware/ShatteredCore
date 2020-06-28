@@ -28,18 +28,23 @@ public abstract class BranchCommand extends WrappedCommand {
     }
 
     @Override
-    public List<String> onTabComplete(CommandContext ctx) {
+    public List<String> onTabComplete(@NotNull CommandContext ctx) {
         // create new array
-        final List<String> completions = new ArrayList<>();
-        if (ctx.args.length <= 1) {
-            StringUtil.copyPartialMatches(ctx.args[0], children.keySet(), completions);
-            Collections.sort(completions);
-            return completions;
+        if(this.hasPerms(ctx.sender)) {
+            final List<String> completions = new ArrayList<>();
+            if (ctx.args.length <= 1) {
+                StringUtil.copyPartialMatches(ctx.args[0], children.keySet(), completions);
+                Collections.sort(completions);
+                return completions;
+            }
+            return children.containsKey(ctx.args[0])
+                    ? children
+                    .get(ctx.args[0])
+                    .onTabComplete(ctx.nextLevel(children.get(ctx.args[0])))
+                    : null;
         }
-        return children.containsKey(ctx.args[0])
-                ? children
-                .get(ctx.args[0])
-                .onTabComplete(ctx.nextLevel(children.get(ctx.args[0])))
-                : null;
+        else {
+            return Collections.emptyList();
+        }
     }
 }

@@ -90,12 +90,14 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
 
     @Override
     public List<String> onTabComplete(
-            CommandSender sender, Command command, String alias, String[] args) {
-        return onTabComplete(contextFromCommand(sender, args));
-
+            @NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        if(hasPerms(sender)) {
+            return onTabComplete(contextFromCommand(sender, args));
+        }
+        return Collections.emptyList();
     }
 
-    public List<String> onTabComplete(CommandContext ctx) {
+    public List<String> onTabComplete(@NotNull CommandContext ctx) {
         return Collections.emptyList();
     }
 
