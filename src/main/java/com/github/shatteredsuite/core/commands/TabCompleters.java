@@ -49,7 +49,7 @@ public final class TabCompleters {
     }
 
     public static List<String> completeBoolean(String[] args, int startingArg) {
-        if(args.length < startingArg) {
+        if(args.length <= startingArg) {
             return Arrays.asList("true", "false");
         }
         else {
