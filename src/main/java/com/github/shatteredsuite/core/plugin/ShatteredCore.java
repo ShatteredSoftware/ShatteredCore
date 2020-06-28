@@ -7,6 +7,10 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 public class ShatteredCore extends ShatteredPlugin {
     protected int bStatsId = 7496;
 
+    public ShatteredCore() {
+        this.createMessages = true;
+    }
+
 
     @Override
     protected void load() {
