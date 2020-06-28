@@ -1,6 +1,24 @@
+# 1.3.10 - Unreleased
+
+## Additions
+None
+
+## Changes
+* 
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.3.9 - 2020-06-27
 
 ## Additions
+None
 
 ## Changes
 * ShatteredCore plugin now creates messages properly.
@@ -18,6 +36,7 @@ None
 # 1.3.8 - 2020-06-27
 
 ## Additions
+None
 
 ## Changes
 * fixArgs now properly handles empty args.
@@ -34,6 +53,7 @@ None
 # 1.3.7 - 2020-06-27
 
 ## Additions
+None
 
 ## Changes
 * fixArgs now doesn't remove the last arg if it's empty.
@@ -50,6 +70,7 @@ None
 # 1.3.6 - 2020-06-24
 
 ## Additions
+None
 
 ## Changes
 * fixArgs now returns a list with one element if the fixed args are "empty"
