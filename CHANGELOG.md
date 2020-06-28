@@ -1,3 +1,21 @@
+# 1.4.1 - 2020-06-27
+
+## Additions
+* Added `flipIndices` to `ArrayUtil`.
+* Added `onTabComplete(CommandContext)` which gives the same environment as the command.
+
+## Changes
+* Moved automatic completion of children to `BranchCommand`.
+
+## Deprecations
+None
+
+## Removals
+* `showHelpOrNoPerms` which was deprecated in 1.3.0.
+
+## Security Patches
+None
+
 # 1.4.0 - 2020-06-27
 
 ## Additions
