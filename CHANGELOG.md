@@ -1,3 +1,20 @@
+# 1.4.2 - 2020-06-27
+
+## Additions
+None
+
+## Changes
+* Made ArrayUtil return Lists for `withoutIndex` and `copyOfRange`.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.1 - 2020-06-27
 
 ## Additions
