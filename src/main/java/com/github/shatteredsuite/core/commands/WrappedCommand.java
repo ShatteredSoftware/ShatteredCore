@@ -40,8 +40,7 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, String label, String[] args) {
         try {
-            CommandContext context = new CommandContext(this, sender, label,
-                    com.github.shatteredsuite.core.util.StringUtil.fixArgs(args), instance.getMessenger(), false);
+            CommandContext context = contextFromCommand(sender, args);
             run(context);
         } catch (ArgumentValidationException ex) {
             HashMap<String, String> errorArgs = new HashMap<>();
@@ -56,15 +55,15 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
     /**
      * Runs a command, checking predicates. Call this method to run the command.
      *
-     * @param context A context object containing information about the command's use.
+     * @param ctx A context object containing information about the command's use.
      */
-    public void run(@NotNull CommandContext context) {
-        context.contextMessages.put("permission", getPermission());
+    public void run(@NotNull CommandContext ctx) {
+        ctx.contextMessages.put("permission", getPermission());
         for(CommandContextPredicate predicate : this.contextPredicates.values()) {
-            context = predicate.apply(context);
+            ctx = predicate.apply(ctx);
         }
-        if(!context.cancelled) {
-            execute(context);
+        if(!ctx.cancelled) {
+            execute(ctx);
         }
     }
 
@@ -77,45 +76,19 @@ public abstract class WrappedCommand extends SimpleCommandExecutor
      */
     protected void execute(@NotNull CommandContext context) {}
 
+    private CommandContext contextFromCommand(CommandSender sender, String[] args) {
+        return new CommandContext(this, sender, label,
+                com.github.shatteredsuite.core.util.StringUtil.fixArgs(args), instance.getMessenger(), false);
+    }
+
     @Override
     public List<String> onTabComplete(
             CommandSender sender, Command command, String alias, String[] args) {
-        // create new array
-        final List<String> completions = new ArrayList<>();
-        if (args.length <= 1) {
-            StringUtil.copyPartialMatches(args[0], children.keySet(), completions);
-            Collections.sort(completions);
-            return completions;
-        }
-        return children.containsKey(args[0])
-            ? children
-            .get(args[0])
-            .onTabComplete(
-                sender, command, alias + " " + args[0], Arrays.copyOfRange(args, 1, args.length))
-            : null;
+        return onTabComplete(contextFromCommand(sender, args));
+
     }
 
-    /**
-     * @param sender The person who used the command.
-     * @param label The alias of the command used.
-     * @param args Any command arguments.
-     * @return Whether the command was used properly.
-     * 
-     * @deprecated Use the predicate system. Will be removed in 1.4.
-     */
-    protected boolean showHelpOrNoPerms(CommandSender sender, String label, String[] args) {
-        HashMap<String, String> msgArgs = new HashMap<>();
-        msgArgs.put("label", label);
-        if (!hasPerms(sender)) {
-            instance.getMessenger().sendMessage(sender, "no-permission", true);
-            return false;
-        }
-        if (args.length == 0 || (!children.isEmpty() && !children.containsKey(args[0]))) {
-            instance.getMessenger().sendMessage(sender, helpPath, msgArgs);
-            return false;
-        }
-        return true;
-    }
+    public List<String> onTabComplete(CommandContext ctx) { return Collections.emptyList(); }
 
     public WrappedCommand registerSubcommand(WrappedCommand subcommand) {
         children.putIfAbsent(subcommand.getLabel(), subcommand);

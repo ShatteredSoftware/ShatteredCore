@@ -6,8 +6,10 @@ import com.github.shatteredsuite.core.messages.Messageable;
 import com.github.shatteredsuite.core.util.ArrayUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,19 +22,35 @@ public abstract class ParameterizedBranchCommand extends WrappedCommand {
 
     @Override
     protected void execute(@NotNull CommandContext context) {
-        children.get(context.args[1]).execute(new CommandContext(children.get(context.args[1]), context.sender,
+        children.get(context.args[1]).execute(flippedContext(context));
+    }
+
+    private @NotNull CommandContext flippedContext(@NotNull CommandContext context) {
+        return new CommandContext(children.get(context.args[1]), context.sender,
                 context.label + context.args[1], ArrayUtil.withoutIndex(context.args, 1),
-                context.messenger, context.cancelled, context.args[0]));
+                context.messenger, context.cancelled, context.args[0]);
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        WrappedCommand cmd = children.get(args[1]);
-        if(cmd == null) {
-            return Collections.emptyList();
+    public List<String> onTabComplete(CommandContext ctx) {
+        if(ctx.args.length <= 1) {
+            List<String> res = new ArrayList<>();
+            StringUtil.copyPartialMatches(ctx.args[0], provideCompletions(ctx), res);
+            return res;
+        }
+        if(ctx.args.length == 2) {
+            List<String> res = new ArrayList<>();
+            StringUtil.copyPartialMatches(ctx.args[1], this.children.keySet(), res);
+            return res;
         }
         else {
-            return cmd.onTabComplete(sender, command, alias, ArrayUtil.withoutIndex(args, 1));
+            WrappedCommand child = this.children.get(ctx.args[1]);
+            if(child == null) {
+                return Collections.emptyList();
+            }
+            return child.onTabComplete(flippedContext(ctx).nextLevel(child));
         }
     }
+
+    protected List<String> provideCompletions(CommandContext ctx) { return Collections.emptyList(); }
 }

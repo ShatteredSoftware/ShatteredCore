@@ -49,8 +49,8 @@ public class CommandContext {
         return new CommandContext(command, sender, label, Arrays.copyOfRange(args, 1, args.length), messenger, cancelled);
     }
 
-    public CommandContext nextLevel(WrappedCommand command, String oldLabel) {
-        return new CommandContext(command, sender, oldLabel + " " + command.getLabel(), Arrays.copyOfRange(args, 1, args.length), messenger, cancelled);
+    public CommandContext nextLevel(WrappedCommand command) {
+        return new CommandContext(command, sender, this.label + " " + command.getLabel(), Arrays.copyOfRange(args, 1, args.length), messenger, cancelled);
     }
 
     public void sendMessage(String id, boolean prefix) {
