@@ -35,7 +35,8 @@ includes a few outside libraries so that they only need to be installed once on 
 ShatteredCore provides is:
 
 ### Library Access
-Each of these libraries can be accessed when ShatteredCore is loaded. Some of these are shaded.
+Each of these libraries can be accessed when ShatteredCore is loaded. Some of these are shaded into 
+`com.github.shatteredsuite.shatteredcore.include`.
 * [SmartInvs](https://github.com/MinusKube/SmartInvs) by MinusKube (Shaded)
 * [NBTApi](https://github.com/tr7zw/Item-NBT-API) by tr7zw (Shaded)
 * [XSeries](https://github.com/CryptoMorin/XSeries) by CryptoMorin (Shaded)
