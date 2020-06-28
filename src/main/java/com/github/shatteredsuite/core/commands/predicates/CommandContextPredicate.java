@@ -21,11 +21,15 @@ public abstract class CommandContextPredicate implements Predicate<CommandContex
             return context;
         }
         if (test(context)) {
-        context.sender.sendMessage(ChatColor.GREEN.toString() + "Passed Predicate: " + ChatColor.WHITE.toString() + name);
+            if(context.debug) {
+                context.sender.sendMessage(ChatColor.GREEN.toString() + "Passed Predicate: " + ChatColor.WHITE.toString() + name);
+            }
             return response.onSuccess(context);
         }
         else {
-            context.sender.sendMessage(ChatColor.RED.toString() + "Passed Predicate: " + ChatColor.WHITE.toString() + name);
+            if(context.debug) {
+                context.sender.sendMessage(ChatColor.RED.toString() + "Failed Predicate: " + ChatColor.WHITE.toString() + name);
+            }
             return response.onFailure(context);
         }
     }
