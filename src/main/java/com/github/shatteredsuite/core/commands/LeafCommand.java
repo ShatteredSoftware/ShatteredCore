@@ -10,7 +10,4 @@ public abstract class LeafCommand extends WrappedCommand {
         super(instance, parent, label, permission, helpPath);
         contextPredicates.put("permission", new SenderPermissionPredicate());
     }
-
-    protected void execute(@NotNull CommandContext context) {
-    }
 }
