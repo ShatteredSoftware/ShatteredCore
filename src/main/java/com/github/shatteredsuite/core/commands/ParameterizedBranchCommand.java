@@ -26,7 +26,7 @@ public abstract class ParameterizedBranchCommand extends WrappedCommand {
             ctx.sender.sendMessage(this.getLabel() + " (Parameterized Branch) -> "
                     + ctx.args[1] + " with argument " + ctx.args[0]);
         }
-        children.get(ctx.args[1]).execute(flippedContext(ctx));
+        children.get(ctx.args[1]).run(flippedContext(ctx));
     }
 
     private @NotNull
