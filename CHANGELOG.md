@@ -1,3 +1,20 @@
+# 1.4.9 - 2020-06-28
+
+## Additions
+* Add default implementation on ExternalProvider.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.8 - 2020-06-28
 
 ## Additions
