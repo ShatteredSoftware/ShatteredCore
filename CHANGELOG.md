@@ -1,3 +1,20 @@
+# 1.3.9 - 2020-06-27
+
+## Additions
+
+## Changes
+* ShatteredCore plugin now creates messages properly.
+* ShatteredPlugin defaults to creating messages.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.3.8 - 2020-06-27
 
 ## Additions
