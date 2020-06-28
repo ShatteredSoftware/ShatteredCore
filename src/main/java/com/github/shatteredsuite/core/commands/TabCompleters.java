@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.ToIntFunction;
@@ -45,6 +46,17 @@ public final class TabCompleters {
             return completeFromOptions(args, startingArg + 5, results);
         }
         return Collections.emptyList();
+    }
+
+    public static List<String> completeBoolean(String[] args, int startingArg) {
+        if(args.length < startingArg) {
+            return Arrays.asList("true", "false");
+        }
+        else {
+            List<String> res = new ArrayList<>();
+            StringUtil.copyPartialMatches(args[startingArg], Arrays.asList("yes", "no", "true", "false", "enabled", "disabled"), res);
+            return res;
+        }
     }
 
     /**
