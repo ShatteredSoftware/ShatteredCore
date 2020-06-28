@@ -32,6 +32,17 @@ public class Validators {
         }
     };
 
+    public static final Validator<Boolean> booleanValidator = (str) -> {
+        if(str.equalsIgnoreCase("yes") || str.equalsIgnoreCase("true") || str.equalsIgnoreCase("enabled")) {
+            return true;
+        }
+        else if(str.equalsIgnoreCase("no") || str.equalsIgnoreCase("false") || str.equalsIgnoreCase("disabled")) {
+            return false;
+        } else {
+            throw new ArgumentValidationException("Could not convert " + str + " to a boolean.", ArgumentValidationException.ValidationErrorType.INVALID_FORMAT, "invalid-boolean", str, "true, false");
+        }
+    };
+
     public static final Validator<World> worldValidator = (str) -> {
         World world = Bukkit.getWorld(str);
         if (world == null) {
