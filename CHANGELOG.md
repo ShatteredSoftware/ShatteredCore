@@ -1,3 +1,20 @@
+# 1.4.3 - 2020-06-27
+
+## Additions
+* Added a "secret" debug command that shows how the command is flowing through the system.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.2 - 2020-06-27
 
 ## Additions
