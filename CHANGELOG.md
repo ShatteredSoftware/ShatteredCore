@@ -1,4 +1,22 @@
-# 1.3.10 - Unreleased
+# 1.4.0 - 2020-06-27
+
+## Additions
+* Added `ParameterizedBranchCommand` which flips its child arg and next arg.
+* Added `ArrayUtil` which provides some utilities for arrays.
+
+## Changes
+* Moved Responses to their own package. Renamed predicates to be clearer.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
+# 1.3.10 - 2020-06-27
 
 ## Additions
 None
