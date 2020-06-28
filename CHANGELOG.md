@@ -4,7 +4,7 @@
 None
 
 ## Changes
-* 
+* Add Gson to the in-game list of libraries.
 
 ## Deprecations
 None
