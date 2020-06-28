@@ -5,7 +5,7 @@ open class OutsourcedManager<T : Identified> : Manager<T>() {
 
     override fun get(id: String): T? {
         if(id.contains(':')) {
-            val parts = id.split(Regex(":"), 1)
+            val parts = id.split(Regex(":"), 2)
             val namespace = parts[0]
             val name = parts[1]
             if(externalSources.containsKey(namespace)) {
