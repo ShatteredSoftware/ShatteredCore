@@ -1,6 +1,23 @@
 # 1.4.6 - 2020-06-28
 
 ## Additions
+* Added a target argument to the ParameterizedBranchCommand.
+
+## Changes
+* Allow the debug option to cascade into further commands.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
+# 1.4.6 - 2020-06-28
+
+## Additions
 None
 
 ## Changes
