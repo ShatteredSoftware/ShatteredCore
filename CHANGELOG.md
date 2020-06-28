@@ -5,6 +5,7 @@ None
 
 ## Changes
 * Add Gson to the in-game list of libraries.
+* Build CommandContext label incrementally.
 
 ## Deprecations
 None
