@@ -53,6 +53,14 @@ open class OutsourcedManager<T : Identified> : Manager<T>() {
 interface ExternalProvider<T> {
     fun get(id: String): T?
     fun has(id: String): Boolean
-    fun all(): Iterable<T>
     fun keys(): Iterable<String>
+    fun all(): Iterable<T> {
+        val keys = keys()
+        val results = mutableListOf<T>()
+        for(key in keys) {
+            val element = get(key) ?: continue
+            results.add(element)
+        }
+        return results
+    }
 }
