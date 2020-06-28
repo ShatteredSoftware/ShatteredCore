@@ -22,7 +22,7 @@ public abstract class ShatteredPlugin extends JavaPlugin implements Messageable 
     protected int spigotResourceId = 0;
     protected boolean updateAvailable;
     protected boolean internalConfig;
-    protected boolean createMessages;
+    protected boolean createMessages = true;
     private String latestVersion;
 
     /**
