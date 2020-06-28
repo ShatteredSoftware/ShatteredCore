@@ -1,7 +1,9 @@
 package com.github.shatteredsuite.core.commands.predicates;
 
-public class ChildPresentPredicate extends CommandContextPredicate {
-    public ChildPresentPredicate(PredicateResponse response) {
+import com.github.shatteredsuite.core.commands.responses.PredicateResponse;
+
+public class ChildPredicate extends CommandContextPredicate {
+    public ChildPredicate(PredicateResponse response) {
         super(response);
     }
 

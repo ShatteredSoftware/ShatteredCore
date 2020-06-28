@@ -4,6 +4,7 @@ import com.github.shatteredsuite.core.commands.WrappedCommand;
 import com.github.shatteredsuite.core.messages.Messenger;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,8 +23,14 @@ public class CommandContext {
     @NotNull
     public final Messenger messenger;
     public final boolean cancelled;
+    @Nullable
+    public final String parameter;
 
     public CommandContext(@NotNull WrappedCommand command, @NotNull CommandSender sender, @NotNull String label, @NotNull String[] args, @NotNull Messenger messenger, boolean cancelled) {
+        this(command, sender, label, args, messenger, cancelled, null);
+    }
+
+    public CommandContext(@NotNull WrappedCommand command, @NotNull CommandSender sender, @NotNull String label, @NotNull String[] args, @NotNull Messenger messenger, boolean cancelled, String parameter) {
         this.command = command;
         this.sender = sender;
         this.label = label;
@@ -31,6 +38,7 @@ public class CommandContext {
         this.messenger = messenger;
         this.cancelled = cancelled;
         this.contextMessages.put("label", label);
+        this.parameter = parameter;
     }
 
     public CommandContext cancelled() {

@@ -1,5 +1,7 @@
 package com.github.shatteredsuite.core.commands.predicates;
 
+import com.github.shatteredsuite.core.commands.responses.PredicateResponse;
+
 import java.util.function.Predicate;
 
 public abstract class CommandContextPredicate implements Predicate<CommandContext> {

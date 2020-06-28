@@ -1,16 +1,18 @@
 package com.github.shatteredsuite.core.commands.predicates;
 
-public class ArgMinPredicate extends CommandContextPredicate {
+import com.github.shatteredsuite.core.commands.responses.PredicateResponse;
+
+public class ArgumentMinimumPredicate extends CommandContextPredicate {
     private final int min;
     private final String expected;
 
-    public ArgMinPredicate(PredicateResponse response, int min) {
+    public ArgumentMinimumPredicate(PredicateResponse response, int min) {
         super(response);
         this.min = min;
         expected = null;
     }
 
-    public ArgMinPredicate(PredicateResponse response, int min, String expected) {
+    public ArgumentMinimumPredicate(PredicateResponse response, int min, String expected) {
         super(response);
         this.min = min;
         this.expected = expected;

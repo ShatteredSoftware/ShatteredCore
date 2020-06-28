@@ -3,6 +3,7 @@ package com.github.shatteredsuite.core.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class SimpleCommandExecutor implements CommandExecutor {
 
@@ -10,7 +11,7 @@ public abstract class SimpleCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(
-            CommandSender commandSender, Command command, String label, String[] args) {
+            @NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         return onCommand(commandSender, label, args);
     }
 }

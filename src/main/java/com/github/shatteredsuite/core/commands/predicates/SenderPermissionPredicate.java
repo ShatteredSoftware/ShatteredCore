@@ -1,11 +1,14 @@
 package com.github.shatteredsuite.core.commands.predicates;
 
-public class PermissionPredicate extends CommandContextPredicate {
-    public PermissionPredicate(PredicateResponse response) {
+import com.github.shatteredsuite.core.commands.responses.CancelResponse;
+import com.github.shatteredsuite.core.commands.responses.PredicateResponse;
+
+public class SenderPermissionPredicate extends CommandContextPredicate {
+    public SenderPermissionPredicate(PredicateResponse response) {
         super(response);
     }
 
-    public PermissionPredicate() {
+    public SenderPermissionPredicate() {
         super(new CancelResponse("no-permission"));
     }
 

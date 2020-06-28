@@ -87,9 +87,9 @@ public class PlayerTeleportCommand extends LeafCommand {
         // Set up permission, help message name, and command label.
         super(instance, null, "tpme", "teleportplugin.tpme", "command.tpme");
         // Make sure this is a player.
-        this.contextPredicates.put("no-console", new PlayerPredicate());
+        this.contextPredicates.put("no-console", new SenderPlayerPredicate());
         // Show command help if there aren't enough arguments.
-        this.contextPredicates.put("args", new ArgMinPredicate(new CancelResponse(this.helpPath), 1));
+        this.contextPredicates.put("args", new ArgumentMinimumPredicate(new CancelResponse(this.helpPath), 1));
         // Add an alias (useful in child commands!).
         this.addAlias("tpto");
     }
@@ -102,7 +102,7 @@ public class PlayerTeleportCommand extends LeafCommand {
         ctx.contextMessages.put("displayname", player.getDisplayName());
         ctx.contextMessages.put("name", player.getName());
         // Send message with message system.
-        ctx.messenger.sendMessage(ctx.sender, "teleported", ctx.contextMessages);
+        ctx.sendMessage("teleported", true);
     }
 }
 ```
