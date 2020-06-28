@@ -14,36 +14,43 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class ParameterizedBranchCommand extends WrappedCommand {
+    int argTarget;
+
     public ParameterizedBranchCommand(Messageable instance, WrappedCommand parent, String label, String permission, String helpPath) {
+        this(instance, parent, label, permission, helpPath, 1);
+    }
+
+    public ParameterizedBranchCommand(Messageable instance, WrappedCommand parent, String label, String permission, String helpPath, int argTarget) {
         super(instance, parent, label, permission, helpPath);
-        contextPredicates.put("args", new ArgumentMinimumPredicate(new CancelResponse("not-enough-args"), 2));
-        contextPredicates.put("children", new IndexedChildPredicate(new CancelResponse(helpPath), 1));
+        contextPredicates.put("args", new ArgumentMinimumPredicate(new CancelResponse("not-enough-args"), argTarget + 1));
+        contextPredicates.put("children", new IndexedChildPredicate(new CancelResponse(helpPath), argTarget));
+        this.argTarget = argTarget;
     }
 
     @Override
     protected void execute(@NotNull CommandContext ctx) {
         if(ctx.debug) {
             ctx.sender.sendMessage(this.getLabel() + " (Parameterized Branch) -> "
-                    + ctx.args[1] + " with argument " + ctx.args[0]);
+                    + ctx.args[argTarget] + " with argument " + ctx.args[0]);
         }
-        children.get(ctx.args[1]).run(flippedContext(ctx));
+        children.get(ctx.args[argTarget]).run(flippedContext(ctx));
     }
 
     private @NotNull
     CommandContext flippedContext(@NotNull CommandContext ctx) {
-        return new CommandContext(children.get(ctx.args[1]), ctx.sender,
-                ctx.label + ctx.args[1], ArrayUtil.withoutIndex(ctx.args, 1).toArray(new String[]{}),
+        return new CommandContext(children.get(ctx.args[argTarget]), ctx.sender,
+                ctx.label + " " + ctx.args[argTarget], ArrayUtil.withoutIndex(ctx.args, argTarget).toArray(new String[]{}),
                 ctx.messenger, ctx.cancelled, ctx.args[0]);
     }
 
     @Override
     public List<String> onTabComplete(@NotNull CommandContext ctx) {
-        if (ctx.args.length <= 1) {
+        if (ctx.args.length <= argTarget) {
             List<String> res = new ArrayList<>();
             StringUtil.copyPartialMatches(ctx.args[0], provideCompletions(ctx), res);
             return res;
         }
-        if (ctx.args.length == 2) {
+        if (ctx.args.length == argTarget + 1) {
             List<String> res = new ArrayList<>();
             StringUtil.copyPartialMatches(ctx.args[1], this.children.keySet(), res);
             return res;
