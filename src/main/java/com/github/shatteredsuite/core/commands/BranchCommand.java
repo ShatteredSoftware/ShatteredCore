@@ -16,6 +16,6 @@ public abstract class BranchCommand extends WrappedCommand {
 
     protected void execute(@NotNull CommandContext context) {
         WrappedCommand child = this.children.get(context.args[0]);
-        child.run(context.nextLevel(child));
+        child.run(context.nextLevel(child, this.getLabel()));
     }
 }
