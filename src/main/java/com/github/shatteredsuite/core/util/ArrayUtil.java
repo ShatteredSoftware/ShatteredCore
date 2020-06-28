@@ -10,6 +10,12 @@ public class ArrayUtil {
     private static final Pattern SEPARATOR = Pattern.compile(",");
     private static final Pattern RANGE = Pattern.compile("(\\d+)-(\\d+)");
 
+    public static <T> void flipIndices(T[] array, int index1, int index2) {
+        T tmp = array[index2];
+        array[index2] = array[index1];
+        array[index1] = tmp;
+    }
+
     public static <T> T[] withoutIndex(T[] array, int index) {
         List<T> results = new ArrayList<>();
         results.addAll(Arrays.asList(array).subList(0, index));
