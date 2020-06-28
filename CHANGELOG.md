@@ -1,4 +1,22 @@
-# 1.4.6 - 2020-06-28
+# 1.4.8 - 2020-06-28
+
+## Additions
+* Added OutsourcedManager.
+* Added getIds to Manager.
+
+## Changes
+* Fix bounds errors on TabCompleters.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
+# 1.4.7 - 2020-06-28
 
 ## Additions
 * Added a target argument to the ParameterizedBranchCommand.
