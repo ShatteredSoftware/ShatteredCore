@@ -5,6 +5,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class Validators {
+    private Validators() {}
+
     public static final Validator<Integer> integerValidator = (str) -> {
         try {
             return Integer.parseInt(str);
