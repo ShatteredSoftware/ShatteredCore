@@ -30,4 +30,20 @@ public class TestStringUtil {
         String[] res = StringUtil.fixArgs(arr);
         Assert.assertArrayEquals("Args should be fixed properly", expected, res);
     }
+
+    @Test
+    public void testFixArgsNoTrailing() {
+        String[] arr = new String[]{"\"This", "is\"", "a", "cool", "test"};
+        String[] expected = new String[]{"This is", "a", "cool", "test"};
+        String[] res = StringUtil.fixArgs(arr);
+        Assert.assertArrayEquals("Args should be fixed properly", expected, res);
+    }
+
+    @Test
+    public void testFixArgsBlanks() {
+        String[] arr = new String[]{};
+        String[] expected = new String[]{};
+        String[] res = StringUtil.fixArgs(arr);
+        Assert.assertArrayEquals("Args should be fixed properly", expected, res);
+    }
 }
