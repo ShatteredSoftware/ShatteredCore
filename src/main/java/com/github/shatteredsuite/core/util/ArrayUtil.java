@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ArrayUtil {
+    private ArrayUtil() {}
+
     private static final Pattern SEPARATOR = Pattern.compile(",");
     private static final Pattern RANGE = Pattern.compile("(\\d+)-(\\d+)");
 
