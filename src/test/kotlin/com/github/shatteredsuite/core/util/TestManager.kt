@@ -18,7 +18,7 @@ class TestManager {
     }
 
     @Test
-    fun `test contains()`() {
+    fun `test contains`() {
         Assertions.assertTrue(manager.has("primary"))
         Assertions.assertFalse(manager.has("quaternary"))
     }
@@ -31,7 +31,7 @@ class TestManager {
     }
 
     @Test
-    fun `test register()`() {
+    fun `test register`() {
         manager.register(IdentifiedString("quaternary", "Fourth Value"))
         Assertions.assertTrue(manager.has("quaternary"))
         Assertions.assertTrue(manager.has("QUATERNARY"))
@@ -39,12 +39,12 @@ class TestManager {
     }
 
     @Test
-    fun `test get()`() {
+    fun `test get`() {
         Assertions.assertEquals("First Value", manager.get("primary")!!.value)
     }
 
     @Test
-    fun `test delete()`() {
+    fun `test delete`() {
         manager.delete("tertiary")
         manager.delete(initialValues[1])
         Assertions.assertFalse(manager.has("secondary"))
@@ -52,7 +52,7 @@ class TestManager {
     }
 
     @Test
-    fun `test getAll()`() {
+    fun `test getAll`() {
         val values = manager.getAll()
         val valuesArr = values.toList().toTypedArray()
         val expectedArr = initialValues.toTypedArray()
@@ -60,7 +60,7 @@ class TestManager {
     }
 
     @Test
-    fun `test getIds()`() {
+    fun `test getIds`() {
         val values = manager.getIds()
         val valuesArr = values.toList().toTypedArray()
         val expectedArr = arrayOf("primary", "secondary", "tertiary")
