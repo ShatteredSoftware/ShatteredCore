@@ -4,12 +4,12 @@
 <p align="center">
 <a href="https://github.com/ShatteredSuite/ShatteredCore/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/ShatteredSuite/ShatteredCore?style=for-the-badge&logo=github" /></a>
 <a href="https://github.com/ShatteredSuite/ShatteredCore/issues"><img alt="GitHub Issues" src="https://img.shields.io/github/issues/ShatteredSuite/ShatteredCore?style=for-the-badge&logo=github" /></a>
-<a href="https://github.com/ShatteredSuite/ShatteredCore/releases"><img alt="GitHub Version" src="https://img.shields.io/github/release/ShatteredSuite/ShatteredCore?label=Github%20Version&style=for-the-badge&logo=github" /></a>
-<a href="https://discord.gg/zUbNX9t"><img alt="Discord" src="https://img.shields.io/badge/Get%20Help-On%20Discord-%237289DA?style=for-the-badge&logo=discord" /></a>
-<a href="ko-fi.com/uberpilot"><img alt="Ko-Fi" src="https://img.shields.io/badge/Support-on%20Ko--fi-%23F16061?style=for-the-badge&logo=ko-fi" /></a>
 <img alt="GitHub Release Status" src="https://img.shields.io/github/workflow/status/ShatteredSuite/ShatteredCore/tagged-release?label=Release&style=for-the-badge">
 <img alt="GitHub Prerelease Status" src="https://img.shields.io/github/workflow/status/ShatteredSuite/ShatteredCore/prerelease?label=Prerelease&style=for-the-badge">
 <img alt="Codecov" src="https://img.shields.io/codecov/c/github/ShatteredSuite/ShatteredCore?style=for-the-badge">
+<a href="https://github.com/ShatteredSuite/ShatteredCore/releases"><img alt="GitHub Version" src="https://img.shields.io/github/release/ShatteredSuite/ShatteredCore?label=Github%20Version&style=for-the-badge&logo=github" /></a>
+<a href="https://discord.gg/zUbNX9t"><img alt="Discord" src="https://img.shields.io/badge/Get%20Help-On%20Discord-%237289DA?style=for-the-badge&logo=discord" /></a>
+<a href="ko-fi.com/uberpilot"><img alt="Ko-Fi" src="https://img.shields.io/badge/Support-on%20Ko--fi-%23F16061?style=for-the-badge&logo=ko-fi" /></a>
 </p>
 
 ## For Server Owners
