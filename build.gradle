@@ -17,6 +17,7 @@ buildscript {
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.72'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'jacoco'
 }
 
 apply plugin: 'java'
@@ -131,6 +132,14 @@ task distJar(type: ShadowJar) {
 
 task allJars() {
     dependsOn distJar, apiJar, javadocJar, sourcesJar
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
 }
 
 publishing {
