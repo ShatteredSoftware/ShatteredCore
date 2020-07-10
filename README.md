@@ -9,6 +9,7 @@
 <a href="ko-fi.com/uberpilot"><img alt="Ko-Fi" src="https://img.shields.io/badge/Support-on%20Ko--fi-%23F16061?style=for-the-badge&logo=ko-fi" /></a>
 <img alt="GitHub Release Status" src="https://img.shields.io/github/workflow/status/ShatteredSuite/ShatteredCore/tagged-release?label=Release&style=for-the-badge">
 <img alt="GitHub Prerelease Status" src="https://img.shields.io/github/workflow/status/ShatteredSuite/ShatteredCore/prerelease?label=Prerelease&style=for-the-badge">
+<img alt="Codecov" src="https://img.shields.io/codecov/c/github/ShatteredSuite/ShatteredCore?style=for-the-badge">
 </p>
 
 ## For Server Owners
