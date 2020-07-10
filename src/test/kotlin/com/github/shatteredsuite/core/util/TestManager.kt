@@ -1,8 +1,8 @@
 package com.github.shatteredsuite.core.util
 
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class TestManager {
     private lateinit var manager: Manager<IdentifiedString>
@@ -65,20 +65,5 @@ class TestManager {
         val valuesArr = values.toList().toTypedArray()
         val expectedArr = arrayOf("primary", "secondary", "tertiary")
         Assertions.assertArrayEquals(valuesArr, expectedArr)
-    }
-
-    internal class IdentifiedString(override val id: String, val value: String) : Identified {
-        override fun equals(other: Any?): Boolean {
-            if(other !is IdentifiedString) {
-                return false
-            }
-            return id == other.id && value == other.id
-        }
-
-        override fun hashCode(): Int {
-            var result = id.hashCode()
-            result = 31 * result + value.hashCode()
-            return result
-        }
     }
 }
