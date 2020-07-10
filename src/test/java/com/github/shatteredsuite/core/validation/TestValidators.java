@@ -50,4 +50,24 @@ public class TestValidators {
         }
         Assertions.assertTrue(thrown, "Should not be able to convert x to a float.");
     }
+
+    @Test
+    public void testBooleanValidator() {
+        boolean thrown = false;
+        Assertions.assertTrue(Validators.booleanValidator.validate("yes"), "yes should properly be converted.");
+        Assertions.assertTrue(Validators.booleanValidator.validate("enabled"), "enable should properly be converted.");
+        Assertions.assertTrue(Validators.booleanValidator.validate("true"), "yes should properly be converted.");
+        Assertions.assertFalse(Validators.booleanValidator.validate("no"), "enable should properly be converted.");
+        Assertions.assertFalse(Validators.booleanValidator.validate("disabled"), "yes should properly be converted.");
+        Assertions.assertFalse(Validators.booleanValidator.validate("false"), "enable should properly be converted.");
+        try {
+            boolean x = Validators.booleanValidator.validate("maybe");
+        }
+        catch (ArgumentValidationException ex) {
+            thrown = true;
+            Assertions.assertEquals("invalid-boolean", ex.errorKey, "Should have a correct error key when invalid.");
+            Assertions.assertEquals("maybe", ex.offender, "Should have a correct offender when invalid.");
+        }
+        Assertions.assertTrue(thrown, "Should not be able to convert maybe to a boolean.");
+    }
 }
