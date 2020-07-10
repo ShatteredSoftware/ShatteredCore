@@ -3,6 +3,12 @@ on:
   push:
     branches:
       - "master"
+    paths-ignore:
+      - "docs/**"
+      - "travis.yml"
+      - "README.md"
+      - ".github/workflows/release.yml"
+      - ".github/workflows/prerelease.yml"
 
 jobs:
   build:
