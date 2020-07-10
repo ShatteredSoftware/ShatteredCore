@@ -1,26 +1,26 @@
 package com.github.shatteredsuite.core.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestStringUtil {
 
     @Test
     public void blankTest() {
-        assertTrue("Blank strings should return true.", StringUtil.isEmptyOrNull(""));
+        assertTrue(StringUtil.isEmptyOrNull(""), "Blank strings should return true.");
     }
 
     @Test
     public void nullTest() {
-        assertTrue("Null strings should return true.", StringUtil.isEmptyOrNull(null));
+        assertTrue(StringUtil.isEmptyOrNull(null), "Null strings should return true.");
     }
 
     @Test
     public void fullTest() {
-        assertFalse("Strings with content should return false.", StringUtil.isEmptyOrNull("Hello!"));
+        assertFalse(StringUtil.isEmptyOrNull("Hello!"), "Strings with content should return false.");
     }
 
     @Test
@@ -28,7 +28,7 @@ public class TestStringUtil {
         String[] arr = new String[]{"\"This", "is\"", "a", "cool", "test", ""};
         String[] expected = new String[]{"This is", "a", "cool", "test", ""};
         String[] res = StringUtil.fixArgs(arr);
-        Assert.assertArrayEquals("Args should be fixed properly", expected, res);
+        Assertions.assertArrayEquals(expected, res, "Args should be fixed properly");
     }
 
     @Test
@@ -36,7 +36,7 @@ public class TestStringUtil {
         String[] arr = new String[]{"\"This", "is\"", "a", "cool", "test"};
         String[] expected = new String[]{"This is", "a", "cool", "test"};
         String[] res = StringUtil.fixArgs(arr);
-        Assert.assertArrayEquals("Args should be fixed properly", expected, res);
+        Assertions.assertArrayEquals(expected, res, "Args should be fixed properly");
     }
 
     @Test
@@ -44,6 +44,6 @@ public class TestStringUtil {
         String[] arr = new String[]{};
         String[] expected = new String[]{};
         String[] res = StringUtil.fixArgs(arr);
-        Assert.assertArrayEquals("Args should be fixed properly", expected, res);
+        Assertions.assertArrayEquals(expected, res, "Args should be fixed properly");
     }
 }

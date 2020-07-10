@@ -1,15 +1,15 @@
 package com.github.shatteredsuite.core.util
 
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.BeforeEach
 
 class TestManager {
     private lateinit var manager: Manager<IdentifiedString>
     private val initialValues: List<IdentifiedString> = listOf(IdentifiedString("primary", "First Value"),
         IdentifiedString("secondary", "Second Value"), IdentifiedString("tertiary", "Third Value"))
 
-    @Before
+    @BeforeEach
     fun setUp() {
         manager = Manager()
         for (value in initialValues) {
@@ -19,30 +19,36 @@ class TestManager {
 
     @Test
     fun `test contains()`() {
-        Assert.assertTrue(manager.has("primary"))
-        Assert.assertTrue(manager.has("PRIMARY"))
-        Assert.assertFalse(manager.has("quaternary"))
+        Assertions.assertTrue(manager.has("primary"))
+        Assertions.assertFalse(manager.has("quaternary"))
+    }
+
+    @Test
+    fun `test contains() has case insensitivity`() {
+        Assertions.assertTrue(manager.has("PRIMARY"))
+        Assertions.assertTrue(manager.has("PriMaRy"))
+        Assertions.assertFalse(manager.has("QUATERNARY"))
     }
 
     @Test
     fun `test register()`() {
         manager.register(IdentifiedString("quaternary", "Fourth Value"))
-        Assert.assertTrue(manager.has("quaternary"))
-        Assert.assertTrue(manager.has("QUATERNARY"))
-        Assert.assertTrue(manager.has("QuatErnaRy"))
+        Assertions.assertTrue(manager.has("quaternary"))
+        Assertions.assertTrue(manager.has("QUATERNARY"))
+        Assertions.assertTrue(manager.has("QuatErnaRy"))
     }
 
     @Test
     fun `test get()`() {
-        Assert.assertEquals("First Value", manager.get("primary")!!.value)
+        Assertions.assertEquals("First Value", manager.get("primary")!!.value)
     }
 
     @Test
     fun `test delete()`() {
         manager.delete("tertiary")
         manager.delete(initialValues[1])
-        Assert.assertFalse(manager.has("secondary"))
-        Assert.assertFalse(manager.has("tertiary"))
+        Assertions.assertFalse(manager.has("secondary"))
+        Assertions.assertFalse(manager.has("tertiary"))
     }
 
     @Test
@@ -50,7 +56,7 @@ class TestManager {
         val values = manager.getAll()
         val valuesArr = values.toList().toTypedArray()
         val expectedArr = initialValues.toTypedArray()
-        Assert.assertArrayEquals(valuesArr, expectedArr)
+        Assertions.assertArrayEquals(valuesArr, expectedArr)
     }
 
     @Test
@@ -58,7 +64,7 @@ class TestManager {
         val values = manager.getIds()
         val valuesArr = values.toList().toTypedArray()
         val expectedArr = arrayOf("primary", "secondary", "tertiary")
-        Assert.assertArrayEquals(valuesArr, expectedArr)
+        Assertions.assertArrayEquals(valuesArr, expectedArr)
     }
 
     internal class IdentifiedString(override val id: String, val value: String) : Identified {

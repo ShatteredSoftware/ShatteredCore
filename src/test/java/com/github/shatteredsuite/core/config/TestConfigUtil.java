@@ -1,7 +1,7 @@
 package com.github.shatteredsuite.core.config;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,12 +9,12 @@ import java.util.Random;
 
 import static com.github.shatteredsuite.core.config.ConfigUtil.getIfValid;
 import static com.github.shatteredsuite.core.config.ConfigUtil.getInEnum;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestConfigUtil {
     HashMap<String, Object> map = new HashMap<>();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         map.clear();
         map.put("number", 5);
@@ -92,7 +92,7 @@ public class TestConfigUtil {
         BLUE
     }
 
-    private class TestClass {
+    private static class TestClass {
         public final String message;
         public final int id;
         public final TestEnum colorName;

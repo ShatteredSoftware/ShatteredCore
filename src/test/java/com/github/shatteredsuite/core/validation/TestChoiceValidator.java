@@ -1,8 +1,8 @@
 package com.github.shatteredsuite.core.validation;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +11,7 @@ public class TestChoiceValidator {
     private List<String> choices = new LinkedList<>();
     private ChoiceValidator validator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         choices.add("one");
         choices.add("two");
@@ -19,9 +19,9 @@ public class TestChoiceValidator {
         validator = new ChoiceValidator(choices);
     }
 
-    @Test(expected = ArgumentValidationException.class)
+    @Test
     public void testChoiceValidatorInvalidChoice() {
-        validator.validate("four");
+        Assertions.assertThrows(ArgumentValidationException.class, () -> validator.validate("four"));
     }
 
     @Test
@@ -33,6 +33,6 @@ public class TestChoiceValidator {
         catch (ArgumentValidationException ex) {
             thrown = true;
         }
-        Assert.assertFalse(thrown);
+        Assertions.assertFalse(thrown);
     }
 }
