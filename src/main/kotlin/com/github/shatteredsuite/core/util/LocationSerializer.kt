@@ -5,18 +5,18 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import java.lang.reflect.Type
 
-class LocationSerializer(private val gson: Gson) : JsonSerializer<Location> {
+class LocationSerializer : JsonSerializer<Location> {
     override fun serialize(location: Location?, p1: Type?, p2: JsonSerializationContext?): JsonElement {
         val element = JsonObject()
         if (location == null) {
             return element
         }
-        element.add("x", gson.toJsonTree(location.x))
-        element.add("y", gson.toJsonTree(location.y))
-        element.add("z", gson.toJsonTree(location.z))
-        element.add("pitch", gson.toJsonTree(location.pitch))
-        element.add("yaw", gson.toJsonTree(location.yaw))
-        element.add("world", gson.toJsonTree(location.world?.name))
+        element.addProperty("x", location.x)
+        element.addProperty("y", location.y)
+        element.addProperty("z", location.z)
+        element.addProperty("pitch", location.pitch)
+        element.addProperty("yaw", location.yaw)
+        element.addProperty("world", location.world?.name)
         return element
     }
 }
