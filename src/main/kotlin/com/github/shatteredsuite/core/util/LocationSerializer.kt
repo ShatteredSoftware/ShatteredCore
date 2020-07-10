@@ -31,7 +31,7 @@ class LocationDeserializer : JsonDeserializer<Location> {
         val yaw = obj.get("yaw").asFloat
         val worldName = obj.get("world")
         val world = if (worldName == null) {
-            Bukkit.getWorlds()[0]
+            null
         } else Bukkit.getWorld(worldName.asString)
         return Location(world, x, y, z, yaw, pitch)
     }
