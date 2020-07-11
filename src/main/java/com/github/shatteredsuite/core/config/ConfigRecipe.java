@@ -42,7 +42,7 @@ public class ConfigRecipe implements ConfigurationSerializable {
     }
 
     public void withRow(int rowNumber, String row) {
-        if (rowNumber < 0 || rowNumber > 3) {
+        if (rowNumber < 0 || rowNumber >= 3) {
             return;
         }
         this.items.set(rowNumber, row);

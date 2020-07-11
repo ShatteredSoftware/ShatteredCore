@@ -1,17 +1,13 @@
 package com.github.shatteredsuite.core.util;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.internal.matchers.IsCollectionContaining;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-import java.util.Collections;
 import java.util.HashMap;
 
 public class TestOutsourcedManager {

@@ -75,12 +75,13 @@ processResources {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT'
+    def withoutSpigot = { exclude group: "org.spigotmc", module: "spigot-api" }
+    compile 'org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.google.code.gson:gson:2.8.6'
-    compile "fr.minuskube.inv:smart-invs:1.2.7"
+    compile "fr.minuskube.inv:smart-invs:1.2.7", withoutSpigot
     compile "de.tr7zw:item-nbt-api:2.4.1"
     compile "org.bstats:bstats-bukkit:1.7"
     compile "com.github.cryptomorin:XSeries:5.3.1"
