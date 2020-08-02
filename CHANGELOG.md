@@ -1,3 +1,20 @@
+# 1.4.10 - 2020-08-01
+
+## Additions
+* Add support for 1.16.1.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.9 - 2020-06-28
 
 ## Additions
