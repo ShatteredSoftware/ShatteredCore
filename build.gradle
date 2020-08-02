@@ -82,7 +82,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.google.code.gson:gson:2.8.6'
     compile "fr.minuskube.inv:smart-invs:1.2.7", withoutSpigot
-    compile "de.tr7zw:item-nbt-api:2.4.1"
+    compile "de.tr7zw:item-nbt-api:2.5.0"
     compile "org.bstats:bstats-bukkit:1.7"
     compile "com.github.cryptomorin:XSeries:5.3.1"
     testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.2'
@@ -102,7 +102,7 @@ task apiJar(type: ShadowJar) {
     from sourceSets.main.output
     dependencies {
         include(dependency("fr.minuskube.inv:smart-invs:1.2.7"))
-        include(dependency("de.tr7zw:item-nbt-api:2.4.1"))
+        include(dependency("de.tr7zw:item-nbt-api:2.5.0"))
         include(dependency("org.bstats:bstats-bukkit:1.7"))
         include(dependency("com.github.cryptomorin:XSeries:5.3.1"))
         include(dependency("com.google.code.gson:gson:.*"))
@@ -123,7 +123,7 @@ task distJar(type: ShadowJar) {
     dependencies {
         include(dependency("org.jetbrains.kotlin:.*:.*"))
         include(dependency("fr.minuskube.inv:smart-invs:1.2.7"))
-        include(dependency("de.tr7zw:item-nbt-api:2.4.1"))
+        include(dependency("de.tr7zw:item-nbt-api:2.5.0"))
         include(dependency("org.bstats:bstats-bukkit:1.7"))
         include(dependency("com.github.cryptomorin:XSeries:5.3.1"))
         include(dependency("com.google.code.gson:gson:.*"))
