@@ -54,14 +54,17 @@ public class ConfigRecipe implements ConfigurationSerializable {
         if (items.size() < 1) {
             isValid = false;
         }
+        if (mapping.size() < 1) {
+            isValid = false;
+        }
         if (isValid) {
-            for (String s : mapping.keySet()) {
+            for (String s : items) {
                 for (char c : s.toCharArray()) {
                     if (!mapping.containsKey(String.valueOf(c)) && c != ' ') {
                         isValid = false;
                         Logger.getLogger("ShatteredUtilities").severe("Invalid mapping in config. Trying to use " + c
                                 + " in a recipe where it is not defined.");
-                        break;
+                        return false;
                     }
                 }
             }
@@ -70,15 +73,23 @@ public class ConfigRecipe implements ConfigurationSerializable {
     }
 
     private void checkVailidity() {
-        if (this.items.size() < 1) {
+        if (this.items.size() < 1 || this.items.size() > 3) {
             this.valid = false;
+            return;
         }
-        for (char c : mapping.keySet()) {
-            if (!mapping.containsKey(c) && c != ' ') {
+        for (String line : items) {
+            if (line.length() > 3) {
                 this.valid = false;
-                break;
+                return;
+            }
+            for (char c : line.toCharArray()) {
+                if (!mapping.containsKey(c) && c != ' ') {
+                    this.valid = false;
+                    return;
+                }
             }
         }
+        this.valid = true;
     }
 
     private LinkedHashMap<Character, Material> generateMapping(Map<String, String> mapping) {
