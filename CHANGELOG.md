@@ -1,3 +1,20 @@
+# 1.4.11 - 2020-08-25
+
+## Additions
+* Add support for 1.16.2.
+
+## Changes
+* Fix a ConfigRecipe and validator bugs.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.10 - 2020-08-01
 
 ## Additions
