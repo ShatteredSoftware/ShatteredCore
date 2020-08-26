@@ -45,7 +45,7 @@ repositories {
     }
     maven {
         name = "CodeMC-Repo"
-        url = 'http://repo.codemc.io/repository/maven-public'
+        url = 'https://repo.codemc.io/repository/maven-public'
     }
 }
 
