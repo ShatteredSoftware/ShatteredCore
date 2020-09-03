@@ -1,3 +1,21 @@
+# 1.4.12 - 2020-08-25
+
+## Additions
+* Add a new ShatteredListener class that automatically captures the plugin and allows for it to be registered.
+* Add new FileExt extension that allows using the get operator to access children of directories.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.11 - 2020-08-25
 
 ## Additions
