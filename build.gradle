@@ -18,6 +18,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.72'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'jacoco'
+    id 'kr.entree.spigradle' version '2.2.3'
 }
 
 apply plugin: 'java'
@@ -31,22 +32,10 @@ repositories {
     mavenLocal()
     mavenCentral()
     jcenter()
-    maven {
-        name = "PaperMC"
-        url = "https://papermc.io/repo/repository/maven-public/"
-    }
-    maven {
-        name = "Jitpack"
-        url = 'https://jitpack.io'
-    }
-    maven {
-        name = "Spigot"
-        url = "https://hub.spigotmc.org/nexus/content/groups/public"
-    }
-    maven {
-        name = "CodeMC-Repo"
-        url = 'https://repo.codemc.io/repository/maven-public'
-    }
+    papermc()
+    jitpack()
+    spigotmc()
+    codemc()
 }
 
 java {
@@ -76,14 +65,14 @@ processResources {
 
 dependencies {
     def withoutSpigot = { exclude group: "org.spigotmc", module: "spigot-api" }
-    compile 'org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT'
+    compile spigot('1.15.2')
+    compile bStats()
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.google.code.gson:gson:2.8.6'
     compile "fr.minuskube.inv:smart-invs:1.2.7", withoutSpigot
     compile "de.tr7zw:item-nbt-api:2.5.0"
-    compile "org.bstats:bstats-bukkit:1.7"
     compile "com.github.cryptomorin:XSeries:5.3.1"
     testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.2'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.2'
@@ -137,6 +126,8 @@ task distJar(type: ShadowJar) {
 task allJars() {
     dependsOn distJar, apiJar, javadocJar, sourcesJar
 }
+
+tasks.generateSpigotDescription.enabled = false
 
 test {
     useJUnitPlatform()
