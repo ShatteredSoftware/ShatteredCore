@@ -1,4 +1,22 @@
-# 1.4.12 - 2020-08-25
+# 1.4.13 - 2020-09-05
+
+## Additions
+* Add new RunStrategy that allows for choosing how tasks are run.
+* Add new PlayerDataManager that assists in storing generic player data.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
+# 1.4.12 - 2020-09-03
 
 ## Additions
 * Add a new ShatteredListener class that automatically captures the plugin and allows for it to be registered.
