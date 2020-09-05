@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 public class ShatteredListener implements Listener {
     protected final ShatteredPlugin plugin;
 
-    ShatteredListener(ShatteredPlugin plugin) {
+    public ShatteredListener(ShatteredPlugin plugin) {
         this.plugin = plugin;
     }
 
