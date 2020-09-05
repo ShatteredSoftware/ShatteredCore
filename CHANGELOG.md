@@ -1,3 +1,20 @@
+# 1.4.14 - 2020-09-05
+
+## Additions
+None
+
+## Changes
+* Fix wrong modifier on ShatteredListener.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.13 - 2020-09-05
 
 ## Additions
