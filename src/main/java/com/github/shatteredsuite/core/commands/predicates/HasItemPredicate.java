@@ -4,12 +4,13 @@ import com.github.shatteredsuite.core.commands.responses.PredicateResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import static java.util.Arrays.stream;
-
 public class HasItemPredicate extends SenderPlayerPredicate {
 
-    public HasItemPredicate(PredicateResponse response) {
+    private final int index;
+
+    public HasItemPredicate(PredicateResponse response, int index) {
         super(response);
+        this.index = index;
         this.name = "Player has an item.";
     }
 
@@ -17,8 +18,8 @@ public class HasItemPredicate extends SenderPlayerPredicate {
     public boolean test(CommandContext context) {
         boolean playerHasItem = false;
         if (super.test(context)) {
-            ItemStack[] playerInventoryContents = ((Player) context.sender).getInventory().getContents();
-            playerHasItem = stream(playerInventoryContents).anyMatch(itemStack -> itemStack.getAmount() > 0);
+            ItemStack itemStack = ((Player) context.sender).getInventory().getItem(index);
+            playerHasItem = itemStack != null && itemStack.getAmount() > 0;
         }
         return playerHasItem;
     }
