@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "hhenrichsen",
+      "name": "Hunter Henrichsen",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/31490826?v=4",
+      "profile": "https://hhenrichsen.me",
+      "contributions": [
+        "code",
+        "ideas",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "ShatteredCore",
+  "projectOwner": "ShatteredSuite",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
