@@ -6,6 +6,9 @@ branches:
   only:
   - main
 
+tags:
+  enabled: false
+
 script:
   - ./gradlew check
 
