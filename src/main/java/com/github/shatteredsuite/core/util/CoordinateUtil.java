@@ -3,6 +3,7 @@ package com.github.shatteredsuite.core.util;
 import org.bukkit.Location;
 
 public class CoordinateUtil {
+    private CoordinateUtil() {}
 
     /**
      * Returns the 2D distance between two points based on their coordinates.
