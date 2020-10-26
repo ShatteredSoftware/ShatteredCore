@@ -3,7 +3,7 @@ package com.github.shatteredsuite.core.util;
 public interface Provider<T> {
     T get();
 
-    default Provider<T> of(T t) {
+    static <K> Provider<K> of(K t) {
         return () -> t;
     }
 }
