@@ -58,14 +58,14 @@ public class CoordinateUtil {
     }
 
     /**
-     * Returns the 2D distance between two points based on their coordinates.
+     * Returns the 2D distance between two points based on their coordinates. Ignores height.
      *
      * @param a The first point.
      * @param b The second point.
      * @return The distance between the two points.
      */
     public static double distance2D(Location a, Location b) {
-        return distance2D(a.getX(), a.getY(), b.getX(), b.getY());
+        return distance2D(a.getX(), a.getZ(), b.getX(), b.getZ());
     }
 
     /**
