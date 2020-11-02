@@ -1,12 +1,13 @@
 package com.github.shatteredsuite.core.commands.predicates;
 
 import com.github.shatteredsuite.core.commands.responses.PredicateResponse;
-import com.github.shatteredsuite.core.util.Provider;
 
-public class ProviderPredicate extends CommandContextPredicate {
-    private final Provider<Boolean> provider;
+import java.util.function.Supplier;
 
-    public ProviderPredicate(PredicateResponse response, Provider<Boolean> provider) {
+public class SupplierPredicate extends CommandContextPredicate {
+    private final Supplier<Boolean> provider;
+
+    public SupplierPredicate(PredicateResponse response, Supplier<Boolean> provider) {
         super(response);
         this.provider = provider;
     }
