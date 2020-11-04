@@ -168,7 +168,7 @@ public class Messenger {
         sendMessage(sender, id, vars, prefix);
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            XSound.BLOCK_NOTE_BLOCK_BASS.playSound(player.getLocation(), 1, .8f);
+            XSound.BLOCK_NOTE_BLOCK_BASS.play(player.getLocation(), 1, .8f);
         }
     }
 
@@ -193,11 +193,11 @@ public class Messenger {
         sendMessage(sender, id, vars);
         if (sender instanceof Player) {
             final Player player = (Player) sender;
-            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F);
+            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player.getLocation(), 1, .5F);
             Bukkit.getScheduler()
                     .scheduleSyncDelayedTask(
                             instance,
-                            () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F), 4L);
+                            () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player.getLocation(), 1, .5F), 4L);
         }
     }
 
@@ -212,11 +212,11 @@ public class Messenger {
         sendMessage(sender, id, null, prefix);
         if (sender instanceof Player) {
             final Player player = (Player) sender;
-            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F);
+            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player.getLocation(), 1, .5F);
             Bukkit.getScheduler()
                     .scheduleSyncDelayedTask(
                             instance,
-                            () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F), 4L);
+                            () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player.getLocation(), 1, .5F), 4L);
         }
     }
 
@@ -232,11 +232,11 @@ public class Messenger {
         sendMessage(sender, id, vars, prefix);
         if (sender instanceof Player) {
             final Player player = (Player) sender;
-            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F);
+            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player.getLocation(), 1, .5F);
             Bukkit.getScheduler()
                     .scheduleSyncDelayedTask(
                             instance,
-                            () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.playSound(player.getLocation(), 1, .5F), 4L);
+                            () -> XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player.getLocation(), 1, .5F), 4L);
         }
     }
 }
