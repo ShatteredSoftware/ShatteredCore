@@ -72,8 +72,8 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.google.code.gson:gson:2.8.6'
     compile "fr.minuskube.inv:smart-invs:1.2.7", withoutSpigot
-    compile "de.tr7zw:item-nbt-api:2.5.0"
-    compile "com.github.cryptomorin:XSeries:5.3.1"
+    compile group: "de.tr7zw", name: "item-nbt-api", version: project.property('nbtApiVersion')
+    compile group: "com.github.cryptomorin", name: "XSeries", version: project.property('xSeriesVersion')
     testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.2'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.2'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.4.2'
