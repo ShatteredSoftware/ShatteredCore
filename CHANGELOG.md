@@ -1,3 +1,20 @@
+# 1.4.16 - 2020-11-04
+
+## Additions
+None
+
+## Changes
+* Move dependency versions to properties.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.15 - 2020-11-04
 
 ## Additions
