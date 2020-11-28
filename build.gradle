@@ -65,17 +65,24 @@ processResources {
     }
 }
 
+configurations {
+    implementation {
+        canBeResolved true
+    }
+}
+
 dependencies {
     def withoutSpigot = { exclude group: "org.spigotmc", module: "spigot-api" }
-    compile spigot('1.15.2')
-    compile bStats()
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'com.google.code.gson:gson:2.8.6'
-    compile "fr.minuskube.inv:smart-invs:1.2.7", withoutSpigot
-    compile group: "de.tr7zw", name: "item-nbt-api", version: project.property('nbtApiVersion')
-    compile group: "com.github.cryptomorin", name: "XSeries", version: project.property('xSeriesVersion')
+    implementation spigot('1.15.2')
+    implementation bStats()
+    compile 'org.jetbrains:annotations:16.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation group: "com.google.code.gson", name: "gson", version: project.property("gsonVersion")
+    implementation group: "fr.minuskube.inv", name: "smart-invs", version: project.property("smartInvsVersion"), withoutSpigot
+    implementation group: "de.tr7zw", name: "item-nbt-api", version: project.property('nbtApiVersion')
+    implementation group: "com.github.cryptomorin", name: "XSeries", version: project.property('xSeriesVersion')
     testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.2'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.2'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.4.2'
@@ -90,28 +97,11 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-task apiJar(type: ShadowJar) {
-    from sourceSets.main.output
-    dependencies {
-        include(dependency("fr.minuskube.inv:smart-invs:1.2.7"))
-        include(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
-        include(dependency("org.bstats:bstats-bukkit:1.7"))
-        include(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
-        include(dependency("com.google.code.gson:gson:.*"))
-    }
-    relocate 'fr.minuskube.inv', 'com.github.shatteredsuite.core.include.inv'
-    relocate 'de.tr7zw.changeme.nbtapi', 'com.github.shatteredsuite.core.include.nbt'
-    relocate 'org.bstats.bukkit', 'com.github.shatteredsuite.core.include.stats'
-    relocate 'com.cryptomorin.xseries', 'com.github.shatteredsuite.core.include.xseries'
-    classifier = 'api'
-    configurations = [project.configurations.compile]
-}
-
-task distJar(type: ShadowJar) {
+shadowJar {
     from sourceSets.main.output
     baseName = 'ShatteredCore'
-    classifier = 'dist'
-    configurations = [project.configurations.compile]
+    classifier = null
+    configurations = [project.configurations.implementation]
     dependencies {
         include(dependency("org.jetbrains.kotlin:.*:.*"))
         include(dependency("fr.minuskube.inv:smart-invs:1.2.7"))
@@ -124,10 +114,6 @@ task distJar(type: ShadowJar) {
     relocate 'de.tr7zw.changeme.nbtapi', 'com.github.shatteredsuite.core.include.nbt'
     relocate 'org.bstats.bukkit', 'com.github.shatteredsuite.core.include.stats'
     relocate 'com.cryptomorin.xseries', 'com.github.shatteredsuite.core.include.xseries'
-}
-
-task allJars() {
-    dependsOn distJar, apiJar, javadocJar, sourcesJar
 }
 
 tasks.generateSpigotDescription.enabled = false
@@ -161,8 +147,7 @@ publishing {
             artifactId 'core'
             artifact javadocJar
             artifact sourcesJar
-            artifact distJar
-            artifact apiJar
+            artifact shadowJar
             pom {
                 name = project.property("projectName")
                 description = project.property('description')
