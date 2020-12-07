@@ -1,3 +1,21 @@
+# 1.4.17 - 2020-11-04
+
+## Additions
+* Managers now can be `.clear()`ed. 
+* Google Guice can be used for DI.
+
+## Changes
+None
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.16 - 2020-11-04
 
 ## Additions
