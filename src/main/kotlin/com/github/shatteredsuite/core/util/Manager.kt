@@ -34,4 +34,8 @@ open class Manager<T : Identified> : Iterable<T> {
     override fun iterator(): Iterator<T> {
         return registry.values.iterator()
     }
+
+    open fun clear() {
+        registry.clear()
+    }
 }
