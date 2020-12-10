@@ -1,4 +1,4 @@
-# 1.4.18 - 2020-11-04
+# 1.4.18 - 2020-12-09
 
 ## Additions
 None
@@ -16,7 +16,7 @@ None
 ## Security Patches
 None
 
-# 1.4.17 - 2020-11-04
+# 1.4.17 - 2020-12-06
 
 ## Additions
 * Managers now can be `.clear()`ed. 
