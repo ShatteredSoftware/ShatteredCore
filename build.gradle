@@ -98,6 +98,29 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+task apiJar(type: ShadowJar) {
+    from sourceSets.main.output
+    baseName = 'ShatteredCore'
+    classifier = 'api'
+    configurations = [project.configurations.implementation]
+    dependencies {
+        include(dependency("fr.minuskube.inv:smart-invs:$smartInvsVersion"))
+        include(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
+        include(dependency("org.bstats:bstats-bukkit:1.7"))
+        include(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
+        include(dependency("com.google.code.gson:gson:.*"))
+        include(dependency("com.google.inject:guice:.*"))
+    }
+    relocate 'fr.minuskube.inv', 'com.github.shatteredsuite.core.include.inv'
+    relocate 'de.tr7zw.changeme.nbtapi', 'com.github.shatteredsuite.core.include.nbt'
+    relocate 'org.bstats.bukkit', 'com.github.shatteredsuite.core.include.stats'
+    relocate 'com.cryptomorin.xseries', 'com.github.shatteredsuite.core.include.xseries'
+}
+
+task jars {
+    dependsOn apiJar, shadowJar, javadocJar, sourcesJar
+}
+
 shadowJar {
     from sourceSets.main.output
     baseName = 'ShatteredCore'
@@ -105,11 +128,12 @@ shadowJar {
     configurations = [project.configurations.implementation]
     dependencies {
         include(dependency("org.jetbrains.kotlin:.*:.*"))
-        include(dependency("fr.minuskube.inv:smart-invs:1.2.7"))
+        include(dependency("fr.minuskube.inv:smart-invs:$smartInvsVersion"))
         include(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
         include(dependency("org.bstats:bstats-bukkit:1.7"))
         include(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
         include(dependency("com.google.code.gson:gson:.*"))
+        include(dependency("com.google.inject:guice:.*"))
     }
     relocate 'fr.minuskube.inv', 'com.github.shatteredsuite.core.include.inv'
     relocate 'de.tr7zw.changeme.nbtapi', 'com.github.shatteredsuite.core.include.nbt'
@@ -145,8 +169,9 @@ publishing {
     }
     publications {
         maven(MavenPublication) {
-            artifactId 'core'
+            artifactId 'ShatteredCore'
             artifact javadocJar
+            artifact apiJar
             artifact sourcesJar
             artifact shadowJar
             pom {
