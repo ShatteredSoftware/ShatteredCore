@@ -1,3 +1,21 @@
+# 1.4.18 - 2020-11-04
+
+## Additions
+None
+
+## Changes
+* Google Guice is now included in the jar.
+* Restored the production of the API jar.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.17 - 2020-11-04
 
 ## Additions
