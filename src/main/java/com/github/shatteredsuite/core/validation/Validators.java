@@ -16,6 +16,15 @@ public class Validators {
         }
     };
 
+    public static final Validator<Long> longValidator = (str) -> {
+        try {
+            return Long.parseLong(str);
+        }
+        catch (NumberFormatException ex) {
+            throw new ArgumentValidationException("Could not convert " + str + " to an integer.", ArgumentValidationException.ValidationErrorType.INVALID_FORMAT, "invalid-integer", str);
+        }
+    };
+
     public static final Validator<Float> floatValidator = (str) -> {
         try {
             return Float.parseFloat(str);
