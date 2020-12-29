@@ -14,7 +14,7 @@ import java.io.IOException
 
 class PlayerDataManager<T>(
     private val plugin: ShatteredPlugin, private val gson: Gson, private val typeToken: TypeToken<T>,
-    name: String = "playerdata", runStrategy: RunStrategy? = null
+    name: String = "playerdata", runStrategy: RunStrategy? = null, private val initializer: (name: String) -> T
 ) {
 
     private val dataFolder: File
@@ -102,7 +102,7 @@ class PlayerDataManager<T>(
     private fun pull(id: String): T {
         val file = getFile(id)
         if (!file.exists()) {
-            writeFile(id)
+            writeFile(id, initializer(id))
         }
         val reader = FileReader(file)
         val data = gson.fromJson<T>(reader, typeToken.type)
