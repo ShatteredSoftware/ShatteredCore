@@ -34,7 +34,7 @@ class TestPlayerDataManager {
                 dataFolder
             }
             playerDataManager = PlayerDataManager(plugin, GsonBuilder().setPrettyPrinting().create(),
-                TypeToken.get(TestPlayerData::class.java), runStrategy = MainThreadRunStrategy())
+                TypeToken.get(TestPlayerData::class.java), runStrategy = MainThreadRunStrategy()) { TestPlayerData(it, "DefaultPlayer", 0)}
             for (child in dataFolder.listFiles() ?: arrayOf()) {
                 child.delete()
             }
