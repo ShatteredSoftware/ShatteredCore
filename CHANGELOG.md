@@ -1,3 +1,21 @@
+# 1.4.19 - 2021-01-25
+
+## Additions
+* Add GsonExt to make working with Json easier.
+* Add missing Long validator.
+
+## Changes
+* Refactor PlayerDataManager to take an initializer.
+
+## Deprecations
+None
+
+## Removals
+None
+
+## Security Patches
+None
+
 # 1.4.18 - 2020-12-09
 
 ## Additions
