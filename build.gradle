@@ -189,7 +189,7 @@ publishing {
                 withXml {
                     def depsNode = asNode().appendNode('dependencies')
 
-                    configurations.compile.allDependencies.each {
+                    configurations.implementation.allDependencies.each {
                         def depNode = depsNode.appendNode('dependency')
                         depNode.appendNode('groupId', it.group)
                         depNode.appendNode('artifactId', it.name)
