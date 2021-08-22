@@ -19,7 +19,7 @@ it. Most of this page is dedicated to good things this does for Developers, allo
 
 ### Installation
 
-1. Make sure you're running a reasonably up to date fork of Bukkit. I recommend 
+1. Make sure you're running a reasonably up to date fork of Paper. I recommend 
 [Tuinity](https://github.com/Spottedleaf/Tuinity) if possible, [Paper](https://papermc.io) otherwise.
 2. Grab the latest version of this library from the releases [here](https://github.com/ShatteredSuite/ShatteredCore/releases/latest).
 You'll want the jar ending in `dist`.
