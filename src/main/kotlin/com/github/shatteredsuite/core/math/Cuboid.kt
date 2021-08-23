@@ -1,8 +1,8 @@
 package com.github.shatteredsuite.core.math
 
+import com.github.shatteredsuite.core.math.context.NumericContext
 import com.github.shatteredsuite.core.math.vector.MutableVector3
 import com.github.shatteredsuite.core.math.vector.Vector3
-import software.shattered.corelib.math.context.NumericContext
 
 data class Cuboid<T : Number>(
     val origin: MutableVector3<T>,
