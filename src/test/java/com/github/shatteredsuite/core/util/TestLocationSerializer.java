@@ -18,7 +18,6 @@ public class TestLocationSerializer {
     public static void setUp() {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Location.class, new LocationAdapter());
-        builder.registerTypeAdapter(Location.class, new LocationDeserializer());
         gson = builder.create();
     }
 
