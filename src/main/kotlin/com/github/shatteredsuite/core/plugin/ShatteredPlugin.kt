@@ -23,20 +23,20 @@ import java.util.logging.Level
 abstract class ShatteredPlugin : JavaPlugin(), Messageable {
     protected var metrics: Metrics? = null
 
-    protected open var bStatsId = 0
-    protected open var spigotResourceId = 0
+    protected open val bStatsId = 0
+    protected open val spigotResourceId = 0
+    protected open val requiresPaper: Boolean = false
 
-    protected lateinit var gson: Gson
-    protected abstract val requiresPaper: Boolean
-
-    protected var core: ShatteredCore? = null
-    private var messenger: Messenger? = null
     var isUpdateAvailable = false
         protected set
     private var loaded = false
     var latestVersion: String? = null
         private set
+    protected var hasPaper = false
 
+    protected lateinit var gson: Gson
+    protected var core: ShatteredCore? = null
+    private var messenger: Messenger? = null
     lateinit var playerManager: PlayerManager
     lateinit var featureCooldownManager: PlayerCooldownManager
     protected var hasPaper = false
