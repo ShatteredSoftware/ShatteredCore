@@ -39,7 +39,7 @@ abstract class ShatteredPlugin : JavaPlugin(), Messageable {
 
     lateinit var playerManager: PlayerManager
     lateinit var featureCooldownManager: PlayerCooldownManager
-    var hasPaper = false
+    protected var hasPaper = false
 
     fun <T : Event> on(fn: (e: T) -> Unit) {
         this.server.pluginManager.registerEvents(object: Listener {
