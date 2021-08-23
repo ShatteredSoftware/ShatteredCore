@@ -53,6 +53,7 @@ task getHash {
     getHash.ext.hash = p1.text
 }
 
+
 processResources {
     dependsOn getHash
     def hash = getHash.hash
@@ -69,6 +70,21 @@ processResources {
 configurations {
     implementation {
         canBeResolved true
+    }
+}
+
+registerCustomOutputTask("hhenrichsen", "C://Users/Hunter/Documents/Servers/TestServer/plugins", name)
+
+def registerCustomOutputTask(name, path, plugin) {
+    tasks.register('build' + name, Copy) {
+        group('development')
+        outputs.upToDateWhen { false }
+        dependsOn ':jars'
+        from(file('build/libs/' + plugin + '-' + version + '-no-kt.jar'))
+        into(file(path))
+        rename { String fileName ->
+            fileName.replace(plugin + '-' + version + '-all.jar', plugin + ".jar")
+        }
     }
 }
 
@@ -115,6 +131,7 @@ task apiJar(type: ShadowJar) {
         include(dependency("org.bstats:bstats-bukkit:1.7"))
         include(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
         include(dependency("com.google.code.gson:gson:$gsonVersion"))
+        include(dependency("com.ibm.icu:icu4j:$icuVersion"))
     }
     relocate 'fr.minuskube.inv', 'com.github.shatteredsuite.core.include.inv'
     relocate 'de.tr7zw.changeme.nbtapi', 'com.github.shatteredsuite.core.include.nbt'
@@ -137,7 +154,8 @@ shadowJar {
         include(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
         include(dependency("org.bstats:bstats-bukkit:1.7"))
         include(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
-        include(dependency("com.google.code.gson:gson:.*"))
+        include(dependency("com.google.code.gson:gson:$gsonVersion"))
+        include(dependency("com.ibm.icu:icu4j:$icuVersion"))
     }
     relocate 'fr.minuskube.inv', 'com.github.shatteredsuite.core.include.inv'
     relocate 'de.tr7zw.changeme.nbtapi', 'com.github.shatteredsuite.core.include.nbt'
