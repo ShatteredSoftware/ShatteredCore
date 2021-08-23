@@ -1,0 +1,26 @@
+{
+  "id": "shatteredcore:test_items_1",
+  "items": [
+    {
+      "id": "shatteredcore:big_stick",
+      "material": "minecraft:stick",
+      "name": "Big Stick",
+      "enchantments": [
+        {
+          "id": "knockback",
+          "level": 5
+        }
+      ],
+      "traits": [
+        "update",
+        {
+          "id": "format",
+          "format": "shatteredcore:rpg"
+        }
+      ],
+      "nbt": {
+
+      }
+    }
+  ]
+}

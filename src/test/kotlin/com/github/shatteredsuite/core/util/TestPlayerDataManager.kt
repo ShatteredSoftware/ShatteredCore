@@ -1,8 +1,8 @@
 package com.github.shatteredsuite.core.util
 
-import com.github.shatteredsuite.core.ShatteredPlugin
-import com.github.shatteredsuite.core.ext.get
-import com.github.shatteredsuite.core.tasks.MainThreadRunStrategy
+import com.github.shatteredsuite.core.plugin.ShatteredPlugin
+import com.github.shatteredsuite.core.extension.get
+import com.github.shatteredsuite.core.plugin.tasks.MainThreadRunStrategy
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import org.hamcrest.MatcherAssert.assertThat

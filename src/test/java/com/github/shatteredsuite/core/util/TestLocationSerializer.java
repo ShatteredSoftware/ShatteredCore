@@ -1,10 +1,9 @@
 package com.github.shatteredsuite.core.util;
 
+import com.github.shatteredsuite.core.data.adapter.LocationAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Location;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +17,7 @@ public class TestLocationSerializer {
     @BeforeAll
     public static void setUp() {
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Location.class, new LocationSerializer());
+        builder.registerTypeAdapter(Location.class, new LocationAdapter());
         builder.registerTypeAdapter(Location.class, new LocationDeserializer());
         gson = builder.create();
     }

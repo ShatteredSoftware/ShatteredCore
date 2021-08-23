@@ -1,9 +1,9 @@
 package com.github.shatteredsuite.core.util
 
-import com.github.shatteredsuite.core.ShatteredPlugin
-import com.github.shatteredsuite.core.ext.get
-import com.github.shatteredsuite.core.tasks.AsyncBukkitRunStrategy
-import com.github.shatteredsuite.core.tasks.RunStrategy
+import com.github.shatteredsuite.core.extension.get
+import com.github.shatteredsuite.core.plugin.ShatteredPlugin
+import com.github.shatteredsuite.core.plugin.tasks.AsyncBukkitRunStrategy
+import com.github.shatteredsuite.core.plugin.tasks.RunStrategy
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -41,8 +41,7 @@ class PlayerDataManager<T>(
     fun get(id: String): T {
         return if (id in playerData) {
             playerData[id]!!
-        }
-        else pull(id)
+        } else pull(id)
     }
 
     /**
@@ -50,7 +49,7 @@ class PlayerDataManager<T>(
      */
     fun put(id: String, data: T) {
         playerData[id] = data
-        runStrategy.run(Runnable {
+        runStrategy.execute(Runnable {
             writeFile(id, data)
         })
     }
@@ -72,7 +71,8 @@ class PlayerDataManager<T>(
      * @see untrackAll
      */
     fun saveAll() {
-        runStrategy.run(Runnable { Unit
+        runStrategy.execute(Runnable {
+            Unit
             for ((id, data) in playerData.entries) {
                 writeFile(id, data)
             }
@@ -85,7 +85,8 @@ class PlayerDataManager<T>(
      * @see saveAll
      */
     fun untrackAll() {
-        runStrategy.run(Runnable { Unit
+        runStrategy.execute(Runnable {
+            Unit
             for (id in playerData.keys) {
                 untrack(id)
             }

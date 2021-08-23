@@ -1,6 +1,6 @@
 package com.github.shatteredsuite.core.events;
 
-import com.github.shatteredsuite.core.ShatteredPlugin;
+import com.github.shatteredsuite.core.plugin.ShatteredPlugin;
 import org.bukkit.event.Listener;
 
 public class ShatteredListener implements Listener {

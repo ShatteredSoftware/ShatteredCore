@@ -22,6 +22,7 @@ public class ArgumentValidationException extends ConversionException {
 
     public enum ValidationErrorType {
         NOT_ENOUGH_ARGS,
-        INVALID_FORMAT
+        INVALID_FORMAT,
+        INVALID_VALUE
     }
 }
