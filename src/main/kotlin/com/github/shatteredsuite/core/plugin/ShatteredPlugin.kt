@@ -168,7 +168,14 @@ abstract class ShatteredPlugin : JavaPlugin(), Messageable {
         }
 
         if (requiresPaper && !hasPaper) {
-            logger.log(Level.SEVERE, "This plugin requires Paper or a fork of Paper. Disabling.")
+            logger.log(Level.SEVERE, "============================================================")
+            logger.log(Level.SEVERE, "")
+            logger.log(Level.SEVERE, "")
+            logger.log(Level.SEVERE, "This plugin requires Paper or a fork of Paper. We are not able to find Paper. Disabling.")
+            logger.log(Level.SEVERE, "If you are using a fork of Paper, please contact the plugin author.")
+            logger.log(Level.SEVERE, "")
+            logger.log(Level.SEVERE, "")
+            logger.log(Level.SEVERE, "============================================================")
             this.isEnabled = false
             this.loaded = false
             throw Exception("This plugin requires Paper or a fork of Paper. Disabling.")
