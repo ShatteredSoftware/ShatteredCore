@@ -9,8 +9,7 @@ class AboutCommand(private val instance: ShatteredCore) :
         val updateStatus: String =
             if (instance.isUpdateAvailable) {
                 instance.messenger.getMessage("update-available", mapOf("version" to instance.latestVersion))
-            }
-            else {
+            } else {
                 instance.messenger.getMessage("up-to-date", null)
             }
         context.messenger.sendMessage(
