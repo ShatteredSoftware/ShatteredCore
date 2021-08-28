@@ -17,11 +17,11 @@ object FileUtil {
     private val yaml = Yaml()
 
     fun <T> loadPluginJsonFileAs(pluginTypeKey: PluginTypeKey<T>, gson: Gson = defaultGson): T? {
-        val file = File(pluginTypeKey.plugin.dataFolder, pluginTypeKey.key)
+        val file = File(pluginTypeKey.plugin.dataFolder, pluginTypeKey.key + ".json")
         return loadJsonFileAs(file, pluginTypeKey.clazz, gson)
     }
     fun <T> loadPluginJsonFileAs(pluginTypeKey: PluginTypeKey<T>, gson: Gson = defaultGson, init: (() -> T)): T {
-        val file = File(pluginTypeKey.plugin.dataFolder, pluginTypeKey.key)
+        val file = File(pluginTypeKey.plugin.dataFolder, pluginTypeKey.key + ".json")
         return loadJsonFileAs(file, pluginTypeKey.clazz, gson, init)
     }
 
@@ -64,12 +64,12 @@ object FileUtil {
     }
 
     fun <T> loadPluginYamlFileAs(pluginTypeKey: PluginTypeKey<T>, gson: Gson = defaultGson, init: (() -> T)): T {
-        val file = File(pluginTypeKey.plugin.dataFolder, pluginTypeKey.key)
+        val file = File(pluginTypeKey.plugin.dataFolder, pluginTypeKey.key + ".yml")
         return loadYamlFileAs(file, pluginTypeKey.clazz, gson, init)
     }
 
     fun <T> loadPluginYamlFileAs(pluginTypeKey: PluginTypeKey<T>, gson: Gson = defaultGson): T? {
-        val file = File(pluginTypeKey.plugin.dataFolder, pluginTypeKey.key)
+        val file = File(pluginTypeKey.plugin.dataFolder, pluginTypeKey.key + ".yml")
         return loadYamlFileAs(file, pluginTypeKey.clazz, gson)
     }
 
