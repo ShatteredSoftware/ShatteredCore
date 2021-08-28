@@ -1,4 +1,3 @@
 package com.github.shatteredsuite.core.dispatch.argument
 
-class StringArgument {
-}
+class StringArgument

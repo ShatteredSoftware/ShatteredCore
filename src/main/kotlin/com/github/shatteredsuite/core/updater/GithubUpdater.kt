@@ -1,4 +1,3 @@
 package com.github.shatteredsuite.core.updater
 
-class GithubUpdater {
-}
+class GithubUpdater

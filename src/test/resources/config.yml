@@ -1,0 +1,9 @@
+defaultLocale: test
+storageType: FLATFILE
+storageSettings:
+  port: 3306
+  host: localhost
+  username: minecraft
+  password: changeme
+  driver: mysql
+  prefix: core_

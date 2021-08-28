@@ -1,6 +1,6 @@
 package com.github.shatteredsuite.core.dispatch.argument
 
-import com.github.shatteredsuite.core.data.persistence.GenericDataStore
+import com.github.shatteredsuite.core.data.generic.GenericDataStore
 
 data class ValidationResult<T>(
     val success: Boolean = false,

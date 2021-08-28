@@ -1,5 +1,5 @@
 about: |-
-  &2ShatteredCore &fv%version% %update-status%&f by &aUberPilot
+  &2ShatteredCore &fv%version% %update-status%&f by %authors%
   &f
   &fGithub:&a https://github.com/ShatteredSoftware/ShatteredCore
   &fDiscord:&a https://discord.gg/zUbNX9t
@@ -17,3 +17,6 @@ no-permission: "&cYou don't have permission to use that."
 prefix: "&2ShatteredCore &7» &f"
 up-to-date: "&7(Current)"
 update-available: "&2(Update %version% Available!)"
+author-first-format: "&a%author%&7, "
+author-format: "&a%author%&7, "
+author-last-format: "&a%author%"

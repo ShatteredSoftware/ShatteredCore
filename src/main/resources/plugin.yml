@@ -3,6 +3,11 @@ description: A library of libraries, for the ShatteredSuite.
 main: com.github.shatteredsuite.core.plugin.ShatteredCore
 version: @version@
 api-version: "1.13"
+website: @website@
+softdepend:
+  - KotlinBridge
+authors:
+  - UberPilot
 
 permissions:
   shatteredcore.command.about:

@@ -1,5 +1,6 @@
-package com.github.shatteredsuite.core.data.persistence
+package com.github.shatteredsuite.core.data.generic
 
+import com.github.shatteredsuite.core.data.plugin.PluginTypeKey
 import com.github.shatteredsuite.core.extension.mapValuesNotNull
 
 /**
@@ -56,6 +57,11 @@ class GenericDataStore(private val logFailures: Boolean = true) {
     fun <T : Any> get(id: String, cl: Class<T>): T? {
         val value = valueMap[id] ?: return null
         return reflectiveTypeAssertion(value, cl)
+    }
+
+    fun <T : Any> get(pluginTypeKey: PluginTypeKey<T>): T? {
+        val value = valueMap[pluginTypeKey.toString()] ?: return null
+        return reflectiveTypeAssertion(value, pluginTypeKey.clazz)
     }
 
     /**
@@ -121,7 +127,8 @@ class GenericDataStore(private val logFailures: Boolean = true) {
      */
     fun <T : Any> asMapOf(cl: Class<T>): Map<String, T> {
         return valueMap.mapValuesNotNull {
-            reflectiveTypeAssertion(it, cl)
+            val v = it.value ?: return@mapValuesNotNull null
+            reflectiveTypeAssertion(v, cl)
         }
     }
 
@@ -157,7 +164,7 @@ class GenericDataStore(private val logFailures: Boolean = true) {
         return store
     }
 
-    inline fun <reified T: Any> asMapOf(): Map<String, T> {
+    inline fun <reified T : Any> asMapOf(): Map<String, T> {
         return asMapOf(T::class.java)
     }
 }

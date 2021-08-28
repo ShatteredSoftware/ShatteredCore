@@ -1,4 +1,4 @@
-package com.github.shatteredsuite.core.data.persistence
+package com.github.shatteredsuite.core.data.generic
 
 class MaskedDataContainer<T : Any>(private val cl: Class<T>, private val dataStore: GenericDataStore) {
     operator fun get(id: String): T? {

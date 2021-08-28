@@ -1,0 +1,24 @@
+about: |-
+  &2ShatteredCore &fv%version% %update-status%&f by &aUberPilot
+  &f
+  &fGithub:&a https://github.com/ShatteredSoftware/ShatteredCore
+  &fDiscord:&a https://discord.gg/zUbNX9t
+  &f
+  &fUsing the following libraries:
+  &f - &2SmartInvs &fby &aMinusKube
+  &f - &2NBTApi &fby &atr7zw
+  &f - &2XSeries &fby &aCryptoMorin
+  &f - &2Kotlin Standard Library &fby &aJetBrains
+  &f - &2Gson &fby &aGoogle
+  &f - &2ICU &fby &aIBM
+invalid-ingeger: "&c%offender% cannot be converted into an integer."
+invalid-integer-range: "&c%offender% is not within the range [%min%,%max%]"
+no-permission: "&cYou don't have permission to use that."
+prefix: "&2ShatteredCore &7» &f"
+up-to-date: "&7(Current)"
+update-available: "&2(Update %version% Available!)"
+spigot-required: |-
+
+get-help: |-
+  Get help:
+  https://discord.gg/zUbNX9t

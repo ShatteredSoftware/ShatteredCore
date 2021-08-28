@@ -1,4 +1,3 @@
 package com.github.shatteredsuite.core.data.item.backend
 
-class NBTItemBackend {
-}
+class NBTItemBackend

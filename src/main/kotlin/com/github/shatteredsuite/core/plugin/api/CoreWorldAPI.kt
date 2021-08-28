@@ -1,4 +1,3 @@
 package com.github.shatteredsuite.core.plugin.api
 
-interface CoreWorldAPI {
-}
+interface CoreWorldAPI

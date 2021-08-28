@@ -7,7 +7,7 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 
-class BasicPlayerDataStore(val gson: Gson, val runStrategy: RunStrategy) : PlayerDataStore {
+class JsonPlayerDataStore(val gson: Gson, val runStrategy: RunStrategy) : PlayerDataStore {
     override fun <T : Any> save(player: CorePlayer, key: PluginKey, value: T) {
         val baseFolder = File(key.plugin.dataFolder, "playerdata")
         baseFolder.mkdirs()

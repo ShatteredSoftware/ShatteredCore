@@ -2,9 +2,11 @@ package com.github.shatteredsuite.core.plugin
 
 import com.github.shatteredsuite.core.data.player.PlayerCooldownManager
 import com.github.shatteredsuite.core.data.player.PlayerManager
+import com.github.shatteredsuite.core.message.lang.MessageSet
 import com.github.shatteredsuite.core.messages.Messageable
 import com.github.shatteredsuite.core.messages.Messages
 import com.github.shatteredsuite.core.messages.Messenger
+import com.github.shatteredsuite.core.plugin.feature.ShatteredModule
 import com.github.shatteredsuite.core.updates.UpdateChecker
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -17,10 +19,16 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import java.nio.file.Files
+import java.util.*
 import java.util.logging.Level
+import java.util.stream.Collectors
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import kotlin.Comparator
 
 @Suppress("MemberVisibilityCanBePrivate")
-abstract class ShatteredPlugin : JavaPlugin(), Messageable {
+abstract class ShatteredPlugin(val childClass: Class<out ShatteredPlugin>) : JavaPlugin(), Messageable {
     protected var metrics: Metrics? = null
 
     protected open val bStatsId = 0
@@ -33,16 +41,23 @@ abstract class ShatteredPlugin : JavaPlugin(), Messageable {
     var latestVersion: String? = null
         private set
     protected var hasPaper = false
+    var isCore: Boolean = false
+        private set
+
+    protected open val module = ShatteredModule(this.name)
+
+    protected open val requiredFeatureIds: Set<String> = setOf()
 
     protected lateinit var gson: Gson
     protected var core: ShatteredCore? = null
     private var messenger: Messenger? = null
     lateinit var playerManager: PlayerManager
     lateinit var featureCooldownManager: PlayerCooldownManager
-    protected var hasPaper = false
+    private val internalMessageSet: MessageSet by lazy { MessageSet() }
+    val messageSet: MessageSet by lazy { if (isCore) this.internalMessageSet else core!!.messageSet }
 
     fun <T : Event> on(fn: (e: T) -> Unit) {
-        this.server.pluginManager.registerEvents(object: Listener {
+        this.server.pluginManager.registerEvents(object : Listener {
             @Suppress("unused")
             fun onEvent(e: T) {
                 fn(e)
@@ -53,9 +68,12 @@ abstract class ShatteredPlugin : JavaPlugin(), Messageable {
     /**
      * Do any work that must be done before loading the config.
      */
-    protected fun preload() {}
+    protected fun preload() {
+    }
+
     @Suppress("UNUSED_PARAMETER")
-    protected fun gsonSetup(gsonBuilder: GsonBuilder) {}
+    protected fun gsonSetup(gsonBuilder: GsonBuilder) {
+    }
 
     /**
      * Do any work to be done after loading configs. Register external connections here.
@@ -71,7 +89,8 @@ abstract class ShatteredPlugin : JavaPlugin(), Messageable {
     protected fun onFirstTick() {}
 
     @Suppress("UNUSED_PARAMETER")
-    protected fun parseConfig(config: YamlConfiguration?) {}
+    protected fun parseConfig(config: YamlConfiguration?) {
+    }
 
     fun loadConfig() {
         if (!dataFolder.exists()) {
@@ -96,6 +115,8 @@ abstract class ShatteredPlugin : JavaPlugin(), Messageable {
             playerManager = PlayerManager(this, this.gson)
 
             preload()
+            extractResources(childClass)
+            loadMessageSet()
             loadMessages()
             loadConfig()
             load()
@@ -113,6 +134,10 @@ abstract class ShatteredPlugin : JavaPlugin(), Messageable {
                 "Plugin cannot be enabled due to an error that occurred during the plugin loading phase"
             )
             isEnabled = false
+            return
+        }
+        if(!featuresOk()) {
+            this.isEnabled = false
             return
         }
         if (bStatsId != 0) {
@@ -135,7 +160,6 @@ abstract class ShatteredPlugin : JavaPlugin(), Messageable {
         on<PlayerJoinEvent> { playerManager.join(it.player) }
         on<PlayerQuitEvent> { playerManager.leave(it.player) }
 
-        loadMessages()
         Bukkit.getScheduler().runTask(this, Runnable { onFirstTick() })
         postEnable()
     }
@@ -146,40 +170,78 @@ abstract class ShatteredPlugin : JavaPlugin(), Messageable {
 
     private fun initCore() {
         val corePlugin = getPlugin(ShatteredCore::class.java)
-        if (!Bukkit.getPluginManager().isPluginEnabled(corePlugin)
-            && !this.javaClass.isInstance(ShatteredCore::class.java)
-        ) {
-            logger.log(Level.SEVERE, "Could not find ShatteredCore. Disabling.")
+        isCore = childClass.javaClass.isInstance(ShatteredCore::class.java)
+        if (!Bukkit.getPluginManager().isPluginEnabled(corePlugin) && !isCore) {
+            bigScaryMessage {
+                logger.severe("Could not find ShatteredCore. This plugin requires ShatteredCore.")
+            }
             this.isEnabled = false
             this.loaded = false
             throw Exception("Could not find ShatteredCore. Disabling.")
         }
-        core = corePlugin
-        this.featureCooldownManager = PlayerCooldownManager(corePlugin.featureManager)
+        register(corePlugin)
+    }
+
+    private fun featuresOk(): Boolean {
+        val failures = mutableListOf<String>()
+        for (feature in requiredFeatureIds) {
+            if (!this.core!!.hasFeature(feature)) {
+                failures.add(feature)
+            }
+        }
+        if (failures.isNotEmpty()) {
+            bigScaryMessage {
+                logger.severe("Could not load the following required features:")
+                logger.severe("")
+                for (failure in failures) {
+                    logger.severe(" - $failure")
+                }
+                logger.severe("")
+                logger.severe("This likely indicates a missing or out-of-date plugin.")
+            }
+            return false
+        }
+        return true
+    }
+
+    private fun register(coreRef: ShatteredCore) {
+        core = coreRef
+        this.featureCooldownManager = PlayerCooldownManager(coreRef.featureManager)
+        coreRef.register(this.module)
     }
 
     private fun checkPaper() {
         hasPaper = try {
             Class.forName("com.destroystokyo.paper.VersionHistoryManager\$VersionData")
             true
-        }
-        catch (ex: Exception) {
+        } catch (ex: Exception) {
             false
         }
 
         if (requiresPaper && !hasPaper) {
-            logger.log(Level.SEVERE, "============================================================")
-            logger.log(Level.SEVERE, "")
-            logger.log(Level.SEVERE, "")
-            logger.log(Level.SEVERE, "This plugin requires Paper or a fork of Paper. We are not able to find Paper. Disabling.")
-            logger.log(Level.SEVERE, "If you are using a fork of Paper, please contact the plugin author.")
-            logger.log(Level.SEVERE, "")
-            logger.log(Level.SEVERE, "")
-            logger.log(Level.SEVERE, "============================================================")
+            bigScaryMessage {
+                logger.severe("This plugin requires Paper or a fork of Paper. We are not able to find Paper. Disabling."
+                )
+                logger.severe("If you are using a fork of Paper, please contact the plugin author.")
+            }
             this.isEnabled = false
             this.loaded = false
             throw Exception("This plugin requires Paper or a fork of Paper. Disabling.")
         }
+    }
+
+    private fun bigScaryMessage(f: () -> Unit) {
+        logger.severe("============================================================")
+        logger.severe("")
+        logger.severe("")
+        f()
+        logger.severe("")
+        logger.severe("")
+        logger.severe("Get help:")
+        logger.severe("https://discord.gg/zUbNX9t")
+        logger.severe("")
+        logger.severe("")
+        logger.severe("============================================================")
     }
 
     private fun initGson() {
@@ -188,16 +250,58 @@ abstract class ShatteredPlugin : JavaPlugin(), Messageable {
         this.gson = gsonBuilder.create()
     }
 
+    private fun extractResources(
+        cl: Class<out ShatteredPlugin>,
+        exclude: Set<String> = setOf("plugin.yml"),
+        prefix: String = "unpack/"
+    ) {
+        if (!dataFolder.exists()) {
+            dataFolder.mkdirs()
+        }
+
+        val jar = ZipFile(cl.protectionDomain.codeSource.location.path)
+        val entries = jar.stream()
+            .filter { f -> f.name.startsWith(prefix) }
+            .filter { f -> !exclude.any { f.name.endsWith(it) } }
+            .sorted(Comparator.comparing(ZipEntry::getName))
+            .collect(Collectors.toList())
+
+        for (entry in entries) {
+            val dest = dataFolder.resolve(entry.name.substring(prefix.length))
+            if (dest.exists()) {
+                continue
+            }
+            if (entry.isDirectory) {
+                Files.createDirectory(dest.toPath())
+                continue
+            }
+            Files.copy(jar.getInputStream(entry), dest.toPath())
+        }
+    }
+
     private fun loadMessages() {
         if (!dataFolder.exists()) {
             dataFolder.mkdirs()
         }
-        val messagesFile = File(dataFolder, "messages.yml")
+        val messagesFile = File(dataFolder, "unpack/messages.yml")
         if (!messagesFile.exists()) {
-            saveResource("messages.yml", false)
+            saveResource("unpack/messages.yml", false)
         }
-        val messages = Messages(this, YamlConfiguration.loadConfiguration(messagesFile))
+        val yaml = YamlConfiguration.loadConfiguration(messagesFile)
+        val messages = Messages(this, yaml)
         messenger = Messenger(this, messages)
+    }
+
+    private fun loadMessageSet() {
+        val langFolder = File(dataFolder, "locale")
+        langFolder.listFiles()?.forEach {
+            if (it.extension == "yml" || it.extension == "yaml") {
+                val language = it.nameWithoutExtension.split("-", limit=2)[0]
+                val locale = Locale(language)
+                logger.info("Loaded locale information for $language (${locale.displayName})")
+                messageSet.fromYaml(YamlConfiguration.loadConfiguration(it), locale)
+            }
+        }
     }
 
     override fun getMessenger(): Messenger {

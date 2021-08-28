@@ -1,12 +1,12 @@
 package com.github.shatteredsuite.core.message.processor
 
-import com.github.shatteredsuite.core.data.persistence.GenericDataStore
+import com.github.shatteredsuite.core.data.generic.GenericDataStore
 import com.github.shatteredsuite.core.message.MessageProcessor
 import com.github.shatteredsuite.core.message.lang.MessageSet
-import com.ibm.icu.util.ULocale
+import java.util.*
 
-class LangProcessor(var messageSet: MessageSet): MessageProcessor {
-    override fun process(message: String, data: GenericDataStore?, locale: ULocale): String {
+class LangProcessor(var messageSet: MessageSet) : MessageProcessor {
+    override fun process(message: String, data: GenericDataStore?, locale: Locale): String {
         return messageSet.get(message, data, locale) ?: throw Exception("Missing message $message.")
     }
 }

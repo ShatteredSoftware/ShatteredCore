@@ -29,7 +29,7 @@ public class Messages {
         messages = new HashMap<>();
         YamlConfiguration defaults =
                 YamlConfiguration.loadConfiguration(
-                        new InputStreamReader(Objects.requireNonNull(instance.getResource("messages.yml")), StandardCharsets.UTF_8));
+                        new InputStreamReader(Objects.requireNonNull(instance.getResource("unpack/messages.yml")), StandardCharsets.UTF_8));
         for (String key : config.getKeys(true)) {
             //noinspection ConstantConditions
             messages.put(key, ChatColor.translateAlternateColorCodes('&', config.getString(key)));

@@ -12,7 +12,14 @@ import org.bukkit.util.Vector
 // Some code adapted from here:
 // https://github.com/UniverseCraft/DragonsOnline/blob/master/dragons-core/src/main/java/mc/dragons/core/util/PathfindingUtil.java
 object PathFollower {
-    fun follow(mob: Mob, path: Path3<Double>, speed: Double, plugin: JavaPlugin, hasPaper: Boolean, then: ((mob: Mob) -> Unit) = {}) {
+    fun follow(
+        mob: Mob,
+        path: Path3<Double>,
+        speed: Double,
+        plugin: JavaPlugin,
+        hasPaper: Boolean,
+        then: ((mob: Mob) -> Unit) = {}
+    ) {
         val aware = mob.isAware
         mob.isAware = false
 
@@ -31,7 +38,13 @@ object PathFollower {
         }
     }
 
-    private fun runPathCallback(mob: Mob, path: Path3<Double>, speed: Double, plugin: JavaPlugin, finalCallback: (mob: Mob) -> Unit) {
+    private fun runPathCallback(
+        mob: Mob,
+        path: Path3<Double>,
+        speed: Double,
+        plugin: JavaPlugin,
+        finalCallback: (mob: Mob) -> Unit
+    ) {
         var cb = finalCallback
         for (point in path.points) {
             cb = getPointCallback(point, speed, plugin, cb)
@@ -53,12 +66,17 @@ object PathFollower {
         }
     }
 
-    private fun getBukkitPointCallback(point: Vector3<Double>, speed: Double, plugin: JavaPlugin, next: ((Mob) -> Unit)?): (Mob) -> Unit {
+    private fun getBukkitPointCallback(
+        point: Vector3<Double>,
+        speed: Double,
+        plugin: JavaPlugin,
+        next: ((Mob) -> Unit)?
+    ): (Mob) -> Unit {
         val loc = LocationUtil.fromVector(point)
         return {
-            it.teleport(BlockUtil.getClosestGroundColumn(it.location, surface=true))
-            with (it) {
-                val runnable = object: BukkitRunnable() {
+            it.teleport(BlockUtil.getClosestGroundColumn(it.location, surface = true))
+            with(it) {
+                val runnable = object : BukkitRunnable() {
                     override fun run() {
                         val curr = location
                         if (isValid) {
@@ -66,8 +84,7 @@ object PathFollower {
                                 cancel()
                                 velocity = Vector(0, 0, 0)
                                 next?.invoke(it)
-                            }
-                            else {
+                            } else {
                                 val dir = loc.clone().subtract(curr).toVector().setY(0).normalize().multiply(speed)
                                 val to = curr.clone().add(dir)
                                 val groundY = BlockUtil.getClosestGroundColumn(to, surface = true).y
@@ -75,8 +92,7 @@ object PathFollower {
                                 velocity = dir
                                 teleport(to)
                             }
-                        }
-                        else {
+                        } else {
                             cancel()
                         }
                     }
@@ -86,19 +102,23 @@ object PathFollower {
         }
     }
 
-    private fun getPointCallback(point: Vector3<Double>, speed: Double, plugin: JavaPlugin, next: ((Mob) -> Unit)?): (Mob) -> Unit {
+    private fun getPointCallback(
+        point: Vector3<Double>,
+        speed: Double,
+        plugin: JavaPlugin,
+        next: ((Mob) -> Unit)?
+    ): (Mob) -> Unit {
         val loc = LocationUtil.fromVector(point)
         return { mob: Mob ->
             mob.pathfinder.moveTo(loc, speed)
-            val runnable = object: BukkitRunnable() {
+            val runnable = object : BukkitRunnable() {
                 override fun run() {
                     if (mob.isValid) {
                         if (mob.location.distanceSquared(loc) <= 1) {
                             next?.invoke(mob)
                             cancel()
                         }
-                    }
-                    else {
+                    } else {
                         cancel()
                     }
                 }

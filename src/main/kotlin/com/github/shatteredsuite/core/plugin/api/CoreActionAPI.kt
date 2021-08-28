@@ -1,4 +1,3 @@
 package com.github.shatteredsuite.core.plugin.api
 
-interface CoreActionAPI {
-}
+interface CoreActionAPI
