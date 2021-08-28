@@ -130,9 +130,11 @@ abstract class ShatteredPlugin(val childClass: Class<out ShatteredPlugin>) : Jav
 
     override fun onEnable() {
         if (!loaded) {
-            logger.severe(
-                "Plugin cannot be enabled due to an error that occurred during the plugin loading phase"
-            )
+            bigScaryMessage {
+                logger.severe(
+                    "${description.name} cannot be enabled due to an error that occurred during the plugin loading phase."
+                )
+            }
             isEnabled = false
             return
         }

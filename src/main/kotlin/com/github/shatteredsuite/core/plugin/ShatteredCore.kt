@@ -4,6 +4,7 @@ import com.github.shatteredsuite.core.config.ConfigRecipe
 import com.github.shatteredsuite.core.data.persistence.Persistence
 import com.github.shatteredsuite.core.data.plugin.PluginKey
 import com.github.shatteredsuite.core.data.plugin.PluginTypeKey
+import com.github.shatteredsuite.core.extension.merge
 import com.github.shatteredsuite.core.feature.CoreFeatureManager
 import com.github.shatteredsuite.core.plugin.config.CoreConfig
 import com.github.shatteredsuite.core.plugin.feature.CoreServerFeature
@@ -26,7 +27,7 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
         var defaultRunStrategy: RunStrategy = MainThreadRunStrategy()
             private set
 
-        var config: CoreConfig = CoreConfig("en", CoreConfig.StorageType.FLATFILE, null)
+        var config: CoreConfig = CoreConfig("en", true, CoreConfig.StorageType.FLATFILE, null)
             private set
 
         var instance: ShatteredCore? = null
@@ -55,14 +56,14 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
         this.module.addFeature(
             CoreServerFeature(
                 messengerKey,
-                "Internationalization v1: Messenger System",
+                "Internationalization v1 (Messenger)",
                 "A simple interface for translation."
             )
         )
         this.module.addFeature(
             CoreServerFeature(
                 messageSetKey,
-                "Internationalization v2: Message Set System",
+                "Internationalization v2 (Message Set)",
                 "An alternative, smarter interface for translation."
             )
         )
@@ -87,12 +88,29 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
         defaultGson = this.gson
         defaultRunStrategy = AsyncBukkitRunStrategy(this)
         instance = this
-        ShatteredCore.config = Persistence.loadPluginYamlFileAs(configTypeKey) { CoreConfig("en", CoreConfig.StorageType.FLATFILE, null) }
+        ShatteredCore.config =
+            Persistence.loadPluginYamlFileAs(configTypeKey, init = this::initConfig) merge initConfig()
         defaultLocale = Locale(ShatteredCore.config.defaultLocale)
     }
 
+    private fun initConfig(): CoreConfig {
+        return CoreConfig("en", true, CoreConfig.StorageType.FLATFILE, null)
+    }
+
+
     override fun postEnable() {
         getCommand("shatteredcore")!!.setExecutor(AboutCommand(this))
+
+        if (ShatteredCore.config.listFeatures) {
+            logger.info("The following features are available:")
+            for (feature in availableFeatures) {
+                logger.info(" - §a${feature.name}§f: §7${feature.description}")
+            }
+        }
+    }
+
+    override fun preDisable() {
+        Persistence.savePluginYamlFileAs(configTypeKey, ShatteredCore.config, defaultRunStrategy)
     }
 
     fun hasFeature(name: String): Boolean {

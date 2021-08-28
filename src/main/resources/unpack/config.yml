@@ -1,5 +1,6 @@
 defaultLocale: en
 storageType: flatfile
+listFeatures: false
 storageSettings:
   port: 3306
   host: localhost
