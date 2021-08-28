@@ -1,6 +1,6 @@
 package com.github.shatteredsuite.core.dispatch.argument
 
-interface Argument<StateType : Any, T> {
+interface Argument<StateType, T> {
     val expectedArgs: Int
     val name: String
     fun validate(arguments: List<String>, start: Int, state: StateType): ArgumentValidationResult<T>

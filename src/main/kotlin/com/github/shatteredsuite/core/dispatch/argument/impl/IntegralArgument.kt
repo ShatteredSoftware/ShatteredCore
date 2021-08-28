@@ -14,12 +14,12 @@ open class IntegralArgument(
     completeMin: Int = 0,
     completeMax: Int = 10,
     completeIncrement: Int = 1
-) : Argument<Int> {
+) : Argument<Any?, Int> {
     override val expectedArgs: Int = 1
     private val completeRange =
         listOf(max(min, completeMin)..min(completeMax, max) step completeIncrement).map { it.toString() }
 
-    override fun validate(arguments: List<String>, start: Int): ArgumentValidationResult<Int> {
+    override fun validate(arguments: List<String>, start: Int, state: Any?): ArgumentValidationResult<Int> {
         return try {
             val arg = arguments[start].toInt()
             if (arg in min..max) {
@@ -38,11 +38,11 @@ open class IntegralArgument(
         }
     }
 
-    override fun complete(partialArguments: List<String>, start: Int): List<String> {
+    override fun complete(partialArguments: List<String>, start: Int, state: Any?): List<String> {
         return StringUtil.copyPartialMatches(partialArguments[start], completeRange, mutableListOf())
     }
 
-    override fun default(): Int? {
+    override fun default(state: Any?): Int? {
         return default
     }
 }

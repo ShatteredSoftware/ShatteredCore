@@ -10,16 +10,16 @@ open class ChoiceArgument<T>(
     val choiceProvider: () -> Collection<String>,
     val default: T? = null,
     val dynamic: Boolean = true
-) : Argument<T> {
+) : Argument<Any?, T> {
     override val expectedArgs: Int = 1
     private val choices = if (!dynamic) choiceProvider() else setOf()
 
-    override fun validate(arguments: List<String>, start: Int): ArgumentValidationResult<T> {
+    override fun validate(arguments: List<String>, start: Int, state: Any?): ArgumentValidationResult<T> {
         val result = provider(arguments[start]) ?: return ArgumentValidationResult(faliureMessageId = "invalid-choice")
         return ArgumentValidationResult(success = true, result)
     }
 
-    override fun complete(partialArguments: List<String>, start: Int): List<String> {
+    override fun complete(partialArguments: List<String>, start: Int, state: Any?): List<String> {
         val dest = mutableListOf<String>()
         if (dynamic) {
             StringUtil.copyPartialMatches(partialArguments[start], choiceProvider(), dest)
@@ -29,7 +29,7 @@ open class ChoiceArgument<T>(
         return dest
     }
 
-    override fun default(): T? {
+    override fun default(state: Any?): T? {
         return default
     }
 }
