@@ -1,5 +1,7 @@
-package com.github.shatteredsuite.core.dispatch.argument
+package com.github.shatteredsuite.core.dispatch.argument.impl
 
+import com.github.shatteredsuite.core.dispatch.argument.Argument
+import com.github.shatteredsuite.core.dispatch.argument.ArgumentValidationResult
 import org.bukkit.util.StringUtil
 import kotlin.math.max
 import kotlin.math.min
@@ -17,20 +19,20 @@ open class IntegralArgument(
     private val completeRange =
         listOf(max(min, completeMin)..min(completeMax, max) step completeIncrement).map { it.toString() }
 
-    override fun validate(arguments: List<String>, start: Int): ValidationResult<Int> {
+    override fun validate(arguments: List<String>, start: Int): ArgumentValidationResult<Int> {
         return try {
             val arg = arguments[start].toInt()
             if (arg in min..max) {
-                ValidationResult(success = true, result = arg)
+                ArgumentValidationResult(success = true, result = arg)
             } else {
-                val result = ValidationResult<Int>(faliureMessageId = "invalid-integer-range")
+                val result = ArgumentValidationResult<Int>(faliureMessageId = "invalid-integer-range")
                 result.data["offender"] = arguments[start]
                 result.data["max"] = max
                 result.data["min"] = min
                 result
             }
         } catch (ex: NumberFormatException) {
-            val result = ValidationResult<Int>(faliureMessageId = "invalid-integer")
+            val result = ArgumentValidationResult<Int>(faliureMessageId = "invalid-integer")
             result.data["offender"] = arguments[start]
             result
         }

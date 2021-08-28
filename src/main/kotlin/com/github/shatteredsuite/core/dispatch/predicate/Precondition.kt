@@ -1,7 +1,7 @@
 package com.github.shatteredsuite.core.dispatch.predicate
 
-interface Predicate<TargetType : Any> {
+interface Precondition<StateType : Any> {
     val failureMessageId: String
 
-    fun check(sender: TargetType): PredicateResult
+    fun check(state: StateType): PredicateResult
 }

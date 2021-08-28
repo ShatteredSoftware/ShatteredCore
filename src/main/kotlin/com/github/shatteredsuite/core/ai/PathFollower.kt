@@ -76,7 +76,7 @@ object PathFollower {
         return {
             it.teleport(BlockUtil.getClosestGroundColumn(it.location, surface = true))
             with(it) {
-                val runnable = object : BukkitRunnable() {
+                object : BukkitRunnable() {
                     override fun run() {
                         val curr = location
                         if (isValid) {
@@ -96,8 +96,7 @@ object PathFollower {
                             cancel()
                         }
                     }
-                }
-                    .runTaskTimer(plugin, 0, 1)
+                }.runTaskTimer(plugin, 0, 1)
             }
         }
     }
@@ -111,7 +110,7 @@ object PathFollower {
         val loc = LocationUtil.fromVector(point)
         return { mob: Mob ->
             mob.pathfinder.moveTo(loc, speed)
-            val runnable = object : BukkitRunnable() {
+            object : BukkitRunnable() {
                 override fun run() {
                     if (mob.isValid) {
                         if (mob.location.distanceSquared(loc) <= 1) {
@@ -122,8 +121,7 @@ object PathFollower {
                         cancel()
                     }
                 }
-            }
-            runnable.runTaskTimer(plugin, 0, 10)
+            }.runTaskTimer(plugin, 0, 10)
         }
     }
 }

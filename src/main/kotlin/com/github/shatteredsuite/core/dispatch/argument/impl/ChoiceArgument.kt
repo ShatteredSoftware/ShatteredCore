@@ -1,5 +1,7 @@
-package com.github.shatteredsuite.core.dispatch.argument
+package com.github.shatteredsuite.core.dispatch.argument.impl
 
+import com.github.shatteredsuite.core.dispatch.argument.Argument
+import com.github.shatteredsuite.core.dispatch.argument.ArgumentValidationResult
 import org.bukkit.util.StringUtil
 
 open class ChoiceArgument<T>(
@@ -12,9 +14,9 @@ open class ChoiceArgument<T>(
     override val expectedArgs: Int = 1
     private val choices = if (!dynamic) choiceProvider() else setOf()
 
-    override fun validate(arguments: List<String>, start: Int): ValidationResult<T> {
-        val result = provider(arguments[start]) ?: return ValidationResult(faliureMessageId = "invalid-choice")
-        return ValidationResult(success = true, result)
+    override fun validate(arguments: List<String>, start: Int): ArgumentValidationResult<T> {
+        val result = provider(arguments[start]) ?: return ArgumentValidationResult(faliureMessageId = "invalid-choice")
+        return ArgumentValidationResult(success = true, result)
     }
 
     override fun complete(partialArguments: List<String>, start: Int): List<String> {

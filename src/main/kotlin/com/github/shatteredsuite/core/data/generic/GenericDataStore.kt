@@ -24,6 +24,16 @@ import com.github.shatteredsuite.core.extension.mapValuesNotNull
 @Suppress("unused") // API Class
 class GenericDataStore(private val logFailures: Boolean = true) {
 
+    companion object {
+        fun of(vararg data: Pair<String, Any>): GenericDataStore {
+            val store = GenericDataStore()
+            data.forEach { (key, value) ->
+                store[key] = value
+            }
+            return store
+        }
+    }
+
     private val valueMap: MutableMap<String, Any> = mutableMapOf()
 
     val keys: Set<String> get() = valueMap.keys

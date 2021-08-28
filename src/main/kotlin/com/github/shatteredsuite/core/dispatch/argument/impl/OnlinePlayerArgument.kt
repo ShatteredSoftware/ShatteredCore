@@ -1,4 +1,4 @@
-package com.github.shatteredsuite.core.dispatch.argument
+package com.github.shatteredsuite.core.dispatch.argument.impl
 
 import com.github.shatteredsuite.core.data.player.CorePlayer
 import com.github.shatteredsuite.core.plugin.CoreServer

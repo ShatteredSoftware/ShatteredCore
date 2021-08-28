@@ -1,4 +1,4 @@
-package com.github.shatteredsuite.core.dispatch.argument
+package com.github.shatteredsuite.core.dispatch.argument.impl
 
 import org.bukkit.Material
 
