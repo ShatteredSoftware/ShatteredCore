@@ -37,22 +37,28 @@ abstract class ShatteredPlugin(val childClass: Class<out ShatteredPlugin>) : Jav
 
     var isUpdateAvailable = false
         protected set
-    private var loaded = false
+
     var latestVersion: String? = null
         private set
-    protected var hasPaper = false
+
     var isCore: Boolean = false
         private set
+
+    protected var hasPaper = false
+    private var loaded = false
 
     protected open val module = ShatteredModule(this.name)
 
     protected open val requiredFeatureIds: Set<String> = setOf()
 
     protected lateinit var gson: Gson
+
     protected var core: ShatteredCore? = null
     private var messenger: Messenger? = null
+
     lateinit var playerManager: PlayerManager
     lateinit var featureCooldownManager: PlayerCooldownManager
+
     private val internalMessageSet: MessageSet by lazy { MessageSet() }
     val messageSet: MessageSet by lazy { if (isCore) this.internalMessageSet else core!!.messageSet }
 
