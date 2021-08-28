@@ -85,8 +85,8 @@ abstract class ShatteredPlugin(val childClass: Class<out ShatteredPlugin>) : Jav
     }
 
     protected open fun postEnable() {}
-    protected fun preDisable() {}
-    protected fun onFirstTick() {}
+    protected open fun preDisable() {}
+    protected open fun onFirstTick() {}
 
     @Suppress("UNUSED_PARAMETER")
     protected fun parseConfig(config: YamlConfiguration?) {
