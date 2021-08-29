@@ -11,6 +11,7 @@ libraries:
   - "com.fasterxml.jackson.core:jackson-core:2.12.4"
   - "com.fasterxml.jackson.core:jackson-databind:2.12.4"
   - "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.4"
+  - "com.zaxxer:HikariCP:5.0.0"
 authors:
   - UberPilot
 

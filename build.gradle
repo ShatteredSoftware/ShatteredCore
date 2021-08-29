@@ -115,6 +115,8 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-databind:2.12.4"
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.4"
 
+    implementation "com.zaxxer:HikariCP:5.0.0"
+
     def withoutSpigot = { exclude group: "org.spigotmc", module: "spigot-api" }
 
     implementation group: "io.papermc.paper", name: "paper-api", version: project.property("paperVersion")
