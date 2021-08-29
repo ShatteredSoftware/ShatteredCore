@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
 
 buildscript {
-    ext.kotlin_version = '1.5.20'
+    ext.kotlin_version = '1.5.30'
     ext.xseries_version = project.property('xSeriesVersion')
     ext.nbt_version = project.property('nbtApiVersion')
     repositories {
@@ -35,6 +35,15 @@ repositories {
     maven {
         url 'https://papermc.io/repo/repository/maven-public/'
     }
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        content {
+            includeGroup 'org.bukkit'
+            includeGroup 'org.spigotmc'
+        }
+    }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
     jitpack()
     spigotmc()
     codemc()
@@ -94,7 +103,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation group: "com.google.code.gson", name: "gson", version: project.property("gsonVersion")
+    implementation group: "com.google.code.gson", name: "gson", version: '2.8.7'
 
     def withoutSpigot = { exclude group: "org.spigotmc", module: "spigot-api" }
 
@@ -120,61 +129,9 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_16
 }
 
-task noKtJar(type: ShadowJar) {
-    from sourceSets.main.output
-    baseName = 'ShatteredCore'
-    classifier = 'no-kt'
-    configurations = [project.configurations.implementation]
-    dependencies {
-        include(dependency("fr.minuskube.inv:smart-invs:$smartInvsVersion"))
-        include(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
-        include(dependency("org.bstats:bstats-bukkit:1.7"))
-        include(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
-        include(dependency("com.google.code.gson:gson:$gsonVersion"))
-    }
-    minimize {
-        exclude(dependency("org.jetbrains.kotlin:.*:.*"))
-        exclude(dependency("fr.minuskube.inv:smart-invs:$smartInvsVersion"))
-        exclude(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
-        exclude(dependency("org.bstats:bstats-bukkit:1.7"))
-        exclude(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
-        exclude(dependency("com.google.code.gson:gson:$gsonVersion"))
-    }
-    relocate 'fr.minuskube.inv', 'com.github.shatteredsuite.core.include.inv'
-    relocate 'de.tr7zw.changeme.nbtapi', 'com.github.shatteredsuite.core.include.nbt'
-    relocate 'org.bstats.bukkit', 'com.github.shatteredsuite.core.include.stats'
-    relocate 'com.cryptomorin.xseries', 'com.github.shatteredsuite.core.include.xseries'
-}
-
-task noStdJar(type: ShadowJar) {
-    from sourceSets.main.output
-    baseName = 'ShatteredCore'
-    classifier = 'no-kt-stdlib'
-    configurations = [project.configurations.implementation]
-    dependencies {
-        include(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
-        include(dependency("fr.minuskube.inv:smart-invs:$smartInvsVersion"))
-        include(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
-        include(dependency("org.bstats:bstats-bukkit:1.7"))
-        include(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
-        include(dependency("com.google.code.gson:gson:$gsonVersion"))
-    }
-    minimize {
-        exclude(dependency("org.jetbrains.kotlin:.*:.*"))
-        exclude(dependency("fr.minuskube.inv:smart-invs:$smartInvsVersion"))
-        exclude(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
-        exclude(dependency("org.bstats:bstats-bukkit:1.7"))
-        exclude(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
-        exclude(dependency("com.google.code.gson:gson:$gsonVersion"))
-    }
-    relocate 'fr.minuskube.inv', 'com.github.shatteredsuite.core.include.inv'
-    relocate 'de.tr7zw.changeme.nbtapi', 'com.github.shatteredsuite.core.include.nbt'
-    relocate 'org.bstats.bukkit', 'com.github.shatteredsuite.core.include.stats'
-    relocate 'com.cryptomorin.xseries', 'com.github.shatteredsuite.core.include.xseries'
-}
 
 task jars {
-    dependsOn noKtJar, noStdJar, shadowJar, javadocJar, sourcesJar
+    dependsOn shadowJar, javadocJar, sourcesJar
 }
 
 shadowJar {
@@ -183,20 +140,16 @@ shadowJar {
     classifier = null
     configurations = [project.configurations.implementation]
     dependencies {
-        include(dependency("org.jetbrains.kotlin:.*:.*"))
         include(dependency("fr.minuskube.inv:smart-invs:$smartInvsVersion"))
         include(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
         include(dependency("org.bstats:bstats-bukkit:1.7"))
         include(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
-        include(dependency("com.google.code.gson:gson:$gsonVersion"))
     }
     minimize {
-        exclude(dependency("org.jetbrains.kotlin:.*:.*"))
         exclude(dependency("fr.minuskube.inv:smart-invs:$smartInvsVersion"))
         exclude(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
         exclude(dependency("org.bstats:bstats-bukkit:1.7"))
         exclude(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
-        exclude(dependency("com.google.code.gson:gson:$gsonVersion"))
     }
     relocate 'fr.minuskube.inv', 'com.github.shatteredsuite.core.include.inv'
     relocate 'de.tr7zw.changeme.nbtapi', 'com.github.shatteredsuite.core.include.nbt'
@@ -234,8 +187,6 @@ publishing {
         maven(MavenPublication) {
             artifactId 'ShatteredCore'
             artifact javadocJar
-            artifact noKtJar
-            artifact noStdJar
             artifact sourcesJar
             artifact shadowJar
             pom {

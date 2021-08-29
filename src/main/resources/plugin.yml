@@ -2,10 +2,12 @@ name: ShatteredCore
 description: A library of libraries, for the ShatteredSuite.
 main: com.github.shatteredsuite.core.plugin.ShatteredCore
 version: @version@
-api-version: "1.13"
+api-version: "1.17"
 website: @website@
-softdepend:
-  - KotlinBridge
+libraries:
+  - "org.jetbrains.kotlin:kotlin-reflect:1.5.30"
+  - "org.jetbrains.kotlin:kotlin-stdlib:1.5.30"
+  - "com.google.code.gson:gson:2.8.7"
 authors:
   - UberPilot
 
