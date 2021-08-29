@@ -169,18 +169,30 @@ object Persistence {
         else FileUtil.loadPluginYamlFileAs(pluginTypeKey)
     }
 
-    fun <T> savePluginYamlFileAs(pluginTypeKey: PluginTypeKey<T>, value: T, runStrategy: RunStrategy? = null) {
-        if (runStrategy != null) {
-            FileUtil.savePluginYamlFileAs(pluginTypeKey, value, runStrategy)
+    fun <T> savePluginYamlFileAs(pluginTypeKey: PluginTypeKey<T>, value: T, gson: Gson? = null, runStrategy: RunStrategy? = null) {
+        if (gson != null && runStrategy != null) {
+            FileUtil.savePluginYamlFileAs(pluginTypeKey, value, gson, runStrategy)
+        }
+        else if (gson != null) {
+            FileUtil.savePluginYamlFileAs(pluginTypeKey, value, gson)
+        }
+        else if (runStrategy != null) {
+            FileUtil.savePluginYamlFileAs(pluginTypeKey, value, runStrategy = runStrategy)
         }
         else {
             FileUtil.savePluginYamlFileAs(pluginTypeKey, value)
         }
     }
 
-    fun <T> saveYamlFileAs(file: File, value: T, runStrategy: RunStrategy? = null) {
-        if (runStrategy != null) {
-            FileUtil.saveYamlFileAs(file, value, runStrategy)
+    fun <T> saveYamlFileAs(file: File, value: T, gson: Gson? = null, runStrategy: RunStrategy? = null) {
+        if (gson != null && runStrategy != null) {
+            FileUtil.saveYamlFileAs(file, value, gson, runStrategy)
+        }
+        else if (gson != null) {
+            FileUtil.saveYamlFileAs(file, value, gson)
+        }
+        else if (runStrategy != null) {
+            FileUtil.saveYamlFileAs(file, value, runStrategy = runStrategy)
         }
         else {
             FileUtil.saveYamlFileAs(file, value)

@@ -5,10 +5,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 
-class LeaveListener(val plugin: ShatteredCore) : Listener {
+object LeaveListener : Listener {
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        plugin
+        ShatteredCore.instance.playerManager.leave(event.player)
     }
 }

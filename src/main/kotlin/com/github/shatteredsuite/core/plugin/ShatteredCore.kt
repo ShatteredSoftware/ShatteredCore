@@ -9,12 +9,16 @@ import com.github.shatteredsuite.core.feature.CoreFeatureManager
 import com.github.shatteredsuite.core.plugin.config.CoreConfig
 import com.github.shatteredsuite.core.plugin.feature.CoreServerFeature
 import com.github.shatteredsuite.core.plugin.feature.ShatteredModule
+import com.github.shatteredsuite.core.plugin.listeners.ChatListener
+import com.github.shatteredsuite.core.plugin.listeners.JoinListener
+import com.github.shatteredsuite.core.plugin.listeners.LeaveListener
 import com.github.shatteredsuite.core.plugin.tasks.AsyncBukkitRunStrategy
 import com.github.shatteredsuite.core.plugin.tasks.MainThreadRunStrategy
 import com.github.shatteredsuite.core.plugin.tasks.RunStrategy
 import com.google.gson.Gson
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.util.*
+import javax.script.ScriptEngineManager
 
 class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
     companion object {
@@ -30,8 +34,11 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
         var config: CoreConfig = CoreConfig("en", true, CoreConfig.StorageType.FLATFILE, null)
             private set
 
-        var instance: ShatteredCore? = null
-            private set
+        private var internalInstance: ShatteredCore? = null
+
+        val instance: ShatteredCore get() {
+            return internalInstance ?: throw IllegalStateException("Using Core before it was initialized.")
+        }
 
         var defaultLocale: Locale = Locale.US
             private set
@@ -87,14 +94,14 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
         ConfigurationSerialization.registerClass(ConfigRecipe::class.java)
         defaultGson = this.gson
         defaultRunStrategy = AsyncBukkitRunStrategy(this)
-        instance = this
+        internalInstance = this
         ShatteredCore.config =
-            Persistence.loadPluginYamlFileAs(configTypeKey, init = this::initConfig) merge initConfig()
+            Persistence.loadPluginYamlFileAs(configTypeKey, init = this::initConfig)
         defaultLocale = Locale(ShatteredCore.config.defaultLocale)
     }
 
     private fun initConfig(): CoreConfig {
-        return CoreConfig("en", true, CoreConfig.StorageType.FLATFILE, null)
+        return CoreConfig("en", true, CoreConfig.StorageType.FLATFILE, null) merge initConfig()
     }
 
 
@@ -107,10 +114,14 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
                 logger.info(" - §a${feature.name}§f: §7${feature.description}")
             }
         }
+
+        server.pluginManager.registerEvents(ChatListener, this)
+        server.pluginManager.registerEvents(JoinListener, this)
+        server.pluginManager.registerEvents(LeaveListener, this)
     }
 
     override fun preDisable() {
-        Persistence.savePluginYamlFileAs(configTypeKey, ShatteredCore.config, defaultRunStrategy)
+        Persistence.savePluginYamlFileAs(configTypeKey, ShatteredCore.config, gson, MainThreadRunStrategy())
     }
 
     fun hasFeature(name: String): Boolean {

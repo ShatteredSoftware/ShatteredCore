@@ -1,5 +1,6 @@
 package com.github.shatteredsuite.core.message
 
+import com.github.shatteredsuite.core.data.generic.DataStore
 import com.github.shatteredsuite.core.data.generic.GenericDataStore
 import com.github.shatteredsuite.core.plugin.ShatteredCore
 import java.util.*
@@ -11,7 +12,7 @@ class MessageProcessorStore {
         this.processors.add(processor)
     }
 
-    fun process(message: String, data: GenericDataStore? = null, locale: Locale = ShatteredCore.defaultLocale): String {
+    fun process(message: String, data: DataStore? = null, locale: Locale = ShatteredCore.defaultLocale): String {
         return processors.fold(message) { acc, it -> it.process(acc) }
     }
 }

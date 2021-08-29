@@ -1,11 +1,12 @@
 package com.github.shatteredsuite.core.data.persistence
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.github.shatteredsuite.core.data.plugin.PluginTypeKey
 import com.github.shatteredsuite.core.plugin.ShatteredCore
 import com.github.shatteredsuite.core.plugin.tasks.RunStrategy
 import com.google.gson.Gson
-import com.google.gson.JsonIOException
-import com.google.gson.JsonSyntaxException
 import org.yaml.snakeyaml.Yaml
 import java.io.File
 import java.io.FileReader
@@ -15,6 +16,12 @@ object FileUtil {
     private val defaultGson: Gson get() = ShatteredCore.defaultGson
     private val defaultRunStrategy: RunStrategy get() = ShatteredCore.defaultRunStrategy
     private val yaml = Yaml()
+    private val objectMapper = ObjectMapper()
+    private val yamlMapper = YAMLMapper()
+
+    init {
+        yamlMapper.disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
+    }
 
     fun <T> loadPluginJsonFileAs(pluginTypeKey: PluginTypeKey<T>, gson: Gson = defaultGson): T? {
         val file = File(pluginTypeKey.plugin.dataFolder, pluginTypeKey.key + ".json")
@@ -89,27 +96,28 @@ object FileUtil {
         FileReader(file).use {
             val contents: Any = yaml.load(it)
             val json = gson.toJson(contents, LinkedHashMap::class.java)
-            try {
-                return gson.fromJson(json, clazz)
-            }
-            catch (ex: Exception) {
-                return null
+            return try {
+                gson.fromJson(json, clazz)
+            } catch (ex: Exception) {
+                null
             }
         }
     }
 
-    fun <T> savePluginYamlFileAs(pluginTypeKey: PluginTypeKey<T>, value: T, runStrategy: RunStrategy = defaultRunStrategy) {
+    fun <T> savePluginYamlFileAs(pluginTypeKey: PluginTypeKey<T>, value: T, gson: Gson = defaultGson, runStrategy: RunStrategy = defaultRunStrategy) {
         val file = File(pluginTypeKey.plugin.dataFolder, pluginTypeKey.key + ".yml")
-        saveYamlFileAs(file, value, runStrategy)
+        saveYamlFileAs(file, value, gson, runStrategy)
     }
 
-    fun <T> saveYamlFileAs(file: File, value: T, runStrategy: RunStrategy = defaultRunStrategy) {
+    fun <T> saveYamlFileAs(file: File, value: T, gson: Gson = defaultGson, runStrategy: RunStrategy = defaultRunStrategy) {
         runStrategy.execute {
             if (!file.parentFile.exists()) {
                 file.parentFile.mkdirs()
             }
+            val json = gson.toJson(value)
+            val jsonNode = objectMapper.readTree(json)
             FileWriter(file).use {
-                yaml.dump(value, it)
+                yamlMapper.writeValue(it, jsonNode)
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.github.shatteredsuite.core.message.lang
 
+import com.github.shatteredsuite.core.data.generic.DataStore
 import com.github.shatteredsuite.core.data.generic.GenericDataStore
+import com.github.shatteredsuite.core.data.generic.get
 import com.github.shatteredsuite.core.data.plugin.PluginTypeKey
 import com.github.shatteredsuite.core.extension.getSafe
 import com.github.shatteredsuite.core.message.lang.meta.MessageMetaParser
@@ -40,7 +42,7 @@ class MessageSet {
         this.metaParsers[parser.id] = parser
     }
 
-    fun get(message: String, data: GenericDataStore? = null, locale: Locale = Locale.US): String? {
+    fun get(message: String, data: DataStore? = null, locale: Locale = Locale.US): String? {
 
         val count = data?.get<Number>("count")
         val ordinal = data?.get("ordinal") ?: false
@@ -58,7 +60,7 @@ class MessageSet {
 
         val localeMap = messages[locale] ?: return null
         var rawMessage = localeMap["$message$specifier"] ?: return null
-        val stringData = data?.stringify()?.asMapOf<String>() ?: return rawMessage
+        val stringData = DataStore.stringify(data ?: return rawMessage)
 
         var matcher = metaRegex.matcher(rawMessage)
         while (matcher.find()) {

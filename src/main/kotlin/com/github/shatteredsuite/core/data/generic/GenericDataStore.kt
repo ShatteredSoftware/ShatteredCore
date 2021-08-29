@@ -22,7 +22,7 @@ import com.github.shatteredsuite.core.extension.mapValuesNotNull
  * ```
  */
 @Suppress("unused") // API Class
-class GenericDataStore(private val logFailures: Boolean = true) {
+class GenericDataStore(private val logFailures: Boolean = true) : MutableDataStore {
 
     companion object {
         fun of(vararg data: Pair<String, Any>): GenericDataStore {
@@ -36,14 +36,14 @@ class GenericDataStore(private val logFailures: Boolean = true) {
 
     private val valueMap: MutableMap<String, Any> = mutableMapOf()
 
-    val keys: Set<String> get() = valueMap.keys
+    override val keys: Set<String> get() = valueMap.keys
 
     val values: Set<Any> get() = valueMap.values.toSet()
 
     /**
      * Adds or replaces a value in this container. Null values are ignored.
      */
-    fun <T : Any> put(id: String, value: T?) {
+    override fun <T : Any> put(id: String, value: T?) {
         valueMap[id] = value ?: return
     }
 
@@ -53,7 +53,7 @@ class GenericDataStore(private val logFailures: Boolean = true) {
      * @param id The ID to compare against.
      * @param value The value to possibly insert.
      */
-    fun <T : Any> putIfAbsent(id: String, value: T) {
+    override fun <T : Any> putIfAbsent(id: String, value: T) {
         valueMap.putIfAbsent(id, value)
     }
 
@@ -64,12 +64,12 @@ class GenericDataStore(private val logFailures: Boolean = true) {
      * @param cl The class to check for.
      * @return The element contained in this container if it exists and is of the given type, or `null` otherwise.
      */
-    fun <T : Any> get(id: String, cl: Class<T>): T? {
+    override fun <T : Any> get(id: String, cl: Class<T>): T? {
         val value = valueMap[id] ?: return null
         return reflectiveTypeAssertion(value, cl)
     }
 
-    fun <T : Any> get(pluginTypeKey: PluginTypeKey<T>): T? {
+    override fun <T : Any> get(pluginTypeKey: PluginTypeKey<T>): T? {
         val value = valueMap[pluginTypeKey.toString()] ?: return null
         return reflectiveTypeAssertion(value, pluginTypeKey.clazz)
     }
@@ -83,7 +83,7 @@ class GenericDataStore(private val logFailures: Boolean = true) {
      * @return The element contained in this container if it exists and is of the given type, or the default value
      * otherwise.
      */
-    fun <T : Any> getOrDef(id: String, def: T): T {
+    override fun <T : Any> getOrDef(id: String, def: T): T {
         val value = valueMap[id] ?: return def
         return reflectiveTypeAssertion(value, def.javaClass) ?: def
     }
@@ -94,27 +94,18 @@ class GenericDataStore(private val logFailures: Boolean = true) {
      * @param id The ID to look up.
      * @return The element contained in this container if it exists.
      */
-    fun getUnsafe(id: String): Any? {
+    override fun getUnsafe(id: String): Any? {
         return valueMap[id]
     }
 
-    /**
-     * Infers the class parameter from a provided generic.
-     *
-     * @see [GenericDataStore.get]
-     */
-    inline fun <reified T : Any> get(id: String): T? {
-        return get(id, T::class.java)
-    }
-
-    fun remove(id: String) {
+    override fun remove(id: String) {
         valueMap.remove(id)
     }
 
     /**
      * Removes all values from this container.
      */
-    fun clear() {
+    override fun clear() {
         valueMap.clear()
     }
 
@@ -160,18 +151,6 @@ class GenericDataStore(private val logFailures: Boolean = true) {
             System.err.println("Type assertion of $value to ${cl.name} failed: ${value.javaClass.name} cannot be assigned to ${cl.name}.\nStacktrace:\n$trace")
         }
         return null
-    }
-
-    operator fun set(s: String, value: Any) {
-        this.put(s, value)
-    }
-
-    fun stringify(): GenericDataStore {
-        val store = GenericDataStore()
-        this.valueMap.forEach { (key, value) ->
-            store[key] = value.toString()
-        }
-        return store
     }
 
     inline fun <reified T : Any> asMapOf(): Map<String, T> {

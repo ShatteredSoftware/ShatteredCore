@@ -8,6 +8,9 @@ libraries:
   - "org.jetbrains.kotlin:kotlin-reflect:1.5.30"
   - "org.jetbrains.kotlin:kotlin-stdlib:1.5.30"
   - "com.google.code.gson:gson:2.8.7"
+  - "com.fasterxml.jackson.core:jackson-core:2.12.4"
+  - "com.fasterxml.jackson.core:jackson-databind:2.12.4"
+  - "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.4"
 authors:
   - UberPilot
 
