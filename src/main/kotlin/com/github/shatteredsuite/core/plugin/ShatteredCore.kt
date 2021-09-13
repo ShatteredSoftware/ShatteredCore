@@ -4,9 +4,12 @@ import com.github.shatteredsuite.core.config.ConfigRecipe
 import com.github.shatteredsuite.core.data.persistence.Persistence
 import com.github.shatteredsuite.core.data.plugin.PluginKey
 import com.github.shatteredsuite.core.data.plugin.PluginTypeKey
+import com.github.shatteredsuite.core.dispatch.predicate.impl.PlayerPredicate
 import com.github.shatteredsuite.core.extension.merge
 import com.github.shatteredsuite.core.feature.CoreFeatureManager
 import com.github.shatteredsuite.core.plugin.config.CoreConfig
+import com.github.shatteredsuite.core.plugin.db.CoreDatabase
+import com.github.shatteredsuite.core.plugin.db.CoreDatabaseFactory
 import com.github.shatteredsuite.core.plugin.feature.CoreServerFeature
 import com.github.shatteredsuite.core.plugin.feature.ShatteredModule
 import com.github.shatteredsuite.core.plugin.listeners.ChatListener
@@ -15,40 +18,48 @@ import com.github.shatteredsuite.core.plugin.listeners.LeaveListener
 import com.github.shatteredsuite.core.plugin.tasks.AsyncBukkitRunStrategy
 import com.github.shatteredsuite.core.plugin.tasks.MainThreadRunStrategy
 import com.github.shatteredsuite.core.plugin.tasks.RunStrategy
+import com.github.shatteredsuite.core.sql.MySQLSchemaManager
 import com.google.gson.Gson
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import java.sql.Connection
 import java.util.*
-import javax.script.ScriptEngineManager
 
 class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
     companion object {
         var bStatsId = 7496
             private set
 
+        @JvmStatic
         var defaultGson = Gson()
             private set
 
+        @JvmStatic
         var defaultRunStrategy: RunStrategy = MainThreadRunStrategy()
             private set
 
+        @JvmStatic
         var config: CoreConfig = CoreConfig("en", true, CoreConfig.StorageType.FLATFILE, null)
             private set
 
         private var internalInstance: ShatteredCore? = null
 
-        val instance: ShatteredCore get() {
-            return internalInstance ?: throw IllegalStateException("Using Core before it was initialized.")
-        }
+        @JvmStatic
+        val instance: ShatteredCore
+            get() {
+                return internalInstance ?: throw IllegalStateException("Using Core before it was initialized.")
+            }
 
         var defaultLocale: Locale = Locale.US
             private set
-    }
 
+
+    }
 
     override val bStatsId: Int = ShatteredCore.bStatsId
     val featureManager: CoreFeatureManager = CoreFeatureManager()
     private val availableFeatures: MutableSet<CoreServerFeature> = mutableSetOf()
     private val availableFeatureIds: MutableSet<String> = mutableSetOf()
+    private lateinit var db: CoreDatabase
 
     val messengerKey = PluginKey(this, "messenger")
     val messageSetKey = PluginKey(this, "message_set")
@@ -98,6 +109,10 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
         ShatteredCore.config =
             Persistence.loadPluginYamlFileAs(configTypeKey, init = this::initConfig)
         defaultLocale = Locale(ShatteredCore.config.defaultLocale)
+        CoreDatabaseFactory.addSchemaManager("mysql") {
+            val storageSettings = ShatteredCore.config.storageSettings ?: throw IllegalStateException("Trying to use unconfigured MySQL.")
+            MySQLSchemaManager(this, storageSettings)
+        }
     }
 
     private fun initConfig(): CoreConfig {
@@ -118,10 +133,24 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
         server.pluginManager.registerEvents(ChatListener, this)
         server.pluginManager.registerEvents(JoinListener, this)
         server.pluginManager.registerEvents(LeaveListener, this)
+        val storageSettings = ShatteredCore.config.storageSettings
+        if (ShatteredCore.config.storageType != CoreConfig.StorageType.FLATFILE && storageSettings != null)
+        db = CoreDatabase(this, storageSettings.driver)
+        db.connect()
+        db.checkSchema(PluginKey(this, "test_db"))
+
+        this.command(key("commands")) {
+            check(PlayerPredicate)
+
+            run {
+
+            }
+        }
     }
 
     override fun preDisable() {
         Persistence.savePluginYamlFileAs(configTypeKey, ShatteredCore.config, gson, MainThreadRunStrategy())
+        db.disconnect()
     }
 
     fun hasFeature(name: String): Boolean {
@@ -138,4 +167,12 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
             availableFeatureIds.add(it.id)
         }
     }
+
+    fun runWithStrategy(function: () -> Unit) {
+        defaultRunStrategy.execute(function)
+    }
+
+    fun <R> withPossibleDatabase(function: Connection.() -> R): R? = db.withPossibleDatabase(function)
+
+    fun <R> withDatabase(function: Connection.() -> R): R = db.withDatabase(function)
 }

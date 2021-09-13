@@ -85,7 +85,7 @@ class MessageSet {
         return get(message, store, locale)
     }
 
-    fun get(
+    fun getWithExtra(
         message: String,
         data: GenericDataStore? = null,
         locale: Locale = Locale.US,

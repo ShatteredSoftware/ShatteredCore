@@ -1,16 +1,17 @@
-package com.github.shatteredsuite.core.dispatch.argument.impl
+package com.github.shatteredsuite.core.dispatch.argument.impl.primitive
 
-import com.github.shatteredsuite.core.dispatch.argument.Argument
 import com.github.shatteredsuite.core.dispatch.argument.ArgumentValidationResult
+import com.github.shatteredsuite.core.dispatch.argument.DispatchOptionalArgument
 import org.bukkit.util.StringUtil
 
 open class ChoiceArgument<T>(
     override val name: String,
     val provider: (arg: String) -> T?,
     val choiceProvider: () -> Collection<String>,
-    val default: T? = null,
-    val dynamic: Boolean = true
-) : Argument<Any?, T> {
+    override val usageId: String,
+    private val default: T? = null,
+    private val dynamic: Boolean = true
+) : DispatchOptionalArgument<Any?, T> {
     override val expectedArgs: Int = 1
     private val choices = if (!dynamic) choiceProvider() else setOf()
 
@@ -21,11 +22,8 @@ open class ChoiceArgument<T>(
 
     override fun complete(partialArguments: List<String>, start: Int, state: Any?): List<String> {
         val dest = mutableListOf<String>()
-        if (dynamic) {
-            StringUtil.copyPartialMatches(partialArguments[start], choiceProvider(), dest)
-        } else {
-            StringUtil.copyPartialMatches(partialArguments[start], choices, dest)
-        }
+        val choices = if (dynamic) choiceProvider() else choices
+        StringUtil.copyPartialMatches(partialArguments[start], choices, dest)
         return dest
     }
 

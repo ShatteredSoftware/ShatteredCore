@@ -1,20 +1,21 @@
-package com.github.shatteredsuite.core.dispatch.argument.impl
+package com.github.shatteredsuite.core.dispatch.argument.impl.primitive
 
-import com.github.shatteredsuite.core.dispatch.argument.Argument
 import com.github.shatteredsuite.core.dispatch.argument.ArgumentValidationResult
+import com.github.shatteredsuite.core.dispatch.argument.DispatchOptionalArgument
 import org.bukkit.util.StringUtil
 import kotlin.math.max
 import kotlin.math.min
 
 open class IntegralArgument(
     override val name: String,
+    override val usageId: String,
     private val min: Int = Int.MIN_VALUE,
     private val max: Int = Int.MAX_VALUE,
     val default: Int = 0,
     completeMin: Int = 0,
     completeMax: Int = 10,
     completeIncrement: Int = 1
-) : Argument<Any?, Int> {
+) : DispatchOptionalArgument<Any?, Int> {
     override val expectedArgs: Int = 1
     private val completeRange =
         listOf(max(min, completeMin)..min(completeMax, max) step completeIncrement).map { it.toString() }

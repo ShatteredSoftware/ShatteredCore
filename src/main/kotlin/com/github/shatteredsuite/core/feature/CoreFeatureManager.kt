@@ -15,10 +15,10 @@ class CoreFeatureManager {
 
     fun canUse(player: Player, id: String): Boolean {
         val feature = get(id) ?: return false
-        return feature.defaultEnabled || player.hasPermission(feature.permission)
+        return feature.enabled && (feature.defaultEnabled || player.hasPermission(feature.permission))
     }
 
     fun canUse(player: Player, feature: CoreFeature): Boolean {
-        return feature.defaultEnabled || player.hasPermission(feature.permission)
+        return feature.enabled && (feature.defaultEnabled || player.hasPermission(feature.permission))
     }
 }

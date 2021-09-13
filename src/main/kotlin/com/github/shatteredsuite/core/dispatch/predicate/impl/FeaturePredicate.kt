@@ -2,12 +2,12 @@ package com.github.shatteredsuite.core.dispatch.predicate.impl
 
 import com.github.shatteredsuite.core.attribute.FeatureUser
 import com.github.shatteredsuite.core.data.generic.GenericDataStore
-import com.github.shatteredsuite.core.dispatch.predicate.Precondition
+import com.github.shatteredsuite.core.dispatch.predicate.DispatchPredicate
 import com.github.shatteredsuite.core.dispatch.predicate.PredicateResult
 import com.github.shatteredsuite.core.feature.CoreFeature
 
-class FeaturePrecondition<T : FeatureUser>(val feature: CoreFeature) : Precondition<T> {
-    override fun check(state: T): PredicateResult {
+class FeaturePredicate(val feature: CoreFeature) : DispatchPredicate<FeatureUser> {
+    override fun check(state: FeatureUser): PredicateResult {
         if(state.canUse(feature)) {
             return PredicateResult(passed = true)
         }

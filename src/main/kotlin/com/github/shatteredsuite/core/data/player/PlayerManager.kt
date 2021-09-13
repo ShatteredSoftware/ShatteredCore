@@ -4,7 +4,6 @@ import com.github.shatteredsuite.core.attribute.Identified
 import com.github.shatteredsuite.core.data.persistence.Persistence
 import com.github.shatteredsuite.core.data.plugin.PluginTypeKey
 import com.github.shatteredsuite.core.plugin.ShatteredPlugin
-import com.github.shatteredsuite.core.plugin.tasks.AsyncBukkitRunStrategy
 import com.google.gson.Gson
 import org.bukkit.entity.Player
 

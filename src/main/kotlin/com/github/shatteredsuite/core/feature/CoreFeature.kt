@@ -9,6 +9,7 @@ class CoreFeature(
     val defaultEnabled: Boolean,
     val description: String,
     val permission: String,
+    val enabled: Boolean = true,
 
     /**
      * Cooldown in milliseconds.

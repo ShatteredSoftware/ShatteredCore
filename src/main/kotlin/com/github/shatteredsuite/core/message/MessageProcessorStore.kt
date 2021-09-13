@@ -13,6 +13,6 @@ class MessageProcessorStore {
     }
 
     fun process(message: String, data: DataStore? = null, locale: Locale = ShatteredCore.defaultLocale): String {
-        return processors.fold(message) { acc, it -> it.process(acc) }
+        return processors.fold(message) { acc, it -> it.process(acc, data, locale) }
     }
 }

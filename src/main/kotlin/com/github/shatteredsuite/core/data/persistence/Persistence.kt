@@ -7,7 +7,6 @@ import com.github.shatteredsuite.core.data.player.CorePlayer
 import com.github.shatteredsuite.core.data.plugin.PluginTypeKey
 import com.github.shatteredsuite.core.plugin.ShatteredCore
 import com.github.shatteredsuite.core.plugin.tasks.RunStrategy
-import com.github.shatteredsuite.core.extension.merge
 import com.google.gson.Gson
 import java.io.File
 

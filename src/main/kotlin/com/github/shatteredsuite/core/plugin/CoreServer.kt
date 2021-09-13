@@ -4,6 +4,7 @@ import com.github.shatteredsuite.core.data.player.CorePlayer
 import com.github.shatteredsuite.core.data.plugin.PluginKey
 import com.github.shatteredsuite.core.data.plugin.PluginTypeKey
 import com.github.shatteredsuite.core.feature.CoreFeatureManager
+import java.util.*
 
 object CoreServer {
     lateinit var core: ShatteredCore
@@ -22,5 +23,10 @@ object CoreServer {
 
     fun getFeatureManager(): CoreFeatureManager {
         return core.featureManager
+    }
+
+    fun getLocale(player: CorePlayer) : Locale {
+        // FIXME
+        return Locale.US
     }
 }

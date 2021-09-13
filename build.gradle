@@ -116,6 +116,7 @@ dependencies {
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.4"
 
     implementation "com.zaxxer:HikariCP:5.0.0"
+    implementation "com.h2database:h2:1.4.200"
 
     def withoutSpigot = { exclude group: "org.spigotmc", module: "spigot-api" }
 
@@ -124,6 +125,7 @@ dependencies {
     implementation group: "fr.minuskube.inv", name: "smart-invs", version: project.property("smartInvsVersion"), withoutSpigot
     implementation group: "de.tr7zw", name: "item-nbt-api", version: project.property("nbtApiVersion")
     implementation group: "com.github.cryptomorin", name: "XSeries", version: project.property("xSeriesVersion")
+    implementation group: "com.github.MilkBowl", name: "VaultAPI", version: "1.7"
 
     // Testing
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.2'

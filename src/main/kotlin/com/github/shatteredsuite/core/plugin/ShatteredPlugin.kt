@@ -2,6 +2,11 @@ package com.github.shatteredsuite.core.plugin
 
 import com.github.shatteredsuite.core.data.player.PlayerCooldownManager
 import com.github.shatteredsuite.core.data.player.PlayerManager
+import com.github.shatteredsuite.core.data.plugin.PluginKey
+import com.github.shatteredsuite.core.dispatch.command.DispatchCommand
+import com.github.shatteredsuite.core.dispatch.command.DispatchCommandBuilder
+import com.github.shatteredsuite.core.dispatch.context.BukkitCommandContext
+import com.github.shatteredsuite.core.message.MessageProcessorStore
 import com.github.shatteredsuite.core.message.lang.MessageSet
 import com.github.shatteredsuite.core.messages.Messageable
 import com.github.shatteredsuite.core.messages.Messages
@@ -60,6 +65,7 @@ abstract class ShatteredPlugin(val childClass: Class<out ShatteredPlugin>) : Jav
     lateinit var featureCooldownManager: PlayerCooldownManager
 
     private val internalMessageSet: MessageSet by lazy { MessageSet() }
+    val messageProcessorStore = MessageProcessorStore()
     val messageSet: MessageSet by lazy { if (isCore) this.internalMessageSet else core!!.messageSet }
 
     fun <T : Event> on(fn: (e: T) -> Unit) {
@@ -315,5 +321,13 @@ abstract class ShatteredPlugin(val childClass: Class<out ShatteredPlugin>) : Jav
 
     override fun getMessenger(): Messenger {
         return messenger!!
+    }
+
+    protected fun command(key: PluginKey, fn: DispatchCommandBuilder<BukkitCommandContext>.() -> Unit) {
+        DispatchCommand.build(key.toString(), fn)
+    }
+
+    fun key(value: String): PluginKey {
+        return PluginKey(this, value)
     }
 }
