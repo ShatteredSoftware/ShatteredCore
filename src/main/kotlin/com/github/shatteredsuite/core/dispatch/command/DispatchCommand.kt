@@ -10,6 +10,15 @@ import com.github.shatteredsuite.core.dispatch.argument.DispatchOptionalArgument
 import com.github.shatteredsuite.core.dispatch.context.CommandContext
 import com.github.shatteredsuite.core.dispatch.predicate.DispatchPredicate
 
+/**
+ * Order of operations:
+ * * Validate predicates
+ * * Validate arguments
+ * * Look for children
+ *   * If a child matches, pass off handling to that child
+ * * Look for optional arguments
+ * * Run the given action, passing in data from parsed arguments
+ */
 class DispatchCommand<StateType : CommandContext>(
     override val id: String,
     private val action: DispatchAction<StateType>,
@@ -40,11 +49,12 @@ class DispatchCommand<StateType : CommandContext>(
     }
 
     fun run(state: StateType, args: List<String>, currentState: GenericDataStore = GenericDataStore()) {
-        if (!passedPredicatesOrLogFailures(state)) {
+        if (failedPredicates(state)) {
             return
         }
 
-        if (!validArgLength(state, args, currentState)) {
+        if (isInvalidArgLength(args)) {
+            logArgLengthFailure(state, currentState)
             return
         }
 
@@ -53,12 +63,10 @@ class DispatchCommand<StateType : CommandContext>(
             return
         }
 
-        if (children.isNotEmpty()) {
-            if (lastIndex >= args.size) {
-                return
-            }
-            val child = children[args[lastIndex]] ?: return
-            child.run(state, args.slice(lastIndex..args.size), currentState)
+        val child = getChildToRun(state, args, currentState, lastIndex)
+        if (child != null) {
+            // Pass off handling to children
+            child.run(state, args, currentState)
             return
         }
 
@@ -69,16 +77,32 @@ class DispatchCommand<StateType : CommandContext>(
         action.run(state)
     }
 
-    private fun checkOptionalArgs(state: StateType, args: List<String>, data: MutableDataStore, start: Int) {
-        var current = start
-        optionalArguments.forEach { arg ->
-            val result = arg.validate(args, current, state)
-            if (result.success) {
-                data[arg.name] =
-                    result.result ?: throw IllegalStateException("${arg.name} came back as null when successful")
-                current += arg.expectedArgs
+    private fun failedPredicates(state: StateType): Boolean {
+        val results = predicates.map { it.check(state) }
+        val predicateResults = results.zip(predicates)
+        val failures = predicateResults.filter { (result, _) -> !result.passed }
+        if (failures.isNotEmpty()) {
+            failures.forEach { (result, predicate) ->
+                state.logFailure(predicate.failureMessageId, result.data, state.getLocale())
             }
+            return false
         }
+        return true
+    }
+
+    private fun isInvalidArgLength(args: List<String>): Boolean {
+        if (args.size < requiredArgumentLength) {
+            return true
+        }
+        return false
+    }
+
+    private fun logArgLengthFailure(state: StateType, data: MutableDataStore) {
+        val usage = arguments.fold(StringBuilder()) { builder, arg ->
+            builder.append(state.messageProcessorStore.process(arg.usageId, null, state.getLocale()))
+        }
+        data["usage"] = usage
+        state.logFailure("command.usage", data, state.getLocale())
     }
 
     private fun checkArgs(state: StateType, args: List<String>, data: MutableDataStore): Pair<Boolean, Int> {
@@ -98,34 +122,32 @@ class DispatchCommand<StateType : CommandContext>(
             failures.forEach {
                 state.logFailure(it.faliureMessageId, it.data, state.getLocale())
             }
-            return false to 0
+            return true to 0
         }
-        return true to currendIndex
-
+        return false to currendIndex
     }
 
-    private fun validArgLength(state: StateType, args: List<String>, data: MutableDataStore): Boolean {
-        if (args.size < requiredArgumentLength) {
-            val usage = arguments.fold(StringBuilder()) { builder, arg ->
-                builder.append(state.messageProcessorStore.process(arg.usageId, null, state.getLocale()))
+    private fun getChildToRun(state: StateType, args: List<String>, currentState: GenericDataStore, lastIndex: Int): DispatchCommand<StateType>? {
+        if (children.isNotEmpty()) {
+            if (lastIndex >= args.size) {
+                return null
             }
-            data["usage"] = usage
-            state.logFailure("command.usage", data, state.getLocale())
-            return false
+            val child = children[args[lastIndex]] ?: return null
+            child.run(state, args.slice(lastIndex..args.size), currentState)
+            return child
         }
-        return true
+        return null
     }
 
-    private fun passedPredicatesOrLogFailures(state: StateType): Boolean {
-        val results = predicates.map { it.check(state) }
-        val predicateResults = results.zip(predicates)
-        val failures = predicateResults.filter { (result, _) -> !result.passed }
-        if (failures.isNotEmpty()) {
-            failures.forEach { (result, predicate) ->
-                state.logFailure(predicate.failureMessageId, result.data, state.getLocale())
+    private fun checkOptionalArgs(state: StateType, args: List<String>, data: MutableDataStore, start: Int) {
+        var current = start
+        optionalArguments.forEach { arg ->
+            val result = arg.validate(args, current, state)
+            if (result.success) {
+                data[arg.name] =
+                    result.result ?: throw IllegalStateException("${arg.name} came back as null when successful")
+                current += arg.expectedArgs
             }
-            return false
         }
-        return true
     }
 }
