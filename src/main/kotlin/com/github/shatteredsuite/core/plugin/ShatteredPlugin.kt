@@ -22,6 +22,7 @@ import org.bukkit.event.Event
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.nio.file.Files
@@ -68,13 +69,25 @@ abstract class ShatteredPlugin(val childClass: Class<out ShatteredPlugin>) : Jav
     val messageProcessorStore = MessageProcessorStore()
     val messageSet: MessageSet by lazy { if (isCore) this.internalMessageSet else core!!.messageSet }
 
-    fun <T : Event> on(fn: (e: T) -> Unit) {
+    protected fun <T : Event> on(fn: (e: T) -> Unit) {
         this.server.pluginManager.registerEvents(object : Listener {
             @Suppress("unused")
             fun onEvent(e: T) {
                 fn(e)
             }
         }, this)
+    }
+
+    protected fun checkPlugin(pluginName: String): Boolean {
+        return server.pluginManager.isPluginEnabled(pluginName)
+    }
+
+    protected inline fun <reified T : Plugin> checkPluginThen(pluginName: String, fn: T.() -> Unit) {
+        val plugin = server.pluginManager.getPlugin(pluginName)
+        if (plugin == null || plugin !is T || !plugin.isEnabled) {
+            return
+        }
+        fn(plugin)
     }
 
     /**
