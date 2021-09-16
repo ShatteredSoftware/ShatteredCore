@@ -2,9 +2,13 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
 
 buildscript {
-    ext.kotlin_version = '1.5.30'
+    ext.kotlin_version = project.property('kotlinVersion')
     ext.xseries_version = project.property('xSeriesVersion')
     ext.nbt_version = project.property('nbtApiVersion')
+    ext.gsonVersion = project.property('gsonVersion')
+    ext.jacksonVersion = project.property('jacksonVersion')
+    ext.h2Version = project.property('h2Version')
+    ext.hikariVersion = project.property('hikariVersion')
     repositories {
         maven {
             url 'https://plugins.gradle.org/m2/'
@@ -16,10 +20,9 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.5.20'
+    id 'org.jetbrains.kotlin.jvm' version "1.5.30"
     id 'com.github.johnrengelman.shadow' version '7.0.0'
     id 'jacoco'
-    id 'kr.entree.spigradle' version '2.2.4'
 }
 
 apply plugin: 'java'
@@ -31,7 +34,6 @@ version = project.property('version')
 
 repositories {
     mavenLocal()
-    mavenCentral()
     maven {
         url 'https://papermc.io/repo/repository/maven-public/'
     }
@@ -42,16 +44,25 @@ repositories {
             includeGroup 'org.spigotmc'
         }
     }
-    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
-    maven { url = 'https://jitpack.io' }
-    spigotmc()
-    codemc()
-}
-
-spigot {
-    debug {
-        buildVersion = project.property("apiVersion")
+    maven {
+        url = "https://repo.codemc.io/repository/maven-public/"
+    }
+    mavenCentral()
+    maven {
+        url = 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
+        url = 'https://oss.sonatype.org/content/repositories/central'
+    }
+    maven {
+        url = "https://repo.codemc.io/repository/nms/"
+        content {
+            includeGroup 'org.bukkit'
+            includeGroup 'org.spigotmc'
+        }
+    }
+    maven {
+        url = 'https://jitpack.io'
     }
 }
 
@@ -75,12 +86,17 @@ processResources {
     with copySpec {
         from 'src/main/resources'
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        filter(ReplaceTokens, tokens: [description: project.property('description'),
-                                       projectName: project.property('projectName'),
-                                       pluginName : project.property('pluginName'),
-                                       website    : project.property('website'),
-                                       apiVersion : project.property('apiVersion'),
-                                       version    : project.version + ' (' + hash.trim() + ')'])
+        filter(ReplaceTokens, tokens: [description   : project.property('description'),
+                                       projectName   : project.property('projectName'),
+                                       pluginName    : project.property('pluginName'),
+                                       website       : project.property('website'),
+                                       apiVersion    : project.property('apiVersion'),
+                                       version       : project.version + ' (' + hash.trim() + ')',
+                                       kotlinVersion : project.property('kotlinVersion'),
+                                       gsonVersion   : project.property('gsonVersion'),
+                                       jacksonVersion: project.property('jacksonVersion'),
+                                       h2Version     : project.property('h2Version'),
+                                       hikariVersion : project.property('hikariVersion')])
     }
 }
 
@@ -110,18 +126,18 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation group: "com.google.code.gson", name: "gson", version: '2.8.7'
-    implementation "com.fasterxml.jackson.core:jackson-core:2.12.4"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.12.4"
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.4"
+    implementation group: "com.google.code.gson", name: "gson", version: gsonVersion
+    implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
 
-    implementation "com.zaxxer:HikariCP:5.0.0"
-    implementation "com.h2database:h2:1.4.200"
+    implementation "com.zaxxer:HikariCP:$hikariVersion"
+    implementation "com.h2database:h2:$h2Version"
 
     def withoutSpigot = { exclude group: "org.spigotmc", module: "spigot-api" }
 
     implementation group: "io.papermc.paper", name: "paper-api", version: project.property("paperVersion")
-    implementation bStats()
+    implementation group: "org.bstats", name: "bstats-bukkit", version: "2.2.1"
     implementation group: "fr.minuskube.inv", name: "smart-invs", version: project.property("smartInvsVersion"), withoutSpigot
     implementation group: "de.tr7zw", name: "item-nbt-api", version: project.property("nbtApiVersion")
     implementation group: "com.github.cryptomorin", name: "XSeries", version: project.property("xSeriesVersion")
@@ -150,12 +166,12 @@ task largeJar(type: ShadowJar) {
     classifier = 'large'
     configurations = [project.configurations.implementation]
     dependencies {
-        include(dependency("com.google.code.gson:gson:2.8.7"))
-        include(dependency("com.fasterxml.jackson.core:jackson-core:2.12.4"))
-        include(dependency("com.fasterxml.jackson.core:jackson-databind:2.12.4"))
-        include(dependency("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.4"))
-        include(dependency("com.h2database:h2:1.4.200"))
-        include(dependency("com.zaxxer:HikariCP:5.0.0"))
+        include(dependency("com.google.code.gson:gson:$gsonVersion"))
+        include(dependency("com.fasterxml.jackson.core:jackson-core:$jacksonVersion"))
+        include(dependency("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"))
+        include(dependency("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"))
+        include(dependency("com.h2database:h2:$h2Version"))
+        include(dependency("com.zaxxer:HikariCP:$hikariVersion"))
         include(dependency("org.jetbrains.kotlin:.*:.*"))
         include(dependency("fr.minuskube.inv:smart-invs:$smartInvsVersion"))
         include(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
@@ -163,12 +179,12 @@ task largeJar(type: ShadowJar) {
         include(dependency("com.github.cryptomorin:XSeries:$xseries_version"))
     }
     minimize {
-        exclude(dependency("com.google.code.gson:gson:2.8.7"))
-        exclude(dependency("com.fasterxml.jackson.core:jackson-core:2.12.4"))
-        exclude(dependency("com.fasterxml.jackson.core:jackson-databind:2.12.4"))
-        exclude(dependency("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.4"))
-        exclude(dependency("com.h2database:h2:1.4.200"))
-        exclude(dependency("com.zaxxer:HikariCP:5.0.0"))
+        exclude(dependency("com.google.code.gson:gson:$gsonVersion"))
+        exclude(dependency("com.fasterxml.jackson.core:jackson-core:$jacksonVersion"))
+        exclude(dependency("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"))
+        exclude(dependency("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"))
+        exclude(dependency("com.h2database:h2:$h2Version"))
+        exclude(dependency("com.zaxxer:HikariCP:$hikariVersion"))
         exclude(dependency("org.jetbrains.kotlin:.*:.*"))
         exclude(dependency("fr.minuskube.inv:smart-invs:$smartInvsVersion"))
         exclude(dependency("de.tr7zw:item-nbt-api:$nbt_version"))
@@ -207,8 +223,6 @@ shadowJar {
     relocate 'org.bstats.bukkit', 'com.github.shatteredsuite.core.include.stats'
     relocate 'com.cryptomorin.xseries', 'com.github.shatteredsuite.core.include.xseries'
 }
-
-tasks.generateSpigotDescription.enabled = false
 
 test {
     useJUnitPlatform()
