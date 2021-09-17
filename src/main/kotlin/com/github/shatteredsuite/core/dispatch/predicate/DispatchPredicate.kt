@@ -1,7 +1,9 @@
 package com.github.shatteredsuite.core.dispatch.predicate
 
-interface DispatchPredicate<in StateType> {
+import com.github.shatteredsuite.core.dispatch.context.CommandContext
+
+interface DispatchPredicate<in StateType : CommandContext> {
     val failureMessageId: String
 
-    fun check(state: StateType): PredicateResult
+    fun check(state: StateType, debug: Boolean = false): PredicateResult
 }

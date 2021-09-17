@@ -4,7 +4,7 @@ import com.github.shatteredsuite.core.config.ConfigRecipe
 import com.github.shatteredsuite.core.data.persistence.Persistence
 import com.github.shatteredsuite.core.data.plugin.PluginKey
 import com.github.shatteredsuite.core.data.plugin.PluginTypeKey
-import com.github.shatteredsuite.core.dispatch.predicate.impl.PlayerPredicate
+import com.github.shatteredsuite.core.bukkitdispatch.predicate.PlayerPredicate
 import com.github.shatteredsuite.core.extension.merge
 import com.github.shatteredsuite.core.feature.CoreFeatureManager
 import com.github.shatteredsuite.core.plugin.config.CoreConfig
@@ -20,6 +20,7 @@ import com.github.shatteredsuite.core.plugin.tasks.MainThreadRunStrategy
 import com.github.shatteredsuite.core.plugin.tasks.RunStrategy
 import com.github.shatteredsuite.core.sql.MySQLSchemaManager
 import com.google.gson.Gson
+import net.kyori.adventure.platform.bukkit.BukkitAudiences
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.sql.Connection
 import java.util.*
@@ -51,6 +52,13 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
 
         var defaultLocale: Locale = Locale.US
             private set
+
+        private var internalAudiences: BukkitAudiences? = null
+
+        val audiences: BukkitAudiences
+            get() {
+                return internalAudiences ?: throw IllegalStateException("Using Core audiences before it's enabled.")
+            }
 
 
     }
@@ -121,6 +129,8 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
 
 
     override fun postEnable() {
+        internalAudiences = BukkitAudiences.create(this)
+
         getCommand("shatteredcore")!!.setExecutor(AboutCommand(this))
 
         if (ShatteredCore.config.listFeatures) {
@@ -151,6 +161,8 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
     override fun preDisable() {
         Persistence.savePluginYamlFileAs(configTypeKey, ShatteredCore.config, gson, MainThreadRunStrategy())
         db.disconnect()
+        internalAudiences?.close()
+        internalAudiences = null
     }
 
     fun hasFeature(name: String): Boolean {

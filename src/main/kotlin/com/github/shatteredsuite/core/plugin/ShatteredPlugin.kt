@@ -5,7 +5,7 @@ import com.github.shatteredsuite.core.data.player.PlayerManager
 import com.github.shatteredsuite.core.data.plugin.PluginKey
 import com.github.shatteredsuite.core.dispatch.command.DispatchCommand
 import com.github.shatteredsuite.core.dispatch.command.DispatchCommandBuilder
-import com.github.shatteredsuite.core.dispatch.context.BukkitCommandContext
+import com.github.shatteredsuite.core.bukkitdispatch.context.BukkitCommandContext
 import com.github.shatteredsuite.core.message.MessageProcessorStore
 import com.github.shatteredsuite.core.message.lang.MessageSet
 import com.github.shatteredsuite.core.messages.Messageable

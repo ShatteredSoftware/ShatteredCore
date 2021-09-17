@@ -1,6 +1,8 @@
 package com.github.shatteredsuite.core.dispatch.argument
 
-interface DispatchArgument<in StateType, out T> {
+import com.github.shatteredsuite.core.dispatch.context.CommandContext
+
+interface DispatchArgument<in StateType : CommandContext, out T> {
     val expectedArgs: Int
     val name: String
     val usageId: String

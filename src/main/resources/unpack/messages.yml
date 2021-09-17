@@ -20,3 +20,22 @@ update-available: "&2(Update %version% Available!)"
 author-first-format: "&a%author%&7, "
 author-format: "&a%author%&7, "
 author-last-format: "&a%author%"
+dispatch:
+  debug:
+    length: ""
+    predicate: ""
+    argument: ""
+    optional: ""
+
+
+predicate:
+  generic: &generic
+    start: "? "
+    pass:
+    fail:
+  feature: *generic
+    pass:
+    fail:
+  player: *generic
+    pass:
+    fail:
