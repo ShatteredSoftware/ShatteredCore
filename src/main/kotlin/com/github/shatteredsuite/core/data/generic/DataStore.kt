@@ -43,6 +43,17 @@ interface DataStore {
      * @return The element contained in this container if it exists.
      */
     fun getUnsafe(id: String): Any?
+
+    fun merge(other: DataStore): DataStore {
+        val newStore = GenericDataStore()
+        this.keys.forEach {
+            newStore.put(it, this.getUnsafe(it))
+        }
+        other.keys.forEach {
+            newStore.put(it, other.getUnsafe(it))
+        }
+        return newStore
+    }
 }
 
 /**

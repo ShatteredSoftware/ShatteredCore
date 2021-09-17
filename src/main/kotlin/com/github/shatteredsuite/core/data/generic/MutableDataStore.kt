@@ -25,4 +25,10 @@ interface MutableDataStore : DataStore {
     operator fun set(s: String, value: Any) {
         this.put(s, value)
     }
+
+    fun pullFrom(other: DataStore) {
+        other.keys.forEach {
+            this.put(it, other.getUnsafe(it))
+        }
+    }
 }

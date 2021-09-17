@@ -3,8 +3,8 @@ package com.github.shatteredsuite.core.message.lang
 import com.github.shatteredsuite.core.data.generic.GenericDataStore
 import com.github.shatteredsuite.core.message.lang.impl.ChinesePluralRules
 import com.github.shatteredsuite.core.message.lang.impl.EnglishPluralRules
-import com.natpryce.hamkrest.assertion.assertThat
-import com.natpryce.hamkrest.equalTo
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.util.*

@@ -8,13 +8,17 @@ import com.github.shatteredsuite.core.dispatch.predicate.DispatchPredicate
 import com.github.shatteredsuite.core.dispatch.predicate.PredicateResult
 
 class DispatchCommandBuilder<StateType : CommandContext>(val key: String) {
-    var action: DispatchAction<StateType> = object : DispatchAction<StateType> {
-        override fun run(state: StateType) {
-            return
-        }
+    companion object {
+        val defaultAction =  object : DispatchAction<CommandContext> {
+            override fun run(state: CommandContext, debug: Boolean) {
+                return
+            }
 
-        override val id: String = "core:nothing"
+            override val id: String = "core:nothing"
+        }
     }
+
+    var action: DispatchAction<StateType> = defaultAction
 
     private val requiredArguments: MutableList<DispatchArgument<StateType, *>> = mutableListOf()
     private val optionalArguments: MutableList<Pair<DispatchOptionalArgument<StateType, *>, Int>> = mutableListOf()
@@ -41,7 +45,7 @@ class DispatchCommandBuilder<StateType : CommandContext>(val key: String) {
     fun check(fn: (state: StateType) -> PredicateResult, failMessage: String) {
         predicates.add(object : DispatchPredicate<StateType> {
             override val failureMessageId: String = failMessage
-            override fun check(state: StateType): PredicateResult = fn(state)
+            override fun check(state: StateType, debug: Boolean): PredicateResult = fn(state)
         })
     }
 
@@ -63,7 +67,7 @@ class DispatchCommandBuilder<StateType : CommandContext>(val key: String) {
     fun run(fn: (state: StateType) -> Unit) {
         action = object : DispatchAction<StateType> {
             override val id: String = "$key:action"
-            override fun run(state: StateType) = fn(state)
+            override fun run(state: StateType, debug: Boolean) = fn(state)
         }
     }
 }

@@ -19,7 +19,7 @@ open class IntegralArgument(
 ) : DispatchOptionalArgument<CommandContext, Int> {
     override val expectedArgs: Int = 1
     private val completeRange =
-        listOf(max(min, completeMin)..min(completeMax, max) step completeIncrement).map { it.toString() }
+        (max(min, completeMin)..min(completeMax, max) step completeIncrement).toList().map { it.toString() }
 
     override fun validate(arguments: List<String>, start: Int, state: CommandContext): ArgumentValidationResult<Int> {
         return try {
@@ -41,6 +41,9 @@ open class IntegralArgument(
     }
 
     override fun complete(partialArguments: List<String>, start: Int, state: CommandContext): List<String> {
+        if (partialArguments.size <= start) {
+            return StringUtil.copyPartialMatches("", completeRange, mutableListOf())
+        }
         return StringUtil.copyPartialMatches(partialArguments[start], completeRange, mutableListOf())
     }
 

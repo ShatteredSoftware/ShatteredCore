@@ -9,6 +9,7 @@ import com.github.shatteredsuite.core.dispatch.argument.DispatchArgument
 import com.github.shatteredsuite.core.dispatch.argument.DispatchOptionalArgument
 import com.github.shatteredsuite.core.dispatch.context.CommandContext
 import com.github.shatteredsuite.core.dispatch.predicate.DispatchPredicate
+import com.github.shatteredsuite.core.extension.merge
 
 /**
  * Order of operations:
@@ -42,7 +43,7 @@ class DispatchCommand<StateType : CommandContext>(
         val argsByPosition = mutableListOf<Pair<DispatchArgument<StateType, *>, Int>>()
         var counter = 0
         for (arg in arguments) {
-            for (position in 0..arg.expectedArgs) {
+            for (position in 0 until arg.expectedArgs) {
                 argsByPosition.add(arg to counter)
             }
             counter += arg.expectedArgs
@@ -53,7 +54,7 @@ class DispatchCommand<StateType : CommandContext>(
     fun run(
         state: StateType,
         args: List<String>,
-        currentState: GenericDataStore = GenericDataStore(),
+        currentData: GenericDataStore = GenericDataStore(),
         debug: Boolean = false
     ) {
         if (failedPredicates(state, debug)) {
@@ -65,25 +66,28 @@ class DispatchCommand<StateType : CommandContext>(
             { GenericDataStore.of("size" to args.size, "required" to requiredArgumentLength) }, state.getLocale()
         )
         if (isInvalidArgLength(args)) {
-            logArgLengthFailure(state, currentState)
+            logArgLengthFailure(state, currentData)
             return
         }
 
-        val (success, lastIndex) = checkArgs(state, args, currentState, debug)
+        val (success, lastIndex) = areArgsOk(state, args, currentData, debug)
         if (!success) {
             return
         }
 
-        val child = getChildToRun(state, args, currentState, lastIndex, debug)
+        val child = getChildToRun(state, args, currentData, lastIndex, debug)
         if (child != null) {
             // Pass off handling to children
-            child.run(state, args, currentState)
+            child.run(state, args, currentData)
             return
         }
 
         if (lastIndex < args.size) {
-            checkOptionalArgs(state, args, currentState, lastIndex, debug)
+            checkOptionalArgs(state, args, currentData, lastIndex, debug)
         }
+
+        currentData.pullFrom(state.data)
+        state.data = currentData
 
         action.run(state)
     }
@@ -98,15 +102,18 @@ class DispatchCommand<StateType : CommandContext>(
             return emptyList()
         }
 
-        if (args.size >= requiredArgumentLength) {
+        if (args.size > requiredArgumentLength) {
             val child = children[args[requiredArgumentLength]]
             if (child != null) {
                 return child.complete(state, args.subList(requiredArgumentLength, args.size), currentState, debug)
             }
         }
 
-        val (currentArg, startingIndex) = argsByPosition[args.size]
-        return currentArg.complete(args, startingIndex, state)
+        if (args.size < argsByPosition.size) {
+            val (currentArg, startingIndex) = argsByPosition[args.size]
+            return currentArg.complete(args, startingIndex, state)
+        }
+        return emptyList()
     }
 
     private fun failedPredicates(state: StateType, debug: Boolean): Boolean {
@@ -117,9 +124,9 @@ class DispatchCommand<StateType : CommandContext>(
             failures.forEach { (result, predicate) ->
                 state.log(predicate.failureMessageId, result.data, state.getLocale())
             }
-            return false
+            return true
         }
-        return true
+        return false
     }
 
     private fun isInvalidArgLength(args: List<String>): Boolean {
@@ -137,7 +144,7 @@ class DispatchCommand<StateType : CommandContext>(
         state.log("command.usage", data, state.getLocale())
     }
 
-    private fun checkArgs(
+    private fun areArgsOk(
         state: StateType,
         args: List<String>,
         data: MutableDataStore,
@@ -178,9 +185,9 @@ class DispatchCommand<StateType : CommandContext>(
             failures.forEach {
                 state.log(it.faliureMessageId, it.data, state.getLocale())
             }
-            return true to 0
+            return false to 0
         }
-        return false to currendIndex
+        return true to currendIndex
     }
 
     private fun getChildToRun(
