@@ -67,7 +67,7 @@ to read, procedural solutions are allowed.
 ## Commit Format
 
 We use [Gitmoji](https://gitmoji.dev) in colon-format, and then uppercase 
-commits like this, including a period at the end of the message:
+commits like this:
 
 ``` 
 :white_check_mark: Add tests to Path3
