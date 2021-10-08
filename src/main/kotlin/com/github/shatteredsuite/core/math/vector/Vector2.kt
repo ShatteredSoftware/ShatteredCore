@@ -89,7 +89,7 @@ open class Vector2<T : Number>(
 
     fun magnitude(): T {
         return with(context) {
-            squareRoot(magnitude())
+            squareRoot(squareMagnitude())
         }
     }
 
