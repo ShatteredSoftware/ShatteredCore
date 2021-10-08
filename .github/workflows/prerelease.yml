@@ -9,6 +9,7 @@ on:
       - "main"
     paths-ignore:
       - "docs/**"
+      - "src/test/**"
       - "travis.yml"
       - "README.md"
 
