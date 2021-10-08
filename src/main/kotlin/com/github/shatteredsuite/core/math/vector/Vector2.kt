@@ -96,7 +96,7 @@ open class Vector2<T : Number>(
     fun unit(): Vector2<T> {
         return with(context) {
             val inverseMagnitude = 1 / (magnitude())
-            Vector2(this, _x / inverseMagnitude, _y / inverseMagnitude)
+            Vector2(this, _x * inverseMagnitude, _y * inverseMagnitude)
         }
     }
 

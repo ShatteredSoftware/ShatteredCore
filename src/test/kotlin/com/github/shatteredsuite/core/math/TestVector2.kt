@@ -107,6 +107,16 @@ class TestVector2 {
         assertThat(v.magnitude(), closeTo(4.0, error))
     }
 
+    @Test
+    fun `should calculate unit vector properly`() {
+        val v = Vector2(DoubleContext, 3.0, 4.0)
+
+        val actual = v.unit()
+        val expected = Vector2(DoubleContext, 0.6, 0.8)
+
+        assertVectorCloseTo(actual, expected)
+    }
+
     private fun assertVectorCloseTo(actual: Vector2<Double>, expected: Vector2<Double>) {
         assertThat(actual.x, closeTo(expected.x, error))
         assertThat(actual.y, closeTo(expected.y, error))
