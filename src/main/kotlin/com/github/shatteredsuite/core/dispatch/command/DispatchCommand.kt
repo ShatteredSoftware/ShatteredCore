@@ -9,7 +9,6 @@ import com.github.shatteredsuite.core.dispatch.argument.DispatchArgument
 import com.github.shatteredsuite.core.dispatch.argument.DispatchOptionalArgument
 import com.github.shatteredsuite.core.dispatch.context.CommandContext
 import com.github.shatteredsuite.core.dispatch.predicate.DispatchPredicate
-import com.github.shatteredsuite.core.extension.merge
 
 /**
  * Order of operations:
@@ -51,7 +50,7 @@ class DispatchCommand<StateType : CommandContext>(
         this.argsByPosition = argsByPosition
     }
 
-    fun run(
+    fun execute(
         state: StateType,
         args: List<String>,
         currentData: GenericDataStore = GenericDataStore(),
@@ -75,10 +74,10 @@ class DispatchCommand<StateType : CommandContext>(
             return
         }
 
-        val child = getChildToRun(state, args, currentData, lastIndex, debug)
+        val child = getChildToRun(args, lastIndex)
         if (child != null) {
             // Pass off handling to children
-            child.run(state, args, currentData)
+            child.execute(state, args.slice((lastIndex + 1)..args.lastIndex), currentData)
             return
         }
 
@@ -171,7 +170,7 @@ class DispatchCommand<StateType : CommandContext>(
                     result.result ?: throw IllegalStateException("${arg.name} came back as null when successful")
             } else {
                 state.debugLog(
-                    "dispatch.debug.optional.fail",
+                    "dispatch.debug.argument.fail",
                     { GenericDataStore.of("arg" to arg.name) },
                     state.getLocale()
                 )
@@ -191,19 +190,14 @@ class DispatchCommand<StateType : CommandContext>(
     }
 
     private fun getChildToRun(
-        state: StateType,
         args: List<String>,
-        currentState: GenericDataStore,
         lastIndex: Int,
-        debug: Boolean
     ): DispatchCommand<StateType>? {
         if (children.isNotEmpty()) {
             if (lastIndex >= args.size) {
                 return null
             }
-            val child = children[args[lastIndex]] ?: return null
-            child.run(state, args.slice(lastIndex..args.size), currentState)
-            return child
+            return children[args[lastIndex]] ?: return null
         }
         return null
     }
@@ -215,6 +209,7 @@ class DispatchCommand<StateType : CommandContext>(
         start: Int,
         debug: Boolean
     ) {
+        val excludedArgs: MutableSet<DispatchArgument<*, *>> = mutableSetOf()
         var current = start
         optionalArguments.forEach { arg ->
             state.debugLog(
@@ -231,6 +226,7 @@ class DispatchCommand<StateType : CommandContext>(
                 )
                 data[arg.name] =
                     result.result ?: throw IllegalStateException("${arg.name} came back as null when successful")
+                excludedArgs += arg
                 current += arg.expectedArgs
             }
             state.debugLog(

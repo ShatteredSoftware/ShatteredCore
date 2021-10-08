@@ -60,11 +60,11 @@ class DispatchCommandBuilder<StateType : CommandContext>(val key: String) {
         return DispatchCommand(key, action, predicates, requiredArguments, optionalArguments.map { (arg, _) -> arg }, children)
     }
 
-    fun run(action: DispatchAction<StateType>) {
+    fun exec(action: DispatchAction<StateType>) {
         this.action = action
     }
 
-    fun run(fn: (state: StateType) -> Unit) {
+    fun exec(fn: (state: StateType) -> Unit) {
         action = object : DispatchAction<StateType> {
             override val id: String = "$key:action"
             override fun run(state: StateType, debug: Boolean) = fn(state)

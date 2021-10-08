@@ -152,7 +152,7 @@ class ShatteredCore : ShatteredPlugin(ShatteredCore::class.java) {
         this.command(key("commands")) {
             check(PlayerPredicate)
 
-            run {
+            exec {
 
             }
         }

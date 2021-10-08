@@ -7,34 +7,56 @@ import org.bukkit.util.StringUtil
 import kotlin.math.max
 import kotlin.math.min
 
-open class IntegralArgument(
+open class LongArgument(
     override val name: String,
     override val usageId: String,
-    private val min: Int = Int.MIN_VALUE,
-    private val max: Int = Int.MAX_VALUE,
-    val default: Int = 0,
-    completeMin: Int = 0,
-    completeMax: Int = 10,
-    completeIncrement: Int = 1
-) : DispatchOptionalArgument<CommandContext, Int> {
+    private val min: Long = Long.MIN_VALUE,
+    private val max: Long = Long.MAX_VALUE,
+    private val default: Long = 0,
+    private val completeRange: List<String>
+) : DispatchOptionalArgument<CommandContext, Long> {
     override val expectedArgs: Int = 1
-    private val completeRange =
-        (max(min, completeMin)..min(completeMax, max) step completeIncrement).toList().map { it.toString() }
+    private val range = min..max
 
-    override fun validate(arguments: List<String>, start: Int, state: CommandContext): ArgumentValidationResult<Int> {
+    constructor(
+        name: String,
+        usageId: String,
+        min: Long = Long.MIN_VALUE,
+        max: Long = Long.MAX_VALUE,
+        default: Long = 0,
+        completeMin: Long = 0,
+        completeMax: Long = 10,
+        completeIncrement: Long = 1
+    ) : this(name, usageId, min, max, default,
+        (max(min, completeMin)..min(completeMax, max) step completeIncrement).toList().map { it.toString() }
+    )
+
+    constructor(
+        name: String,
+        usageId: String,
+        min: Long = Long.MIN_VALUE,
+        max: Long = Long.MAX_VALUE,
+        default: Long = 0,
+        completeCount: Int = 5,
+        completeFn: (index: Int) -> Long
+    ) : this(name, usageId, min, max, default,
+        (0..completeCount).map { completeFn(it).toString() }
+    )
+
+    override fun validate(arguments: List<String>, start: Int, state: CommandContext): ArgumentValidationResult<Long> {
         return try {
-            val arg = arguments[start].toInt()
-            if (arg in min..max) {
+            val arg = arguments[start].toLong()
+            if (arg in range) {
                 ArgumentValidationResult(success = true, result = arg)
             } else {
-                val result = ArgumentValidationResult<Int>(faliureMessageId = "invalid-integer-range")
+                val result = ArgumentValidationResult<Long>(faliureMessageId = "invalid-integer-range")
                 result.data["offender"] = arguments[start]
                 result.data["max"] = max
                 result.data["min"] = min
                 result
             }
         } catch (ex: NumberFormatException) {
-            val result = ArgumentValidationResult<Int>(faliureMessageId = "invalid-integer")
+            val result = ArgumentValidationResult<Long>(faliureMessageId = "invalid-integer")
             result.data["offender"] = arguments[start]
             result
         }
@@ -47,7 +69,7 @@ open class IntegralArgument(
         return StringUtil.copyPartialMatches(partialArguments[start], completeRange, mutableListOf())
     }
 
-    override fun default(state: CommandContext): Int? {
+    override fun default(state: CommandContext): Long? {
         return default
     }
 }

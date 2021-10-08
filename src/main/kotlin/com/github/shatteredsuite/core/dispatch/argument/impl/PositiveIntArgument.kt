@@ -1,8 +1,8 @@
 package com.github.shatteredsuite.core.dispatch.argument.impl
 
-import com.github.shatteredsuite.core.dispatch.argument.impl.primitive.IntegralArgument
+import com.github.shatteredsuite.core.dispatch.argument.impl.primitive.IntArgument
 
-open class PositiveIntegralArgument(
+open class PositiveIntArgument(
     name: String,
     usageId: String,
     max: Int = Int.MAX_VALUE,
@@ -10,4 +10,4 @@ open class PositiveIntegralArgument(
     completeMin: Int = 0,
     completeMax: Int = 10,
     completeIncrement: Int = 1
-) : IntegralArgument(name, usageId, 0, default, max, completeMin, completeMax, completeIncrement)
+) : IntArgument(name, usageId, 0, max, default, completeMin, completeMax, completeIncrement)
