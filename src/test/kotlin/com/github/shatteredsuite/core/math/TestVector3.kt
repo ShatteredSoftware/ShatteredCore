@@ -61,6 +61,17 @@ class TestVector3 {
     }
 
     @Test
+    fun `should calculate unary minus properly`() {
+        val v = Vector3(DoubleContext, 3.0, 4.0, 5.0)
+
+        val actual = -v
+        val expected = Vector3(DoubleContext, -3.0, -4.0, -5.0)
+
+        assertVectorCloseTo(actual, expected)
+    }
+
+
+    @Test
     fun `should compute dot product properly`() {
         val v1 = Vector3(DoubleContext, 5.0, 1.0, 1.0)
         val v2 = Vector3(DoubleContext, 1.0, 0.0, 1.0)

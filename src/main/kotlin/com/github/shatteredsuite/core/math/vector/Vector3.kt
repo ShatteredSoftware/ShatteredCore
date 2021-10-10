@@ -46,6 +46,8 @@ open class Vector3<T : Number>(
         }
     }
 
+    operator fun unaryMinus(): Vector3<T> = negate()
+
     infix fun dot(other: Vector3<*>): T {
         return with(context) {
             _x * other._x + _y * other._y + _z * other._z
