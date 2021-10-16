@@ -15,11 +15,20 @@
         "ideas",
         "review"
       ]
+    },
+    {
+      "login": "hardiksachan",
+      "name": "Hardik Sachan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/60518745?v=4",
+      "profile": "https://github.com/hardiksachan",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "projectName": "ShatteredCore",
-  "projectOwner": "ShatteredSuite",
+  "projectOwner": "ShatteredSoftware",
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true
