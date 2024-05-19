@@ -2,11 +2,10 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
 
 buildscript {
-    ext.kotlin_version = '1.5.20'
+    ext.kotlin_version = '1.9.24'
     ext.xseries_version = project.property('xSeriesVersion')
     ext.nbt_version = project.property('nbtApiVersion')
     repositories {
-        jcenter()
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
@@ -17,10 +16,10 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.5.20'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.24'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'jacoco'
-    id 'kr.entree.spigradle' version '2.2.4'
+    id 'kr.entree.spigradle' version '2.4.3'
 }
 
 apply plugin: 'java'
@@ -74,7 +73,7 @@ configurations {
 
 dependencies {
     def withoutSpigot = { exclude group: "org.spigotmc", module: "spigot-api" }
-    implementation spigot('1.15.2')
+    implementation spigot('1.20.6')
     implementation bStats()
     implementation 'org.jetbrains:annotations:16.0.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

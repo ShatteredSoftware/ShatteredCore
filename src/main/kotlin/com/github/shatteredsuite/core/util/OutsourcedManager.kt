@@ -6,7 +6,7 @@ open class OutsourcedManager<T : Identified> : Manager<T>() {
     override fun get(id: String): T? {
         if(id.contains(':')) {
             val parts = id.split(Regex(":"), 2)
-            val namespace = parts[0].toLowerCase()
+            val namespace = parts[0].lowercase()
             val name = parts[1]
             if(externalSources.containsKey(namespace)) {
                 return externalSources[namespace]!!.get(name) ?: super.get(id)
@@ -18,7 +18,7 @@ open class OutsourcedManager<T : Identified> : Manager<T>() {
     override fun has(id: String): Boolean {
         if(id.contains(':')) {
             val parts = id.split(Regex(":"), 2)
-            val namespace = parts[0].toLowerCase()
+            val namespace = parts[0].lowercase()
             val name = parts[1]
             if(externalSources.containsKey(namespace)) {
                 return externalSources[namespace]!!.has(name) || super.has(id)
@@ -46,7 +46,7 @@ open class OutsourcedManager<T : Identified> : Manager<T>() {
     }
 
     fun addSource(namespace: String, provider: ExternalProvider<T>) {
-        this.externalSources[namespace.toLowerCase()] = provider
+        this.externalSources[namespace.lowercase()] = provider
     }
 }
 
