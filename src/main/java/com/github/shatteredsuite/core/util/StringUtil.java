@@ -1,6 +1,9 @@
 package com.github.shatteredsuite.core.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,5 +39,19 @@ public class StringUtil {
             results.add("");
         }
         return results.toArray(new String[]{});
+    }
+
+    public static <T extends Collection<? super String>> T copyPartialMatches(String token, Iterable<String> originals, T collection) {
+        Objects.requireNonNull(token, "Search token cannot be null");
+        Objects.requireNonNull(collection, "Collection cannot be null");
+        Objects.requireNonNull(originals, "Originals cannot be null");
+
+        for (String string : originals) {
+            if (string.contains(token)) {
+                collection.add(string);
+            }
+        }
+
+        return collection;
     }
 }

@@ -1,9 +1,9 @@
 package com.github.shatteredsuite.core.commands;
 
+import com.github.shatteredsuite.core.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
