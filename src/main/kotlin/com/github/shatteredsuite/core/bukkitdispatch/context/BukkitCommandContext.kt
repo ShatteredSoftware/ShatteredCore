@@ -29,8 +29,8 @@ class BukkitCommandContext(val sender: CommandSender, messageProcessorStore: Mes
     }
 
     override fun sendMessage(message: String) {
-        val components: Array<out BaseComponent> = serializer.serialize(miniMessage.parse(message))
-        sender.sendMessage(*components)
+        val component = miniMessage.deserialize(message)
+        sender.sendMessage(component)
     }
 
     override fun getLocale(): Locale {

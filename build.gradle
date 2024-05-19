@@ -25,11 +25,11 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version "1.5.30"
     id 'com.github.johnrengelman.shadow' version '7.0.0'
     id 'jacoco'
+    id 'maven-publish'
 }
 
 apply plugin: 'java'
 apply plugin: 'nebula-aggregate-javadocs'
-apply plugin: 'maven-publish'
 
 group = project.property('pluginGroup')
 version = project.property('version')
@@ -37,7 +37,7 @@ version = project.property('version')
 repositories {
     mavenLocal()
     maven {
-        url 'https://papermc.io/repo/repository/maven-public/'
+        url 'https://repo.papermc.io/repository/maven-public/'
     }
     maven {
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
@@ -69,8 +69,8 @@ repositories {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_16
-    targetCompatibility = JavaVersion.VERSION_16
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     withJavadocJar()
     withSourcesJar()
 }
@@ -88,17 +88,19 @@ processResources {
     with copySpec {
         from 'src/main/resources'
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        filter(ReplaceTokens, tokens: [description   : project.property('description'),
-                                       projectName   : project.property('projectName'),
-                                       pluginName    : project.property('pluginName'),
-                                       website       : project.property('website'),
-                                       apiVersion    : project.property('apiVersion'),
-                                       version       : project.version + ' (' + hash.trim() + ')',
-                                       kotlinVersion : project.property('kotlinVersion'),
-                                       gsonVersion   : project.property('gsonVersion'),
-                                       jacksonVersion: project.property('jacksonVersion'),
-                                       h2Version     : project.property('h2Version'),
-                                       hikariVersion : project.property('hikariVersion')])
+        filter(ReplaceTokens, tokens: [
+                description   : project.property('description'),
+                projectName   : project.property('projectName'),
+                pluginName    : project.property('pluginName'),
+                website       : project.property('website'),
+                apiVersion    : project.property('apiVersion'),
+                kotlinVersion : project.property('kotlinVersion'),
+                gsonVersion   : project.property('gsonVersion'),
+                jacksonVersion: project.property('jacksonVersion'),
+                h2Version     : project.property('h2Version'),
+                hikariVersion : project.property('hikariVersion'),
+                version       : project.version + ' (' + hash.trim() + ')',
+        ])
     }
 }
 
